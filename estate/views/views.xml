@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+                  
+        <record id="pay_is_it_there" model="ir.actions.server">
+            <field name="name">استحقاق الدفعة</field>
+            <field name="model_id" ref="estate.model_payment_payment"/>
+            <field name="binding_model_id" ref="estate.model_payment_payment"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records._is_it_there()</field>
+        </record>
+
+    <menuitem name="إدارة العقارات" id="estate.menu_root" web_icon="estate,static/description/icon.png"/>
+
+<!--       estate  -->
+      
+        <record id="edit_estate" model="ir.ui.view">
+            <field name="name">estate.estate.form</field>
+            <field name="model">estate.estate</field>
+            <field name="arch" type="xml">
+                <form string="إدارة العقارات">
+                    <header>
+                    </header>
+                <sheet string="إدارة العقارات">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="partner_id" required="1"/>
+                         <field name="partner_employee" domain="[('parent_id','=', partner_id)]"/>
+                         <field name="user_id" readonly="1"/>
+                        </group>   
+                        <group>
+                         <field name="client_type"/>
+                        </group>   
+                      </group>
+                    <notebook>
+                        <page name="estate" string="العقارات">
+                         <field name="building_ids"/>
+                        </page>
+                        <page name="estate" string="العقارات">
+                         <field name="contract_ids"/>
+                        </page>
+                    </notebook>
+                         <field name="note"/>
+                </sheet>
+                 </form>
+            </field>
+        </record>
+      
+        <record id="view_estate_tree" model="ir.ui.view">
+            <field name="name">estate.estate.tree</field>
+            <field name="model">estate.estate</field>
+            <field name="arch" type="xml">
+                <tree string="إدارة العقارات" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="partner_id"/>
+                    <field name="client_type"/>
+                    <field name="contract_ids"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="view_estate" model="ir.actions.act_window">
+            <field name="name">إدارة العقارات</field>
+            <field name="res_model">estate.estate</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا توجد عقارات لنصنع واحدة
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="estate_root" name="إدارة العقارات" parent="estate.menu_root" action="view_estate" sequence="50"/>
+
+      
+      
+<!--       building  -->
+      
+        <record id="edit_building" model="ir.ui.view">
+            <field name="name">building.building.form</field>
+            <field name="model">building.building</field>
+            <field name="arch" type="xml">
+                <form string="المباني">
+                    <header>
+                    </header>
+                <sheet string="المباني">
+                    <field name="image_10" widget='image' class="oe_avatar" required="1"/>
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="estate_id"/>
+                         <field name="user_id"/>
+                         <field name="start_date"/>
+                         <field name="end_date"/>
+                         <field name="file"/>
+                        </group>   
+                        <group>
+                         <field name="profit_total"/>
+                         <field name="lost_total"/>
+                         <field name="net_total"/>
+                        </group>   
+                      </group>
+                    <notebook>
+                        <page name="units" string="الوحدات الإيجارية">
+                         <field name="unit_ids"/>
+                         <group col="6" class="mt-2 mt-md-0">
+                             <group colspan="4">
+                                 <field name="note"/>
+                             </group>
+                             <group class="oe_subtotal_footer oe_right" colspan="2" name="total">
+                                <field name="amount_left" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                                <field name="paid_amount" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                                <field name="taxs" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="amount_taxed"/>
+                                </div>
+                                <field name="amount_taxed" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                             </group>
+                         </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+      
+        <record id="view_building_tree" model="ir.ui.view">
+            <field name="name">building.building.tree</field>
+            <field name="model">building.building</field>
+            <field name="arch" type="xml">
+                <tree string="المباني" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="profit_total"/>
+                    <field name="lost_total"/>
+                    <field name="net_total"/>
+                    <field name="paid_amount"/>
+                    <field name="amount_left"/>
+                    <field name="unit_ids"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="view_building_search_form" model="ir.ui.view">
+            <field name="name">building.building.search.form</field>
+            <field name="model">building.building</field>
+            <field name="arch" type="xml">
+               <search string="المباني">
+                    <group expand="0" string="جمع حسب">
+                        <filter string="العقارات" name="estate" context="{'group_by': 'estate_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+      
+        <record id="view_building" model="ir.actions.act_window">
+            <field name="name">المباني</field>
+            <field name="res_model">building.building</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_estate': 1}</field>
+            <field name="search_view_id" ref="view_building_search_form"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا يوجد مبنى لنصنع واحد
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="building_root" name="المباني" parent="estate.menu_root" action="view_building" sequence="50"/>
+
+<!--       unit  -->
+      
+        <record id="edit_unit" model="ir.ui.view">
+            <field name="name">unit.unit.form</field>
+            <field name="model">unit.unit</field>
+            <field name="arch" type="xml">
+                <form string="الوحدة الإيجارية">
+                    <header>
+                    </header>
+                <sheet string="الوحدة الإيجارية">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="building_id"/>
+                         <field name="user_id" readonly="1"/>
+                         <field name="space" required="1"/>
+                        </group>   
+                        <group>
+                         <field name="rented_day"/>
+                         <field name="unrented_days"/>
+                         <field name="avalibale_days"/>
+                         <field name="profit_total"/>
+                         <field name="lost_total"/>
+                         <field name="net_total"/>
+                        </group>   
+                      </group>
+                    <notebook>
+                        <page name="contract" string="العقود">
+                         <field name="contract_ids"/>
+                         <group col="6" class="mt-2 mt-md-0">
+                             <group colspan="4">
+                                 <field name="note"/>
+                             </group>
+                             <group class="oe_subtotal_footer oe_right" colspan="2" name="total">
+                                <field name="amount_left" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                                <field name="paid_amount" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                                <field name="taxs" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="amount_taxed"/>
+                                </div>
+                                <field name="amount_taxed" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                             </group>
+                         </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                 </form>
+            </field>
+        </record>
+      
+        <record id="view_unit_tree" model="ir.ui.view">
+            <field name="name">unit.unit.tree</field>
+            <field name="model">unit.unit</field>
+            <field name="arch" type="xml">
+                <tree string="الوحدة الإيجارية" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="building_id"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="space"/>
+                    <field name="rented_day"/>
+                    <field name="unrented_days"/>
+                    <field name="avalibale_days"/>
+                    <field name="paid_amount"/>
+                    <field name="amount_left"/>
+                    <field name="contract_ids"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="view_unit_search_form" model="ir.ui.view">
+            <field name="name">unit.unit.search.form</field>
+            <field name="model">unit.unit</field>
+            <field name="arch" type="xml">
+               <search string="الوحدات">
+                    <group expand="0" string="جمع حسب">
+                        <filter string="المباني" name="building" context="{'group_by': 'building_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+      
+        <record id="view_unit" model="ir.actions.act_window">
+            <field name="name">الوحدة الإيجارية</field>
+            <field name="res_model">unit.unit</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_building': 1}</field>
+            <field name="search_view_id" ref="view_unit_search_form"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا توجد وحدة إيجارية لنصنع واحدة
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="unit_root" name="الوحدة الإيجارية" parent="estate.menu_root" action="view_unit" sequence="50"/>
+
+      
+<!--       contract  -->
+      
+        <record id="edit_contract" model="ir.ui.view">
+            <field name="name">contract.contract.form</field>
+            <field name="model">contract.contract</field>
+            <field name="arch" type="xml">
+                <form string="عقود الإيجار">
+                    <header>
+                        <field name="contract_state" widget="statusbar" statusbar_visible="جديد,ساري"/>
+                    </header>
+                <sheet string="عقود الإيجار">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="partner_id"/>
+                         <field name="user_id" readonly="1"/>
+                         <field name="building_id"/>
+                         <field name="unit_id" required="1"/>
+                         <field name="payment_date"/>
+                         <field name="contract_type"/>
+                         <field name="file" attrs="{'invisible': [('contract_type', '=', False)]}"/>
+                        </group>
+                        <group>
+                         <field name="start_date"/>
+                         <field name="end_date"/>
+                         <field name="rent_amount"/>
+                         <field name="days_left"/>
+                         <field name="meter_price"/>
+                        </group>
+                         <field name="payment_ids"/>
+                     </group>
+                     <group col="6" class="mt-2 mt-md-0">
+                         <group colspan="4">
+                             <field name="terms"/>
+                         </group>
+                         <group class="oe_subtotal_footer oe_right" colspan="2" name="total">
+                            <field name="amount_left" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                            <field name="paid_amount" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                            <field name="taxs" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                <label for="amount_taxed"/>
+                            </div>
+                            <field name="amount_taxed" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'company_currency'}"/>
+                         </group>
+                     </group>
+                </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+
+      
+      
+        <record id="contract_kanban_view" model="ir.ui.view">
+            <field name="name">contract.contract.kanban.lead</field>
+            <field name="model">contract.contract</field>
+            <field name="arch" type="xml">
+              <kanban default_group_by="contract_state" class="o_kanban_small_column o_opportunity_kanban">
+                <field name="user_id"/>
+                <progressbar field="contract_state" colors='{"جديد": "success", "ساري": "warning", "منتهي": "danger"}' sum_field="rent_amount"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                <div>
+                                    <field name="unit_id"/>
+                                </div>
+                                <div>
+                                    <field name="start_date"/>
+                                </div>
+                                <div>
+                                    <field name="end_date"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="rent_amount"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+              </kanban>
+            </field>
+        </record>
+
+        <record id="view_contract_tree" model="ir.ui.view">
+            <field name="name">contract.contract.tree</field>
+            <field name="model">contract.contract</field>
+            <field name="arch" type="xml">
+                <tree string="عقود الإيجار" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="unit_id"/>
+                    <field name="building_id"/>
+                    <field name="payment_date"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="meter_price"/>
+                </tree>
+            </field>
+        </record>
+            
+        <record id="view_contract" model="ir.actions.act_window">
+            <field name="name">عقود الإيجار</field>
+            <field name="res_model">contract.contract</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا يوجد عقد إيجار لنصنع واحد
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="contract_root" name="عقود الإيجار" parent="estate.menu_root" action="view_contract" sequence="50"/>
+      
+<!--       payment  -->
+      
+        <record id="edit_payment" model="ir.ui.view">
+            <field name="name">payment.payment.form</field>
+            <field name="model">payment.payment</field>
+            <field name="arch" type="xml">
+                <form string="الدفعات">
+                    <header>
+                    </header>
+                <sheet string="الدفعات">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="contract_id"/>
+                         <field name="user_id"/>
+                         <field name="payment_date"/>
+                         <field name="payment_amount"/>
+                        </group>   
+                        <group>
+                         <field name="payment_type" widget="radio"/>
+                         <field name="payment_full" widget="radio" attrs="{'invisible': [('payment_type', 'not in', 'تم السداد')]}"/>
+                         <field name="partial_payment" attrs="{'invisible': [('payment_full', 'not in', 'سداد جزئي')]}"/>
+                         <field name="tax_paid" widget="radio" attrs="{'invisible': [('payment_type', 'not in', 'تم السداد')]}"/>
+                         <field name="partial_tax" attrs="{'invisible': [('tax_paid', 'not in', 'نعم بشكل جزئي')]}"/>
+                        </group>   
+                      </group>
+                         <field name="note"/>
+                </sheet>
+                 </form>
+            </field>
+        </record>
+      
+        <record id="view_payment_tree" model="ir.ui.view">
+            <field name="name">payment.payment.tree</field>
+            <field name="model">payment.payment</field>
+            <field name="arch" type="xml">
+                <tree string="الدفعات" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="contract_id"/>
+                    <field name="payment_amount"/>
+                    <field name="payment_date"/>
+                    <field name="payment_type"/>
+                </tree>
+            </field>
+        </record>      
+      
+        <record id="view_payment_search_form" model="ir.ui.view">
+            <field name="name">payment.payment.search.form</field>
+            <field name="model">payment.payment</field>
+            <field name="arch" type="xml">
+               <search string="الدفعات">
+                    <group expand="0" string="جمع حسب">
+                        <filter string="العقود" name="contract" context="{'group_by': 'contract_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+      
+        <record id="view_payment" model="ir.actions.act_window">
+            <field name="name">الدفعات</field>
+            <field name="res_model">payment.payment</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_contract': 1}</field>
+            <field name="search_view_id" ref="view_payment_search_form"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا توجد دفعة لنصنع واحدة
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="payment_root" name="الدفعات" parent="estate.menu_root" action="view_payment" sequence="50"/>
+      
+  </data>
+</odoo>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="module_category_estate">
+        <field name="name">إدارة العقارات</field>
+        <field name="description">أدارة العقارات</field>
+        <field name="sequence">2</field>
+    </record>
+    
+    <record model="res.groups" id="group_estate_user">
+        <field name="name">مستخدم</field>
+        <field name="category_id" ref="module_category_estate"/>
+    </record>
+    
+    <record model="res.groups" id="group_estate_manager">
+        <field name="name">مدير</field>
+        <field name="category_id" ref="module_category_estate"/>
+        <field name="implied_ids" eval="[(4, ref('group_estate_user'))]"/>
+    </record>
+
+<data noupdate="1">
+    
+<!-- estate -->
+    <record model="ir.rule" id="estate_comp_rule">
+        <field name="name">estate: multi-company</field>
+        <field name="model_id" ref="model_estate_estate"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="estate_estate_manager_rule">
+        <field name="name">estate: estate manager: see all</field>
+        <field name="model_id" ref="model_estate_estate"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('estate.group_estate_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="estate_members_rule">
+        <field name="name">estate: Own estate</field>
+        <field name="model_id" ref="model_estate_estate"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.group_estate_user'))]"/>
+    </record>
+    
+ 
+    
+<!-- building -->
+    <record model="ir.rule" id="building_comp_rule">
+        <field name="name">building: multi-company</field>
+        <field name="model_id" ref="model_building_building"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="building_building_manager_rule">
+        <field name="name">building: building manager: see all</field>
+        <field name="model_id" ref="model_building_building"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('estate.group_estate_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="building_members_rule">
+        <field name="name">building: Own building</field>
+        <field name="model_id" ref="model_building_building"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.group_estate_user'))]"/>
+    </record>
+    
+    <!-- building Portal -->
+    <record id="building_building_rule_portal" model="ir.rule">
+        <field name="name">building: portal users</field>
+        <field name="model_id" ref="estate.model_building_building"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+    </record>
+    
+    <record id="building_building_rule_portal_employee" model="ir.rule">
+        <field name="name">building: portal users</field>
+        <field name="model_id" ref="estate.model_building_building"/>
+        <field name="domain_force">[('partner_employee','=',user.partner_id.id)]</field>
+    </record>
+    
+<!-- unit -->
+    <record model="ir.rule" id="unit_comp_rule">
+        <field name="name">unit: multi-company</field>
+        <field name="model_id" ref="model_unit_unit"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="unit_unit_manager_rule">
+        <field name="name">unit: unit manager: see all</field>
+        <field name="model_id" ref="model_unit_unit"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('estate.group_estate_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="unit_members_rule">
+        <field name="name">unit: Own unit</field>
+        <field name="model_id" ref="model_unit_unit"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.group_estate_user'))]"/>
+    </record>
+   
+    <!-- unit Portal -->
+    <record id="unit_unit_rule_portal" model="ir.rule">
+        <field name="name">unit: portal users</field>
+        <field name="model_id" ref="estate.model_unit_unit"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+    </record>
+    
+    <record id="unit_unit_rule_portal_employee" model="ir.rule">
+        <field name="name">unit: portal users</field>
+        <field name="model_id" ref="estate.model_unit_unit"/>
+        <field name="domain_force">[('partner_employee','=',user.partner_id.id)]</field>
+    </record>
+    
+    
+<!-- payment -->
+    <record model="ir.rule" id="payment_comp_rule">
+        <field name="name">payment: multi-company</field>
+        <field name="model_id" ref="model_payment_payment"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="payment_payment_manager_rule">
+        <field name="name">payment: payment manager: see all</field>
+        <field name="model_id" ref="model_payment_payment"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('estate.group_estate_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="payment_members_rule">
+        <field name="name">payment: Own payment</field>
+        <field name="model_id" ref="model_payment_payment"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.group_estate_user'))]"/>
+    </record>
+
+<!-- contract -->
+    <record model="ir.rule" id="contract_comp_rule">
+        <field name="name">contract: multi-company</field>
+        <field name="model_id" ref="model_contract_contract"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="contract_contract_manager_rule">
+        <field name="name">contract: contract manager: see all</field>
+        <field name="model_id" ref="model_contract_contract"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('estate.group_estate_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="contract_members_rule">
+        <field name="name">contract: Own contract</field>
+        <field name="model_id" ref="model_contract_contract"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.group_estate_user'))]"/>
+    </record>
+    
+    
+    <!-- contract Portal -->
+    <record id="contract_contract_rule_portal" model="ir.rule">
+        <field name="name">contract: portal users</field>
+        <field name="model_id" ref="estate.model_contract_contract"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+    </record>
+    
+    <record id="contract_contract_rule_portal_employee" model="ir.rule">
+        <field name="name">contract: portal users</field>
+        <field name="model_id" ref="estate.model_contract_contract"/>
+        <field name="domain_force">[('partner_employee','=',user.partner_id.id)]</field>
+    </record>
+
+</data>
+</odoo>

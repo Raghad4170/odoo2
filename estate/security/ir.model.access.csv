@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_estate_estate_manager,estate.estate,model_estate_estate,estate.group_estate_manager,1,1,1,1
+access_estate_estate,estate.estate,model_estate_estate,estate.group_estate_user,1,1,1,0
+access_estate_estate_portal,estate.estate,model_estate_estate,base.group_portal,1,0,0,0
+access_building_building_manager,building.building,model_building_building,estate.group_estate_manager,1,1,1,1
+access_building_building,building.building,model_building_building,estate.group_estate_user,1,1,1,0
+access_building_building_portal,building.building,model_building_building,base.group_portal,1,0,0,0
+access_unit_unit_manager,unit.unit,model_unit_unit,estate.group_estate_manager,1,1,1,1
+access_unit_unit,unit.unit,model_unit_unit,estate.group_estate_user,1,1,1,0
+access_unit_unit_portal,unit.unit,model_unit_unit,base.group_portal,1,0,0,0
+access_contract_contract_manager,contract.contract,model_contract_contract,estate.group_estate_manager,1,1,1,1
+access_contract_contract,contract.contract,model_contract_contract,estate.group_estate_user,1,1,1,0
+access_contract_contract_portal,contract.contract,model_contract_contract,base.group_portal,1,0,0,0
+access_payment_payment_manager,payment.payment,model_payment_payment,estate.group_estate_manager,1,1,1,1
+access_payment_payment,payment.payment,model_payment_payment,estate.group_estate_user,1,1,1,0
+access_payment_payment_portal,payment.payment,model_payment_payment,base.group_portal,1,0,0,0

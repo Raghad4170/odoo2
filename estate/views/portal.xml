@@ -1,0 +1,538 @@
+<odoo>
+    <data noupdate="1">
+        <record id="website_menu_buildings" model="website.menu">
+            <field name="name">العقارات</field>
+            <field name="url">/my/buildings</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">4</field>
+            <field name="group_ids" eval="[(4, ref('base.group_portal')),
+                                          (4,ref('base.group_user')),]"/>
+        </record>
+    </data>
+    
+    
+    <data>        
+
+<!-- building -->
+       
+    <template id="portal_layout_building" name="Portal layout: building menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'building' or building" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not building else ''}">
+                <a t-if="building" t-attf-href="/my/buildings?{{ keep_query() }}">العقارات</a>
+                <t t-else="">العقارات</t>
+            </li>
+            <li t-if="building" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="building.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_building" name="Show Estate" customize_show="True" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">العقارات</t>
+                <t t-set="url" t-value="'/my/buildings'"/>
+                <t t-set="placeholder_count" t-value="'building_count'"/>
+            </t>
+        </xpath>
+    </template>      
+        
+    <template id="portal_my_buildings" name="العقارات">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">العقارات</t>
+            </t>
+            <t t-if="not buildings">
+                <div class="alert alert-warning mt8" role="alert">
+                    لا توجد لك عقارات لدينا، لتسجيل عقاراتك ومتابعتها تواصل مع مسؤول العلاقات.
+                </div>
+            </t>
+            <t t-if="buildings">
+            <div class="row" style="margin-left: 1px;  margin-right: 1px;">
+               <tr t-foreach="buildings" t-as="building">
+                <li class="list-group-item flex-grow-1" style="width: 250px; height: 450px;">
+                    <div class="text-center">
+                    <a t-attf-href="/my/building/#{building.id}?access_token=#{building.access_token}">
+                        <img t-if="building.image_10" t-attf-src="data:image/png;base64,{{building.image_10}}" class='rounded-circle oe_topbar_avatar' style="height:130px;width:130px;"/>
+                        <div class="text-center" t-field="building.name"/>
+                    </a>
+                    </div>
+                    <div class="text-center">
+                        <small><b class="text-muted">القيمة الفعلية للربح: </b></small>
+                        <div style="color: green;" t-field="building.profit_total"/>
+                    </div>
+                    <div class="text-center">
+                        <small><b class="text-muted center">القيمة التقديرية للخسارة: </b></small>
+                        <div style="color: red;" t-field="building.lost_total"/>
+                    </div>
+                    <div class="text-center">
+                        <small><b class="text-muted center">صافي الربح التقديري: </b></small>
+                        <div style="color: green;" t-field="building.net_total"/>
+                    </div>
+                    <div class="text-center">
+                        <small><b class="text-muted center">مجموع المبالغ المدفوعة: </b></small>
+                        <div style="color: green;" t-field="building.paid_amount"/>
+                    </div>
+                    <div class="text-center">
+                        <small><b class="text-muted center">المبالغ المتبقية: </b></small>
+                        <div style="color: red;" t-field="building.amount_left"/>
+                    </div>
+                    <div class="text-center">
+                        <small><b class="text-muted">عدد الوحدات: </b></small>
+                        <span t-field="building.unit_count"/>
+                    </div>
+                    <div class="text-center">
+                        <small><b class="text-muted">عدد العقود: </b></small>
+                        <span t-field="building.contracts_count"/>
+                    </div>
+                </li>
+               </tr>
+           </div>
+            </t>
+        </t>
+    </template>
+        
+       
+        
+    <template id="portal_my_building" name="عقود الإيجار">
+            <t t-set="o_portal_fullwidth_alert" groups="estate.group_estate_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=building.building&amp;id=%s&amp;view_type=form' % (building.id)"/>
+                </t>
+            </t>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li t-if="building.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المسؤول</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="building.user_id.image_1024" t-att-src="image_data_uri(building.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not building.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="building.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                    <div class="card_header">
+                        <div class="col mt-3">
+                            <div field="building.name"/>
+                        </div>
+                    </div>
+                        <div class="card-body">
+                                <div>
+                                    <h4 class="mb-1">معلومات المبنى</h4>
+                                    <hr class="my-0"/>
+                                <div class="row mt-4">
+                                    <table class="table table-borderless table-sm">
+                                        <tbody style="white-space:nowrap">
+                                            <tr t-if="building.profit_total">
+                                                <th class="text-left pb-0">القيمة الفعلية للربح:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="building.profit_total"/></td>
+                                            </tr>
+                                            <tr t-if="building.lost_total">
+                                                <th class="text-left pb-0">القيمة التقديرية للخسارة:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span style="color: red;" t-field="building.lost_total"/></td>
+                                            </tr>
+                                            <tr t-if="building.net_total">
+                                                <th class="text-left pb-0">صافي الربح التقديري:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="building.net_total"/></td>
+                                            </tr>
+                                            <tr t-if="building.amount_left">
+                                                <th class="text-left pb-0">المبالغ المتبقية:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span style="color: red;" t-field="building.amount_left"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row mt-4">
+                                    <table class="table table-borderless table-sm">
+                                        <tbody style="white-space:nowrap">
+                                            <tr t-if="building.start_date">
+                                                <th class="text-left pb-0">بداية الإيجار:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="building.start_date"/></td>
+                                            </tr>
+                                            <tr t-if="building.end_date">
+                                                <th class="text-left pb-0">نهاية الإيجار:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="building.end_date"/></td>
+                                            </tr>
+                                            <tr t-if="building.paid_amount">
+                                                <th class="text-left pb-0">مجموع المبالغ المدفوعة:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="building.paid_amount"/></td>
+                                            </tr>
+                                            <tr t-if="building.taxs">
+                                                <th class="text-left pb-0">مبلغ الضريبة المضافة:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="building.taxs"/></td>
+                                            </tr>
+                                            <tr t-if="building.amount_taxed">
+                                                <th class="text-left pb-0">المبلغ الإجمالي:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="building.amount_taxed"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            <div t-if="building.unit_ids">
+                                <h4 class="mb-1">الوحدات</h4>
+                                <hr class="my-0"/>
+                                <div class="row mt-4">
+                                    <span class="col-12 col-lg-5  mb-3 mb-lg-0" t-foreach="building.unit_ids" t-as="unit">
+                                        <table class="table table-borderless table-sm">
+                                            <thead>
+                                                <strong><i class="fa fa-building-o"> </i> <span t-field="unit.name"/></strong>
+                                            </thead>
+                                            <tbody style="white-space:nowrap">
+                                                <tr t-if="unit.rented_day">
+                                                    <th class="text-left pb-0">الأيام المؤجرة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="unit.rented_day"/></td>
+                                                </tr>
+                                                <tr t-if="unit.unrented_days">
+                                                    <th class="text-left pb-0">الأيام الغير مؤجرة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span style="color: red;" t-field="unit.unrented_days"/></td>
+                                                </tr>
+                                                <tr t-if="unit.avalibale_days">
+                                                    <th class="text-left pb-0">الأيام التأجيرية المتاحة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="unit.avalibale_days"/></td>
+                                                </tr>
+                                                <tr t-if="unit.profit_total">
+                                                    <th class="text-left pb-0">القيمة الفعلية للربح:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="unit.profit_total"/></td>
+                                                </tr>
+                                                <tr t-if="unit.lost_total">
+                                                    <th class="text-left pb-0">القيمة التقديرية للخسارة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span style="color: red;" t-field="unit.lost_total"/></td>
+                                                </tr>
+                                                <tr t-if="unit.net_total">
+                                                    <th class="text-left pb-0">صافي الربح:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="unit.net_total"/></td>
+                                                </tr>
+                                                <tr t-if="unit.paid_amount">
+                                                    <th class="text-left pb-0">مجموع المبالغ المدفوعة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span style="color: green;" t-field="unit.paid_amount"/></td>
+                                                </tr>
+                                                <tr t-if="unit.amount_left">
+                                                    <th class="text-left pb-0">المبالغ المتبقية:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span style="color: red;" t-field="unit.amount_left"/></td>
+                                                </tr>
+                                                <tr t-if="unit.contract_count">
+                                                    <th class="text-left pb-0">العقود:</th>
+                                                    <td class="w-100 pb-0 text-wrap">
+                                                        <div t-foreach="unit.contract_ids" t-as="contract">
+                                                             <a t-attf-href="/my/estatecontract/#{contract.id}?access_token=#{contract.access_token}" class="mt-1">
+                                                                 <i class="fa fa-file-text-o"> </i> <span t-field="contract.name"/>
+                                                             </a>
+                                                        </div>    
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </span>
+                                </div>                            
+                                <div id="discussion"/>
+                            </div>                            
+                        </div>
+                    </div>
+
+                    <!-- ======  Chatter ====== -->
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="building"/>
+                            <t t-set="token" t-value="building.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>        
+        
+        
+<!-- unit -->
+        
+    <template id="portal_layout_unit" name="Portal layout: unit menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'unit' or unit" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not unit else ''}">
+                <a t-if="unit" t-attf-href="/my/units?{{ keep_query() }}">الوحدات</a>
+                <t t-else="">الوحدات</t>
+            </li>
+            <li t-if="unit" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="unit.name"/>
+            </li>
+        </xpath>
+    </template>
+        
+    <template id="portal_my_units" name="الوحدات">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">الوحدات</t>
+            </t>
+            <t t-if="not units">
+                <div class="alert alert-warning mt8" role="alert">
+                    لا توجد وحدات
+                </div>
+            </t>
+            <t t-if="units" t-call="portal.portal_table">
+                 <thead>
+                    <tr t-attf-class="thead-light">
+                        <th class="text-left">الوحدة</th>
+                        <th class="text-left">القيمة الفعلية للربح</th>
+                        <th class="text-left">القيمة التقديرية للخسارة</th>
+                        <th class="text-left">صافي الربح التقديري</th>
+                        <th class="text-left">مجموع المبالغ المدفوعة</th>
+                        <th class="text-left">المبالغ المتبقية</th>
+                        <th class="text-left">عدد العقود</th>
+                    </tr>
+                 </thead>
+                <tbody>
+                    <tr t-foreach="units" t-as="unit">
+                        <td>
+                            <a t-attf-href="/my/estatecontracts?filterby=#{unit.id}"><span t-field="unit.name"/></a>
+                        </td>
+                        <td>
+                           <span t-field="unit.profit_total"/>
+                        </td>
+                        <td>
+                           <span t-field="unit.lost_total"/>
+                        </td>
+                        <td>
+                           <span t-field="unit.net_total"/>
+                        </td>
+                        <td>
+                           <span t-field="unit.paid_amount"/>
+                        </td>
+                        <td>
+                           <span t-field="unit.amount_left"/>
+                        </td>
+                        <td>
+                           <span t-field="unit.contract_count"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+        
+<!-- contract -->
+        
+    <template id="contract_portal_breadcrumbs" name="Portal Breadcrumbs">
+        <ol t-if="page_name != 'home'" class="o_portal_submenu breadcrumb mb-0 py-2 flex-grow-1 row">
+            <li class="breadcrumb-item ml-1">
+                <a href="/my/home" aria-label="Home" title="Home"><i class="fa fa-home"/></a>                
+            </li>
+            <li class="breadcrumb-item ml-1">
+                <a t-attf-href="/my/building/#{contract.building_id.id}?access_token=#{contract.building_id.access_token}" aria-label="Home" title="Home"><span t-field="contract.building_id.name"/></a>
+            </li>            
+        </ol>
+    </template>
+
+        
+    <template id="contract_portal_layout" name="Portal Layout">
+        <t t-call="portal.frontend_layout">
+            <t t-set="is_portal" t-value="True"/>
+
+            <div t-if="not no_breadcrumbs and not my_details and not breadcrumbs_searchbar" class="o_portal container mt-3">
+                <div class="row align-items-center bg-white no-gutters border rounded">
+                    <div class="col-10">
+                        <t t-call="estate.contract_portal_breadcrumbs"></t>
+                    </div>
+                    <div t-if="prev_record or next_record" class="col-2 flex-grow-0 text-center">
+                        <t t-call='portal.record_pager'/>
+                    </div>
+                </div>
+            </div>
+            <div id="wrap" class='o_portal_wrap'>
+                <div class="container mb64">
+                    <t t-if="my_details">
+                        <div class="row justify-content-between mt-4">
+                            <div t-attf-class="col-12 col-md col-lg-6">
+                                <t t-raw="0"/>
+                            </div>
+                            <div id="o_my_sidebar" class="pt-3 pt-lg-0 col-12 col-md col-lg-4 col-xl-3 o_my_sidebar">
+                                <div class="o_my_contact" t-if="sales_user">
+                                    <t t-call="portal.portal_contact"/>
+                                </div>
+                                <div class="o_portal_my_details">
+                                    <h4>Details <a role="button" href="/my/account" class="btn btn-sm btn-link"><i class="fa fa-pencil"/> Edit</a></h4>
+                                    <hr class="mt-1 mb-0"/>
+                                    <div t-field="user_id.partner_id" t-options='{"widget": "contact", "fields": ["email", "phone", "address", "name"]}'/>
+                                </div>
+                                <div class="o_portal_my_security mt-3">
+                                    <h4>Account Security </h4>
+                                    <hr class="mt-1 mb-1"/>
+                                    <a href="/my/security"><i class="fa fa-pencil mx-1"/>Edit Security Settings</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <t t-raw="0"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+        
+    <template id="portal_my_contract" name="عقود الإيجار">
+            <t t-set="o_portal_fullwidth_alert" groups="project.group_project_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=contract.contract&amp;id=%s&amp;view_type=form' % (contract.id)"/>
+                </t>
+            </t>
+        <t t-call="estate.contract_portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li t-if="contract.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المسؤول</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="contract.user_id.image_1024" t-att-src="image_data_uri(contract.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not contract.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="contract.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                    <div class="card_header">
+                        <div class="col mt-3">
+                            <div field="contract.name"/>
+                        </div>
+                    </div>
+                        <div class="card-body">
+                                <div>
+                                    <h4 class="mb-1">معلومات العقد</h4>
+                                    <hr class="my-0"/>
+                                <div class="row">
+                                    <span class="col-12 col-lg-5  mb-3 mb-lg-0">
+                                        <table class="table table-borderless table-sm">
+                                            <tbody style="white-space:nowrap">
+                                                <tr t-if="contract.contract_state">
+                                                    <th class="text-left pb-0">حالة العقد:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.contract_state"/></td>
+                                                </tr>
+                                                <tr t-if="contract.days_left">
+                                                    <th class="text-left pb-0">الأيام المتبقية على إنتهاء العقد:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.days_left"/></td>
+                                                </tr>
+                                                <tr t-if="contract.start_date">
+                                                    <th class="text-left pb-0">بداية الإيجار:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.start_date"/></td>
+                                                </tr>
+                                                <tr t-if="contract.end_date">
+                                                    <th class="text-left pb-0">نهاية الإيجار:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.end_date"/></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </span>
+                                    <span class="col-12 col-lg-5  mb-3 mb-lg-0">
+                                        <table class="table table-borderless table-sm">
+                                            <tbody style="white-space:nowrap">
+                                                <tr t-if="contract.payment_date">
+                                                    <th class="text-left pb-0">مواعيد السداد:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.payment_date"/></td>
+                                                </tr>
+                                                <tr t-if="contract.rent_amount">
+                                                    <th class="text-left pb-0">قيمة الإيجار:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.rent_amount"/></td>
+                                                </tr>
+                                                <tr t-if="contract.meter_price">
+                                                    <th class="text-left pb-0">سعر المتر بالريال:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.meter_price"/></td>
+                                                </tr>
+                                                <tr t-if="contract.paid_amount">
+                                                    <th class="text-left pb-0">مجموع المبالغ المدفوعة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.paid_amount"/></td>
+                                                </tr>
+                                                <tr t-if="contract.amount_left">
+                                                    <th class="text-left pb-0">المبالغ المتبقية:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="contract.amount_left"/></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </span>
+                                </div>
+                                </div>
+                            <div t-if="contract.terms">
+                                <h4 class="mb-1">شروط الإيجار</h4>
+                                <hr class="my-0"/>
+                                <div style="text-align: justify;text-justify: inter-word;" t-field="contract.terms"/>
+                            </div>
+                            <div t-if="contract.payment_ids">
+                                <h4 class="mb-1">الدفعات</h4>
+                                <hr class="my-0"/>
+                                <div class="row mt-4">
+                                    <span class="col-12 col-lg-5  mb-3 mb-lg-0" t-foreach="contract.payment_ids" t-as="payment">
+                                        <table class="table table-borderless table-sm">
+                                            <thead>
+                                                <strong><i class="fa fa-money"> </i> <span t-field="payment.name"/></strong>
+                                            </thead>
+                                            <tbody style="white-space:nowrap">
+                                                <tr t-if="payment.payment_amount">
+                                                    <th class="text-left pb-0">مبلغ الدفعة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="payment.payment_amount"/></td>
+                                                </tr>
+                                                <tr t-if="payment.payment_date">
+                                                    <th class="text-left pb-0">تاريخ الدفعة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="payment.payment_date"/></td>
+                                                </tr>
+                                                <tr t-if="payment.payment_type">
+                                                    <th class="text-left pb-0">حالة السداد:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="payment.payment_type"/></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </span>
+                                </div>                            
+                                <div id="discussion"/>
+                            </div>                            
+                        </div>
+                    </div>
+
+                    <!-- ======  Chatter ====== -->
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="contract"/>
+                            <t t-set="token" t-value="contract.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>        
+        
+                        
+    </data>
+</odoo>
