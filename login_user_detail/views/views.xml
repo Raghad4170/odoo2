@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_ir_session_tree" model="ir.ui.view">
+		<field name="name">ir.session.form</field>
+		<field name="model">ir.session</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name" optional="show"/>
+				<field name="user_id" optional="show"/>				
+				<field name="remote_addr" optional="show"/>
+				<field name="user_agent" optional="show"/>
+				<field name="start_date" optional="show"/>
+				<field name="hostname" optional="show"/>
+				<field name="last_request_time" optional="show"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="act_sessions" model="ir.actions.act_window">
+		<field name="name">الجلسات</field>
+		<field name="res_model">ir.session</field>
+		<field name="view_mode">tree</field>
+	</record>
+    
+	<menuitem name="الجلسات" id="menu_sessions" action="act_sessions" parent="base.menu_security"/>
+
+    
+    
+	<record id="view_all_sessions_tree" model="ir.ui.view">
+		<field name="name">تفاصيل دخول المستخدمين</field>
+		<field name="model">session.session</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name" optional="show"/>
+				<field name="user_id" optional="show"/>				
+				<field name="start_date" optional="show"/>
+				<field name="end_date" optional="show"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="act_all_sessions" model="ir.actions.act_window">
+		<field name="name">تفاصيل دخول المستخدمين</field>
+		<field name="res_model">session.session</field>
+		<field name="view_mode">tree</field>
+	</record>
+    
+	<menuitem name="تفاصيل دخول المستخدمين" id="menu_all_sessions" action="act_all_sessions" parent="base.menu_users"/>
+</odoo>
