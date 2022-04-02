@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.module.category" id="module_category_mutn">
+        <field name="name">متن</field>
+        <field name="description">متن</field>
+        <field name="sequence">-100</field>
+    </record>
+
+    <record model="ir.module.category" id="module_company_employees">
+        <field name="name">موظفي الشركة</field>
+        <field name="description">موظفي الشركة</field>
+        <field name="sequence">-100</field>
+        <field name="parent_id" ref="module_category_mutn"/>
+    </record>
+
+    <record model="res.groups" id="employee">
+        <field name="name">موظف</field>
+        <field name="category_id" ref="module_company_employees"/>
+        <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
+    </record>
+
+    <record model="res.groups" id="accountant">
+        <field name="name">محاسب</field>
+        <field name="category_id" ref="module_company_employees"/>
+        <field name="implied_ids" eval="[(4, ref('employee'))]"/>
+    </record>
+
+    <record model="res.groups" id="bills_officer">
+        <field name="name">مسؤول الفواتير</field>
+        <field name="category_id" ref="module_company_employees"/>
+        <field name="implied_ids" eval="[(4, ref('employee'))]"/>
+    </record>
+
+
+    <record model="res.groups" id="director">
+        <field name="name">مدير الشركة</field>
+        <field name="category_id" ref="module_company_employees"/>
+        <field name="implied_ids" eval="[(4, ref('employee')), (4, ref('bills_officer'))]"/>
+    </record>
+
+<data noupdate="1">
+
+<!--     sign -->
+    <record id="sign_rule_portal_company" model="ir.rule">
+        <field name="name">sign: portal company users</field>
+        <field name="model_id" ref="sign.model_sign_request_item"/>
+        <field name="domain_force">[('parent_id','=',user.partner_id.id)]</field>
+    </record>
+
+    <record id="sign_rule_portal_full_permission" model="ir.rule">
+        <field name="name">sign: portal company users</field>
+        <field name="model_id" ref="sign.model_sign_request_item"/>
+        <field name="domain_force">[('full_permission', 'in', user.ids)]</field>
+    </record>
+
+<!--     helpdesk -->
+        <record id="helpdesk_portal_ticket_rule" model="ir.rule">
+            <field name="name">Tickets: portal users: portal or following</field>
+            <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+            <field name="domain_force">['|',('message_partner_ids', 'in', [user.partner_id.id]),
+                ('parent_id','=',user.partner_id.id)]</field>
+        </record>
+
+        <record id="helpdesk_portal_ticket_rule_full_permission" model="ir.rule">
+            <field name="name">Tickets: portal users: portal or following</field>
+            <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+            <field name="domain_force">['|',('message_partner_ids', 'in', [user.partner_id.id]),
+                ('full_permission', 'in', user.ids)]</field>
+        </record>
+
+<!--     sale -->
+    <record id="sale_order_rule_portal_main" model="ir.rule">
+        <field name="name">Portal Personal Quotations/Sales Orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">[('partner_id','=', [user.partner_id.id])]</field>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+
+    <record id="sale_order_rule_portal" model="ir.rule">
+        <field name="name">Portal Personal Quotations/Sales Orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">[('parent_id','=', [user.partner_id.id])]</field>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+
+
+    <record id="sale_order_rule_author_id_portal" model="ir.rule">
+        <field name="name">Portal Personal Quotations/Sales Orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">[('author_id','=', [user.partner_id.id])]</field>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+
+
+    <record id="sale_order_rule_portal_manager_permission" model="ir.rule">
+        <field name="name">Portal Personal Quotations/Sales Orders</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="domain_force">[('manager_permission','=', [user.ids])]</field>
+        <field name="perm_unlink" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="False"/>
+    </record>
+
+<!--     invoice -->
+    <record id="account_invoice_rule_portal" model="ir.rule">
+        <field name="name">Portal Personal Account Invoices</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="domain_force">[('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('message_partner_ids','in',[user.partner_id.id])]</field>
+    </record>
+
+    <record id="account_invoice_companyrule_portal" model="ir.rule">
+        <field name="name">Portal company Account Invoices</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="domain_force">[('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('parent_id','=',user.partner_id.id)]</field>
+    </record>
+
+
+    <record id="account_invoice_manager_permission_portal" model="ir.rule">
+        <field name="name">Portal company Account Invoices</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="domain_force">[('move_type', 'in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')), ('manager_permission', 'in', user.ids)]</field>
+    </record>
+</data>
+</odoo>
