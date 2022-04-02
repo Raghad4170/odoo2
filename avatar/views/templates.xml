@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright to The City Law Firm -->
+<odoo>
+            
+    <template id="sign_attendance_error" name="الحضور">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+              <section class="s_cover pt96 pb96 o_colored_level s_parallax_no_overflow_hidden bg-black-15 o_full_screen_height" style="position: relative; background-image: none; min-height: 1080px !important;" aria-describedby="tooltip216056" data-oe-shape-data="{&quot;shape&quot;:&quot;web_editor/Origins/18&quot;,&quot;flip&quot;:[]}">
+                <div class="o_we_shape o_web_editor_Origins_18"></div>
+                <div class="container s_allow_columns">
+                  <h2 style="text-align: center;">
+                    <span style="font-size: 36px;">
+                      <font class="text-white bg-false"><span t-esc="time_check_in"/></font>
+                    </span>
+                  </h2>
+                  <p class="pt-5" style="text-align: center;"><a class="mb-2 btn btn-primary" href="/my"><span style="font-size: 24px;">الرجوع</span></a></p>
+                </div>
+              </section>
+
+            </div>
+         </t>
+    </template>
+    
+    <template id="contact_name" inherit_id="base.contact_name">
+        <xpath expr="//div" position="replace">
+            <div t-if="'avatar' in fields" class="m-1 d-inline-block">
+                <span t-field="object.image_128" t-options='{"widget": "image", "style": "object-fit: cover; border-radius: 90%; width: 90px; height: 90px;"}'/>
+            </div>
+            <div t-if="'name' in fields" class="d-inline-block">
+                <t t-if="object.name">
+                    <span itemprop="name" t-esc="name"/>
+                </t>
+                <t t-if="not object.name and object.parent_name">
+                    <span itemprop="name" t-esc="object.parent_name"/>
+                </t>
+                <t t-if="options.get('country_image') and 'country_id' in fields and object.country_id and object.country_id.image">
+                    <span t-field="object.country_id.image" t-options='{"widget": "image", "class": "country_flag"}'/>
+                </t>
+            </div>
+        </xpath>
+    </template>    
+    
+   <template id="portal_layout_inherit" name="Portal Inherit" customize_show="True" inherit_id="portal.portal_layout" priority="40">
+        <xpath expr="//div[hasclass('o_portal_wrap')]" position="replace">
+            <div id="wrap" class='o_portal_wrap'>
+                <div class="container mb64">
+                    <t t-if="my_details">                        
+                        <div class="row justify-content-between mt-4" style="direction:ltr;">
+                            <div t-attf-class="col-12 col-md col-lg-6 pt-2">
+                                <div class="icon_profile">
+                                    <t t-raw="0"/>
+                                </div>                        
+                            </div>
+                            <div class="col-md col-lg-3">
+                            <div id="o_my_sidebar" class="pt-2">
+                             <div>
+                                <div class="profile">
+                                    <div class="profile-pic">
+                                     <div class="header-color bg-primary">
+                                      <div style='float:left;padding:10px;'>
+                                        <h3><a role="button" href="/my/account" class="btn btn-sm btn-link"><i class="fa fa-pencil mx-1"/> تحرير</a></h3>
+                                      </div>
+                                      <div style='float:right;padding:10px;'>
+                                        <h3><a href="/my/security" class="btn btn-sm btn-link">الأمان<i class="fa fa-lock mx-1"/></a></h3>
+                                      </div>
+                                     </div>
+                                    <span t-field="user_id.image_1920" t-options='{"widget": "image", "style": "object-fit: cover; border-radius: 90%; width: 150px; height: 150px;"}'/>	
+                                  </div>
+                                    <div class="title">
+                                       <div style="word-wrap: break-word; width: 200px; height: 40px; margin: auto; border:none; font-size: 20px; font-weight: 700; color: #131b23; text-align: center; direction: rtl; padding: 1px;">
+                                        <span  t-field="user_id.name"/>
+                                    </div>
+                                    </div>
+                                    <div class="description">
+                                        <p>                                    
+                                          <div t-field="user_id.partner_id" t-options='{"widget": "contact", "fields": [ "phone", "email", "address"]}'/>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                <div t-if="user_id.employee_id">
+                                    <div class="pt-2"/>
+                                    <div t-if="user_id.employee_id.attendance_state == 'checked_out'">
+                                        <div class="profile pt-2">
+                                            <div class="description pt-2">
+                                                <div class="form-group">
+                                                    <t t-if="not no_check_out_attendances">
+                                                        <div>
+                                                            <a t-attf-href="/my/sign_in_attendance" class="btn btn-lg btn-primary">
+                                                                <span class="fa fa-3x btn-primary o_hr_attendance_sign_in_out_icon fa-sign-out fa-sign-in"/>
+                                                            </a>
+                                                            <h5 class="pt-2">انقر لتسجيل الحضور</h5>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div t-if="user_id.employee_id.attendance_state != 'checked_out'">
+                                        <div class="profile pt-2">
+                                            <div class="description pt-2">
+                                                <div class="form-group">
+                                                    <t t-if="not no_check_out_attendances">
+                                                        <div>
+                                                            <div>ساعات عمل اليوم: <span t-esc="user_id.employee_id.hours_today" t-options='{"widget": "float_time"}'/></div>
+                                                            <div class="pt-2"/>
+                                                            <a t-attf-href="/my/sign_out_attendance" class="btn btn-lg btn-warning">
+                                                                <span class="fa fa-3x btn-warning  o_hr_attendance_sign_in_out_icon fa-sign-out fa-sign-in"/>
+                                                            </a>
+                                                            <h5 class="pt-2">انقر لتسجيل الخروج</h5>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div t-if="user_id.employee_id.holidays_allocations">
+                                  <div class="pt-2"/>
+                                    <div class="profile pt-2">
+                                      <div class="pt-2">
+                                          <span class="row" style="direction:rtl; margin-left: 60px; margin-right: 60px;">
+                                               <h5 clss="pt-2">طلب إجازة</h5>
+                                               <span t-attf-href="/my/leave_management" class="btn btn-lg btn-primary">
+                                               <span class="fa fa-plane" style='float:left;padding:-3px;'/>
+                                               </span>
+                                          </span>
+                                        <h5 class="pt-2">الإجازات</h5>
+                                          <div class="form-group">
+                                            <span class="row">
+                                               <span t-foreach="user_id.employee_id.holidays_allocations" t-as="h" style="margin: auto; margin-left: 5px; margin-right: -11.99999px;font-size: 15px;">
+                                                  <div class="col">
+                                                       <div t-field="h.holiday_status_id.icon_id.url" t-options='{"widget": "image", "style": "object-fit: cover; border-radius: 40%; width: 40px; height: 40px;"}'/>                                              
+                                                       <div t-esc="h.holiday_status_id.name"/>
+                                                       <div t-esc="h.leave_remaining_employee" style="direction:rtl;"/>
+                                                  </div>
+                                               </span>
+                                            </span>
+                                          </div>
+                                      </div> 
+                                    </div>
+                                  </div>
+                                <div t-if="not user_id.employee_id">
+                                    <div t-if="sales_user" class="pt-2"/>
+                                    <div t-if="sales_user" class="profile">
+                                        <div class="description pt-2">
+                                             <div t-if="sales_user">
+                                                <h5><b>مدير حساب العميل</b></h5>
+                                                <hr/>
+                                                <h6><span t-esc="sales_user.name"/></h6>
+                                                <p>                                    
+                                                    <div t-field="sales_user.partner_id" t-options='{"widget": "contact", "fields": [ "phone", "email"]}'/>
+                                                </p>
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row sale_all_profile pt-2">
+                                            <div class="sale_profile">
+                                                <a style="color:black;" href="/my/invoices">
+                                                    <div class="pt-1 fa fa-2x fa-book"/>
+                                                    <div>
+                                                    <h7>الفواتير</h7>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="sale_profile">
+                                                <a style="color:black;" href="/my/orders">
+                                                    <div class="pt-1 fa fa-2x fa-credit-card-alt"/>
+                                                    <div>
+                                                    <h7>المبيعات</h7>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="sale_profile">
+                                                <a style="color:black;" href="/my/quotes">
+                                                    <div class="pt-1 fa fa-2x fa-hourglass-3"/>
+                                                    <div>
+                                                    <h7>عروض الأسعار</h7>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       </div>
+                      </div>
+                     </div>
+                    </t>
+                    <t t-else="">
+                        <t t-raw="0"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+ </template>
+ <template id="leave_portal" name="طلب إجازة">
+        <t t-call="website.layout">
+            <div class="container pt-5">
+                <div align="center">
+                    <h2 class="text-muted">
+                        طلب إجازة
+                    </h2>
+                </div>
+            </div>            <div class="pt-5"/>
+              <span class="hidden" data-for="leave_portal_form"/>
+                <section class="s_text_block pt40 pb40 o_colored_level " data-snippet="s_text_block">
+                    <div class="container s_allow_columns">
+                        <span class="row">
+                            <div class="col-lg-8 mt-4 mt-lg-0">
+                                <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                                    <div class="container">
+                                        <form id="contactus_form_cl" action="/website/approve_leave/" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="mail.mail" data-success-mode="redirect" data-success-page="/contactus-thank-you" data-pre-fill="true">
+                                            <span class="s_website_form_rows row s_col_no_bgcolor">
+                                                <span class="row">
+                                                 <div class="form-group col-12 s_website_form_field s_website_form_model_required">
+                                                   <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                     <label class="col-form-label col-auto s_website_form_label">
+                                                       <span class="s_website_form_label_content"  for="timeoff_type">نوع الإجازة</span>
+                                                       <span class="s_website_form_mark"> *</span>
+                                                     </label>
+                                                   <div class="col-sm col-xs-12">
+                                                      <select name="timeoff_type" t-attf-class="form-control">
+                                                            <option value="">اختار</option>
+                                                            <span t-foreach="timeoff_types or []" t-as="tts">
+                                                                <option t-att-value="tts.id">
+                                                                    <t t-esc="tts.name" />
+                                                                </option>
+                                                            </span>
+                                                      </select>
+                                                   </div>
+                                                   </div>
+                                                 </div>
+                                                     <div t-attf-class="form-group col-12 check_hours" style="display:none;">
+                                                        <label class="col-form-label" for="halfday">حدد الأيام/الساعات</label>
+                                                        <select name="day_type" t-attf-class="form-control">
+                                                            <option value="select">اختار</option>
+                                                            <option value="half_day">نصف يوم</option>
+                                                            <option value="custom_hours">ساعات مخصصة</option>
+                                                        </select>
+                                                    </div>
+                                                    <div t-attf-class="form-group col-12 date_from">
+                                                        <label class="col-form-label" for="date_from">من</label>
+                                                        <input type="date"  t-attf-class="form-control" id="date_from" name="date_from"/>
+                                                    </div>
+                                                    <div t-attf-class="form-group col-12 date_to">
+                                                        <label class="col-form-label" for="date_to">إلى</label>
+                                                        <input type="date"  t-attf-class="form-control" id="date_to" name="date_to"/>
+                                                    </div>
+                                                     <div t-attf-class="form-group col-12 request_date_from_period" style="display:none;" >
+                                                        <label class="col-form-label" for="request_date_from_period">اختار صباحا/مساء </label>
+                                                        <select name="request_date_from_period" t-attf-class="form-control">
+                                                            <option value="am">صباحا</option>
+                                                            <option value="pm">مساء</option>
+                                                        </select>
+                                                    </div>
+                                                        <div t-attf-class="form-group col-12 check_hours_days" style="display:none;" >
+                                                        <label class="col-form-label" for="from_days">من</label>
+                                                        <select name="from_days" t-attf-class="form-control">
+                                                            <t t-foreach="request_hours_from or []" t-as="tts">
+                                                                <option t-att-value="tts[0]">
+                                                                    <t t-esc="tts[1]" />
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                        <label class="col-form-label" for="to_days">إلى</label>
+                                                        <select name="to_days" t-attf-class="form-control">
+                                                            <t t-foreach="request_hours_to or []" t-as="tts">
+                                                                <option t-att-value="tts[0]">
+                                                                    <t t-esc="tts[1]" />
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                 <div class="form-group col-12 s_website_form_date_from s_website_form_model_required">
+                                                   <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                     <label class="col-form-label col-auto s_website_form_label">
+                                                       <span class="s_website_form_label_content"  for="duration">المدة(أيام)</span>
+                                                       <span class="s_website_form_mark"> *</span>
+                                                     </label>
+                                                   <div class="col-sm col-xs-12">
+                                                        <input type="number"  t-attf-class="form-control" id="duration" name="duration"/>
+                                                   </div>
+                                                 </div>
+                                                 </div>                                                    
+                                                 <div class="form-group col-12 s_website_form_date_from s_website_form_model_required">
+                                                   <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                     <label class="col-form-label col-auto s_website_form_label">
+                                                       <span class="s_website_form_label_content"  for="description">الوصف</span>
+                                                       <span class="s_website_form_mark"> *</span>
+                                                     </label>
+                                                   <div class="col-sm col-xs-12">
+                                                        <textarea id="description"  t-attf-class="form-control" name="description"></textarea>
+                                                   </div>
+                                                 </div>
+                                                 </div>                                                    
+                                                    <div align="left">
+                                                        <button type="submit" id="submit_msg" class="btn btn-primary">إرسال</button>  
+                                                    </div>
+                                            </span>
+                                          </span>
+                                        </form>
+                                    </div>
+                                </section>
+                            </div>
+                        </span>
+                    </div>
+                </section>
+        </t>
+    </template>    
+</odoo>
+
+
+                                                 
