@@ -1,0 +1,129 @@
+<!--  Copyright to The City Law Firm -->
+
+<odoo>
+<data noupdate="1">
+        
+        <record id="late_15m" model="violations.type">
+            <field name="name">التأخر عن مواعيد الحضور للعمل لغاية (15) دقيقة دون إذن، أو عذر مقبول: إذا لم يترتب على ذلك تعطيل عمال آخرين.</field>
+            <field name="violation_type">late_15m</field>
+            <field name="First_time">انذار كتابي</field>
+            <field name="Second_Time">نسبة مئوية</field>
+            <field name="Second_penality">5</field>
+            <field name="Third_time">نسبة مئوية</field>
+            <field name="Third_penality">10</field>
+            <field name="Fourth_time">نسبة مئوية</field>
+            <field name="Fourth_penality">20</field>
+        </record>
+        <record id="late_15m_2" model="violations.type">
+            <field name="name">التأخر عن مواعيد الحضور للعمل لغاية (15) دقيقة دون إذن، أو عذر مقبول: إذا ترتب على ذلك تعطيل عمال آخرين.</field>
+            <field name="violation_type">late_15m_2</field>
+            <field name="First_time">انذار كتابي</field>
+            <field name="Second_Time">نسبة مئوية</field>
+            <field name="Second_penality">15</field>
+            <field name="Third_time">نسبة مئوية</field>
+            <field name="Third_penality">25</field>
+            <field name="Fourth_time">نسبة مئوية</field>
+            <field name="Fourth_penality">50</field>
+        </record>
+        
+        <record id="late_30m" model="violations.type">
+            <field name="name">التأخر عن مواعيد الحضور للعمل أكثر من (15) دقيقة لغاية (30) دقيقة دون إذن، أو عذر مقبول: إذا لم يترتب على ذلك تعطيل عمال آخرين.</field>
+            <field name="violation_type">late_30m</field>
+            <field name="First_time">نسبة مئوية</field>
+            <field name="First_penality">10</field>
+            <field name="Second_Time">نسبة مئوية</field>
+            <field name="Second_penality">15</field>
+            <field name="Third_time">نسبة مئوية</field>
+            <field name="Third_penality">25</field>
+            <field name="Fourth_time">نسبة مئوية</field>
+            <field name="Fourth_penality">50</field>
+        </record>
+        <record id="late_30m_2" model="violations.type">
+            <field name="name">التأخر عن مواعيد الحضور للعمل أكثر من (15) دقيقة لغاية (30) دقيقة دون إذن، أو عذر مقبول: إذا ترتب على ذلك تعطيل عمال آخرين.</field>
+            <field name="violation_type">late_30m_2</field>
+            <field name="First_time">نسبة مئوية</field>
+            <field name="First_penality">25</field>
+            <field name="Second_Time">نسبة مئوية</field>
+            <field name="Second_penality">50</field>
+            <field name="Third_time">نسبة مئوية</field>
+            <field name="Third_penality">75</field>
+            <field name="Fourth_time">يوم</field>
+            <field name="Fourth_penality">1</field>
+        </record>
+        <record id="late_60m" model="violations.type">
+            <field name="name">التأخر عن مواعيد الحضور للعمل أكثر من (30) دقيقة لغاية (60) دقيقة دون إذن، أو عذر مقبول: إذا لم يترتب على ذلك تعطيل عمال آخرين.</field>
+            <field name="violation_type">late_60m</field>
+            <field name="First_time">نسبة مئوية</field>
+            <field name="First_penality">25</field>
+            <field name="Second_Time">نسبة مئوية</field>
+            <field name="Second_penality">50</field>
+            <field name="Third_time">نسبة مئوية</field>
+            <field name="Third_penality">75</field>
+            <field name="Fourth_time">يوم</field>
+            <field name="Fourth_penality">1</field>
+        </record>
+        <record id="late_60m_2" model="violations.type">
+            <field name="name">التأخر عن مواعيد الحضور للعمل أكثر من (30) دقيقة يوم لغاية (60) دقيقة دون إذن، أو عذر مقبول: إذا ترتب على ذلك تعطيل عمال آخرين</field>
+            <field name="violation_type">late_60m_2</field>
+            <field name="First_time">نسبة مئوية</field>
+            <field name="First_penality">30</field>
+            <field name="Second_Time">نسبة مئوية</field>
+            <field name="Second_penality">50</field>
+            <field name="Third_time">يوم</field>
+            <field name="Third_penality">1</field>
+            <field name="Fourth_time">يوم</field>
+            <field name="Fourth_penality">2</field>
+        </record>
+        <record id="late_more_60m" model="violations.type">
+            <field name="name">التأخر عن مواعيد الحضور للعمل لمدة تزيد على ساعة دون إذن، أو عذر مقبول: سواءً ترتب، أو لم يترتب على ذلك تعطيل عمال آخرين.</field>
+            <field name="violation_type">late_more_60m</field>
+            <field name="First_time">انذار كتابي</field>
+            <field name="Second_Time">يوم</field>
+            <field name="Second_penality">1</field>
+            <field name="Third_time">يوم</field>
+            <field name="Third_penality">2</field>
+            <field name="Fourth_time">يوم</field>
+            <field name="Fourth_penality">3</field>
+        </record>
+    
+    
+        <record id="early_15" model="violations.type">
+            <field name="name">ترك العمل، أو الانصراف قبل الميعاد دون إذن، أو عذر مقبول بما لا يتجاوز (15) دقيقة.</field>
+            <field name="violation_type">early_15</field>
+            <field name="First_time">انذار كتابي</field>
+            <field name="Second_Time">نسبة مئوية</field>
+            <field name="Second_penality">10</field>
+            <field name="Third_time">نسبة مئوية</field>
+            <field name="Third_penality">25</field>
+            <field name="Fourth_time">يوم</field>
+            <field name="Fourth_penality">2</field>
+        </record>
+        <record id="early_more_15" model="violations.type">
+            <field name="name">ترك العمل، أو الانصراف قبل الميعاد دون إذن، أو عذر مقبول بما يتجاوز (15) دقيقة.</field>
+            <field name="violation_type">early_more_15</field>
+            <field name="First_time">نسبة مئوية</field>
+            <field name="First_penality">10</field>
+            <field name="Second_Time">نسبة مئوية</field>
+            <field name="Second_penality">25</field>
+            <field name="Third_time">نسبة مئوية</field>
+            <field name="Third_penality">50</field>
+            <field name="Fourth_time">يوم</field>
+            <field name="Fourth_penality">1</field>
+        </record>
+    
+        <record id="absence" model="violations.type">
+            <field name="name">الغياب دون إذن كتابي، أو عذر مقبول لمدة يوم، خلال السنة العقدية الواحدة.</field>
+            <field name="violation_type">absence</field>
+            <field name="First_time">يوم</field>
+            <field name="First_penality">1</field>
+            <field name="Second_Time">يوم</field>
+            <field name="Second_penality">3</field>
+            <field name="Third_time">يوم</field>
+            <field name="Third_penality">4</field>
+            <field name="Fourth_time">اخرى</field>
+            <field name="Fourth_other">الحرمان من الترقيات، أو العلاوات لمرة
+واحدة</field>
+        </record>
+    
+</data>    
+</odoo>

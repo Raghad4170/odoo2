@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_violations_violations,violations.violations,model_violations_violations,hr.group_hr_manager,1,1,1,1
+access_violations_type,violations.type,model_violations_type,hr.group_hr_manager,1,1,1,0
+access_violations_type_system,violations.type,model_violations_type,base.group_system,1,1,1,1
+access_violations_payroll,violations.violations,model_violations_violations,hr_payroll.group_hr_payroll_manager,1,0,0,0
+access_debt_debt,debt.debt,model_debt_debt,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_employee_debts,employee.debts,model_employee_debts,hr_payroll.group_hr_payroll_manager,1,1,1,1
+access_violations_wizard,violations.wizard,model_violations_wizard,hr_payroll.group_hr_payroll_manager,1,1,1,1

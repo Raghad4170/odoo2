@@ -1,0 +1,28 @@
+<!--  Copyright to The City Law Firm -->
+<odoo>
+    <record id="ir_cron_create_work_entry" model="ir.cron">
+        <field name="name">إنشاء جزاءات</field>
+        <field name="model_id" ref="model_violations_violations"/>
+        <field name="state">code</field>
+        <field name="code">model.create_penality()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 19:00:00')"/>
+        <field name="active" eval="True" />
+        <field name="doall" eval="True" />
+    </record>
+<!-- 
+    <record id="ir_cron_warning_penalty" model="ir.cron">
+        <field name="name">إنذار جزائي</field>
+        <field name="model_id" ref="model_violations_violations"/>
+        <field name="state">code</field>
+        <field name="code">model.check_send_email()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 19:10:00')"/>
+        <field name="active" eval="True" />
+        <field name="doall" eval="True" />
+    </record> -->
+</odoo>

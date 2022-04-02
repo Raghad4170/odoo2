@@ -1,0 +1,311 @@
+<!--  Copyright to The City Law Firm -->
+<odoo>
+    <data>
+
+        <record id="structure_type_007" model="hr.payroll.structure.type">
+            <field name="name">موظف إداري</field>
+        </record>
+
+        <record id="structure_007" model="hr.payroll.structure">
+            <field name="name">راتب الموظف الإداري</field>
+            <field name="type_id" ref="structure_type_007"/>
+            <field name="unpaid_work_entry_type_ids"
+                   eval="[(4, ref('hr_work_entry_contract.work_entry_type_unpaid_leave'))]"/>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="hr_rule_basics_2" model="hr.salary.rule">
+            <field name="name">الراتب الأساسي</field>
+            <field name="sequence" eval="-10"/>
+            <field name="code">أساسي</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_basic_remain_2" model="hr.salary.rule">
+            <field name="name">المتبقي من الراتب</field>
+            <field name="sequence" eval="-9"/>
+            <field name="code">المتبقي من الراتب</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_python">result = contract.basic_remain</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.basic_remain</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_housing_allowance_2" model="hr.salary.rule">
+            <field name="name">بدل السكن</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">سكن</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.l10n_sa_housing_allowance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.l10n_sa_housing_allowance</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_transporting_allowance_2" model="hr.salary.rule">
+            <field name="name">بدل المواصلات</field>
+            <field name="sequence" eval="3"/>
+            <field name="code">مواصلات</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.l10n_sa_transportation_allowance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.l10n_sa_transportation_allowance</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_other_allowance_2" model="hr.salary.rule">
+            <field name="name">بدلات أخرى</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">أخرى</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.l10n_sa_other_allowances</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.l10n_sa_other_allowances</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_other_bonus_2" model="hr.salary.rule">
+            <field name="name">مكافأة</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">مكافأة</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.bonus</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.bonus</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_grosses_2" model="hr.salary.rule">
+            <field name="name">الإجمالي</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">إجمالي</field>
+            <field name="category_id" ref="hr_payroll.GROSS"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.BASIC + categories.ALW + categories.INSURANCE</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_absence_2" model="hr.salary.rule">
+            <field name="name">الغياب</field>
+            <field name="sequence" eval="6"/>
+            <field name="code">الغياب</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.absence_amount</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.absence_amount</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_debts_2" model="hr.salary.rule">
+            <field name="name">المديونيات</field>
+            <field name="sequence" eval="6"/>
+            <field name="code">مديونيات</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.debts_amount</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -payslip.debts_amount</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_violations_2" model="hr.salary.rule">
+            <field name="name">العقوبات</field>
+            <field name="sequence" eval="6"/>
+            <field name="code">عقوبات</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.violations_amount</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -payslip.violations_amount</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_insurance_2" model="hr.salary.rule">
+            <field name="name">تأمينات</field>
+            <field name="sequence" eval="9"/>
+            <field name="code">10% تأمينات</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -((contract.wage + contract.l10n_sa_housing_allowance)* 0.0975)</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+        <record id="hr_rule_nets_2" model="hr.salary.rule">
+            <field name="name">الصافي</field>
+            <field name="sequence" eval="10"/>
+            <field name="code">صافي</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.GROSS + categories.DED</field>
+            <field name="struct_id" ref="structure_007"/>
+        </record>
+
+
+
+        <record id="structure_type_015" model="hr.payroll.structure.type">
+            <field name="name">موظف علاقات</field>
+        </record>
+
+        <record id="structure_015" model="hr.payroll.structure">
+            <field name="name">راتب موظف علاقات</field>
+            <field name="type_id" ref="structure_type_015"/>
+            <field name="unpaid_work_entry_type_ids"
+                   eval="[(4, ref('hr_work_entry_contract.work_entry_type_unpaid_leave'))]"/>
+            <field name="country_id" eval="False"/>
+        </record>
+
+        <record id="hr_rule_basics_15" model="hr.salary.rule">
+            <field name="name">الراتب الأساسي</field>
+            <field name="sequence" eval="-10"/>
+            <field name="code">أساسي</field>
+            <field name="category_id" ref="hr_payroll.BASIC"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_basic_remain_15" model="hr.salary.rule">
+            <field name="name">المتبقي من الراتب</field>
+            <field name="sequence" eval="-9"/>
+            <field name="code">المتبقي من الراتب</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_python">result = contract.basic_remain</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.basic_remain</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_housing_allowance_15" model="hr.salary.rule">
+            <field name="name">بدل السكن</field>
+            <field name="sequence" eval="1"/>
+            <field name="code">سكن</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.l10n_sa_housing_allowance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.l10n_sa_housing_allowance</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_transporting_allowance_15" model="hr.salary.rule">
+            <field name="name">بدل المواصلات</field>
+            <field name="sequence" eval="3"/>
+            <field name="code">مواصلات</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.l10n_sa_transportation_allowance</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.l10n_sa_transportation_allowance</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_other_allowance_15" model="hr.salary.rule">
+            <field name="name">بدلات أخرى</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">أخرى</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = contract.l10n_sa_other_allowances</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.l10n_sa_other_allowances</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_other_bonus_15" model="hr.salary.rule">
+            <field name="name">مكافأة</field>
+            <field name="sequence" eval="4"/>
+            <field name="code">مكافأة</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.bonus</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.bonus</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_grosses_15" model="hr.salary.rule">
+            <field name="name">الإجمالي</field>
+            <field name="sequence" eval="5"/>
+            <field name="code">إجمالي</field>
+            <field name="category_id" ref="hr_payroll.GROSS"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.BASIC + categories.ALW + categories.INSURANCE</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_absence_15" model="hr.salary.rule">
+            <field name="name">الغياب</field>
+            <field name="sequence" eval="6"/>
+            <field name="code">الغياب</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.absence_amount</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = payslip.absence_amount</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+
+        <record id="hr_rule_debts_15" model="hr.salary.rule">
+            <field name="name">المديونيات</field>
+            <field name="sequence" eval="6"/>
+            <field name="code">مديونيات</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.debts_amount</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -payslip.debts_amount</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_violations_15" model="hr.salary.rule">
+            <field name="name">العقوبات</field>
+            <field name="sequence" eval="6"/>
+            <field name="code">عقوبات</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = payslip.violations_amount</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -payslip.violations_amount</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_insurance_15" model="hr.salary.rule">
+            <field name="name">تأمينات</field>
+            <field name="sequence" eval="9"/>
+            <field name="code">10% تأمينات</field>
+            <field name="category_id" ref="hr_payroll.DED"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = -((contract.wage + contract.l10n_sa_housing_allowance)* 0.10)</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+        <record id="hr_rule_nets_15" model="hr.salary.rule">
+            <field name="name">الصافي</field>
+            <field name="sequence" eval="10"/>
+            <field name="code">صافي</field>
+            <field name="category_id" ref="hr_payroll.NET"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.GROSS + categories.DED</field>
+            <field name="struct_id" ref="structure_015"/>
+        </record>
+
+    </data>
+</odoo>

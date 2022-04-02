@@ -1,0 +1,104 @@
+<!--  Copyright to The City Law Firm -->
+<odoo>
+    <data>
+        <record id="violation_more_female" model="mail.template">
+            <field name="name">التحقيق الإداري لتطبيق الجزاء التأديبي</field>            
+            <field name="email_from">{{ (object.employee_id.company_id.partner_id.email_formatted or object.employee_id.user_id.email_formatted) }}</field>
+            <field name="email_to">{{object.employee_id.user_id.partner_id.email}}</field>
+            <field name="subject">التحقيق الإداري لتطبيق الجزاء التأديبي</field>
+            <field name="model_id" ref="debt.model_violations_violations"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ object.employee_id.user_id.lang or user.lang}}</field>
+            <field name="body_html" type="xml">
+
+                            <div>
+                             <p>السلام عليكم ورحمة الله وبركاته</p>
+                             <p>المكرمة: <t t-out="object.employee_id.name or ''"/></p> 
+                             <p>وبعد؛ فيؤسفنا إبلاغكم أنه وبموجب المادة الثانية والسبعون من نظام العمل فقد تقرر إيقاع الجزاء الآتي عليكم وإحالتكم إلى التحقيق الإداري</p> 
+                             <p>نوع الجزاء: <t t-out="object.penality_name or ''"/></p> 
+                             <p>تاريخ ووقت الجزاء: <t t-out="object.date or ''"/></p> 
+                             <p>المستند من اللائحة الداخلية: <t t-out="object.violation.name or ''"/></p>
+                             <p>فماهو قولك فيما هو منسوب إليك؟</p>
+                             <p>ونود تنبيهكم أنه في حال تكرار المخالفة خلال ٤٥ يوما فسيتم توقيع جزاء أشد وفقاً للائحة العمل الداخلية</p> 
+                             <p>نأمل عدم التردد في التواصل معنا لأي استفسار، ونتطلع لترقيكم في التزامكم المعهود</p> 
+                            </div>
+
+            </field>
+        </record>
+        
+        <record id="violation_more_male" model="mail.template">
+            <field name="name">التحقيق الإداري لتطبيق الجزاء التأديبي</field>
+            <field name="email_from">{{ (object.employee_id.company_id.partner_id.email_formatted or object.employee_id.user_id.email_formatted) }}</field>
+            <field name="email_to">{{object.employee_id.user_id.partner_id.email}}</field>
+            <field name="subject">التحقيق الإداري لتطبيق الجزاء التأديبي</field>
+            <field name="model_id" ref="debt.model_violations_violations"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ object.employee_id.user_id.lang or user.lang}}</field>
+            <field name="body_html" type="xml">
+
+                            <div>
+                             <p>السلام عليكم ورحمة الله وبركاته</p>
+                             <p>المكرم: <t t-out="object.employee_id.name or ''"/></p> 
+                             <p>وبعد؛ فيؤسفنا إبلاغكم أنه وبموجب المادة الثانية والسبعون من نظام العمل فقد تقرر إيقاع الجزاء الآتي عليكم وإحالتكم إلى التحقيق الإداري</p> 
+                             <p>نوع الجزاء: <t t-out="object.penality_name or ''"/></p> 
+                             <p>تاريخ ووقت الجزاء: <t t-out="object.date or ''"/></p> 
+                             <p>المستند من اللائحة الداخلية: <t t-out="object.violation.name or ''"/></p>
+                             <p>فماهو قولك فيما هو منسوب إليك؟</p>
+                             <p>ونود تنبيهكم أنه في حال تكرار المخالفة خلال ٤٥ يوما فسيتم توقيع جزاء أشد وفقاً للائحة العمل الداخلية</p> 
+                             <p>نأمل عدم التردد في التواصل معنا لأي استفسار، ونتطلع لترقيكم في التزامكم المعهود</p> 
+                            </div>
+
+            </field>
+        </record>                
+
+        <record id="violation_male" model="mail.template">
+            <field name="name">قرار إيقاع الجزاء التأديبي</field>
+            <field name="email_from">{{ (object.employee_id.company_id.partner_id.email_formatted or object.employee_id.user_id.email_formatted) }}</field>
+            <field name="email_to">{{object.employee_id.user_id.partner_id.email}}</field>
+            <field name="subject">قرار إيقاع الجزاء التأديبي</field>
+            <field name="model_id" ref="debt.model_violations_violations"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ object.employee_id.user_id.lang or user.lang}}</field>
+            <field name="body_html" type="xml">
+
+                            <div>
+                             <p>السلام عليكم ورحمة الله وبركاته</p>
+                             <p>المكرم: <t t-out="object.employee_id.name or ''"/></p> 
+                             <p>وبعد؛ فيؤسفنا إبلاغكم أنه وبموجب المادة الثانية والسبعون من نظام العمل فقد تقرر إيقاع الجزاء الآتي عليكم</p> 
+                             <p>نوع الجزاء: <t t-out="object.penality_name or ''"/></p> 
+                             <p>تاريخ ووقت الجزاء: <t t-out="object.date or ''"/></p> 
+                             <p>المستند من اللائحة الداخلية: <t t-out="object.violation.name or ''"/></p> 
+                             <p>ونود تنبيهكم أنه في حال تكرار المخالفة خلال ٤٥ يوما فسيتم توقيع جزاء أشد وفقاً للائحة العمل الداخلية</p> 
+                             <p>نأمل عدم التردد في التواصل معنا لأي استفسار، ونتطلع لترقيكم في التزامكم المعهود</p> 
+                            </div>
+
+            </field>
+        </record> 
+        
+        <record id="violation_female" model="mail.template">
+            <field name="name">قرار إيقاع الجزاء التأديبي</field>
+            <field name="email_from">{{ (object.employee_id.company_id.partner_id.email_formatted or object.employee_id.user_id.email_formatted) }}</field>
+            <field name="email_to">{{object.employee_id.user_id.partner_id.email}}</field>
+            <field name="subject">قرار إيقاع الجزاء التأديبي</field>
+            <field name="model_id" ref="debt.model_violations_violations"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ object.employee_id.user_id.lang or user.lang}}</field>
+            <field name="body_html" type="xml">
+
+                            <div>
+                             <p>السلام عليكم ورحمة الله وبركاته</p>
+                             <p>المكرمة: <t t-out="object.employee_id.name or ''"/></p> 
+                             <p>وبعد؛ فيؤسفنا إبلاغكم أنه وبموجب المادة الثانية والسبعون من نظام العمل فقد تقرر إيقاع الجزاء الآتي عليكم</p> 
+                             <p>نوع الجزاء: <t t-out="object.penality_name or ''"/></p> 
+                             <p>تاريخ ووقت الجزاء: <t t-out="object.date or ''"/></p> 
+                             <p>المستند من اللائحة الداخلية: <t t-out="object.violation.name or ''"/></p> 
+                             <p>ونود تنبيهكم أنه في حال تكرار المخالفة خلال ٤٥ يوما فسيتم توقيع جزاء أشد وفقاً للائحة العمل الداخلية</p> 
+                             <p>نأمل عدم التردد في التواصل معنا لأي استفسار، ونتطلع لترقيكم في التزامكم المعهود</p> 
+                            </div>
+
+            </field>
+        </record>
+        
+    </data>
+</odoo>
+

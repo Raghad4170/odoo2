@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!-- <template xml:space="preserve">
+    <t t-extend="ListView.buttons">
+      <t t-jquery="button.o_list_button_add" t-operation="before">
+ <button t-if="widget.modelName == 'violations.violations'" class="btn btn-primary o_list_tender_button_create" type="button">إنشاء المخالفات</button>
+      </t>
+    </t>
+  </template> -->
+
+
+
+<templates>
+    <t t-name="violation.index_button">
+        <button type="button" class="btn btn-secondary">
+إنشاء المخالفات
+        </button>
+    </t>
+</templates>
