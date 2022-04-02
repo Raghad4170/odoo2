@@ -15,7 +15,6 @@
             <field name="state">code</field>
             <field name="code">action = records._get_partner_user()</field>
         </record>
-
         <record id="report_get_partner_user" model="ir.actions.server">
             <field name="name">المحاميين</field>
             <field name="model_id" ref="model_litigation_report"/>
@@ -24,7 +23,6 @@
             <field name="state">code</field>
             <field name="code">action = records._get_partner_user()</field>
         </record>
-
         <record id="consulting_get_partner_user" model="ir.actions.server">
             <field name="name">المحاميين</field>
             <field name="model_id" ref="model_consulting_consulting"/>
@@ -33,7 +31,6 @@
             <field name="state">code</field>
             <field name="code">action = records._get_partner_user()</field>
         </record>
-
         <record id="contractconsulting_get_partner_user" model="ir.actions.server">
             <field name="name">المحاميين</field>
             <field name="model_id" ref="model_contractconsulting_contractconsulting"/>
@@ -42,7 +39,6 @@
             <field name="state">code</field>
             <field name="code">action = records._get_partner_user()</field>
         </record>
-
        -->
 <!--         <record id="_allowed_internal_user_ids" model="ir.actions.server">
             <field name="name">المهام</field>
@@ -52,8 +48,6 @@
             <field name="state">code</field>
             <field name="code">action = records._allowed_internal_user_ids()</field>
         </record>
-
-
         <record id="_allowed_users_task" model="ir.actions.server">
             <field name="name">المهام</field>
             <field name="model_id" ref="project.model_project_task"/>
@@ -62,7 +56,6 @@
             <field name="state">code</field>
             <field name="code">action = records._allowed_users_task()</field>
         </record>
-
         <record id="_helper_ids" model="ir.actions.server">
             <field name="name">المهام</field>
             <field name="model_id" ref="project.model_project_project"/>
@@ -366,8 +359,6 @@
                 </p>
             </field>
         </record>
-      
-        <menuitem id="litigation_tasks_root_gantt" name="متابعة مهام" parent="litigation_root" action="view_gantt_tasks" sequence="3"/>
 
  <record id="project_task_inherit" model="ir.ui.view">
         <field name="name">project.task.inherit</field>
@@ -855,7 +846,7 @@
         </record>
 
         <menuitem id="litigation_root" name="القضايا" parent="project.menu_main_pm" action="view_litigation" sequence="3"/>
-      
+        <menuitem id="litigation_tasks_root_gantt" name="متابعة مهام" parent="litigation_root" action="view_gantt_tasks" sequence="3"/>
         <menuitem id="litigation_root_1" name="القضايا" parent="litigation_root" action="view_litigation" sequence="1"/>
       
       
