@@ -1,0 +1,283 @@
+<odoo>
+  <data>
+      
+    <menuitem name="الالتزام" id="commitments.menu_commitments" groups="group_commitments_user" web_icon="commitments,static/description/icon.png"/>
+
+    <!-- organization -->
+
+    <record model="ir.ui.view" id="commitments_organization_list">
+      <field name="name">commitments.organization list</field>
+      <field name="model">commitments.organization</field>
+      <field name="arch" type="xml">
+        <tree string="المنظمات">
+          <field name="name"/>
+          <field name="systems_ids" widget="many2many_tags"/>
+        </tree>
+      </field>
+    </record>
+      
+    <record id="edit_commitments_organization" model="ir.ui.view">
+        <field name="name">commitments.organization.form</field>
+        <field name="model">commitments.organization</field>
+        <field name="arch" type="xml">
+            <form string="المنظمات">
+                <sheet string="المنظمات">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name"/>
+                       </h1>
+                     </div>
+                     <group>
+                         <group>
+                             <field name="systems_ids">
+                                <tree editable="bottom"> 
+                                    <field name="name"/>
+                                    <field name="types_ids" widget="many2many_tags"/>
+                                </tree>  
+                             </field>  
+                         </group>
+                     </group>
+               </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="view_commitments_organization">
+      <field name="name">المنظمات</field>
+      <field name="res_model">commitments.organization</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="المنظمات" id="commitments.menu_commitments_organization" parent="commitments.menu_commitments" action="view_commitments_organization" sequence="4"/>
+      
+    <!-- organization types -->
+
+      
+    <record model="ir.ui.view" id="organization_types_list">
+      <field name="name">organization.types list</field>
+      <field name="model">organization.types</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name_display"/>
+        </tree>
+      </field>
+    </record>      
+
+      
+    <!-- activities -->
+
+    <record model="ir.ui.view" id="commitments_organization_activities">
+      <field name="name">organization.activities list</field>
+      <field name="model">organization.activities</field>
+      <field name="arch" type="xml">
+        <tree string="الأنشطة الأساسية">
+          <field name="name"/>
+          <field name="supervizing"/>
+          <field name="approval"/>
+          <field name="activities_ids" widget="many2many_tags"/>
+          <field name="organization_systems" widget="many2many_tags"/>
+          <field name="organization_types" widget="many2many_tags"/>
+        </tree>
+      </field>
+    </record>
+      
+    <record id="edit_organization_activities" model="ir.ui.view">
+        <field name="name">organization.activities.form</field>
+        <field name="model">organization.activities</field>
+        <field name="arch" type="xml">
+            <form string="الأنشطة الأساسية">
+                <sheet string="الأنشطة الأساسية">
+                     <div class="oe_title">
+                       <h2>
+                        <field name="name"/>
+                       </h2>
+                     </div>
+                    <group>
+                        <group>
+                            <field name="supervizing"/>
+                            <field name="approval"/>
+                        </group>
+                        <group>
+                            <field name="activities_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="organization_systems" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="organization_types" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="view_organization_activities">
+      <field name="name">الأنشطة الأساسية</field>
+      <field name="res_model">organization.activities</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="الأنشطة" id="commitments.menu_organization_activities" parent="commitments.menu_commitments" action="view_organization_activities" sequence="3"/>
+      
+      
+    <!-- questions -->
+
+    <record model="ir.ui.view" id="commitments_questions_list">
+      <field name="name">commitments.questions list</field>
+      <field name="model">commitments.questions</field>
+      <field name="arch" type="xml">
+        <tree string="المخالفات">
+          <field name="name"/>
+          <field name="fine"/>
+          <field name="notes"/>
+        </tree>
+      </field>
+    </record>
+      
+    <record id="edit_commitments_questions" model="ir.ui.view">
+        <field name="name">commitments.questions.form</field>
+        <field name="model">commitments.questions</field>
+        <field name="arch" type="xml">
+            <form string="المخالفات">
+                <sheet string="المخالفات">
+                     <div class="oe_title">
+                       <h5>
+                        <field name="name"/>
+                       </h5>
+                     </div>
+                     <group>
+                         <group>
+                            <field name="organization_type"/>
+                            <field name="fine_type"/>
+                         </group>
+                         <group>
+                            <field name="defineded_fine" attrs="{'invisible': [('fine_type', 'not in', ('جزاء','محددة'))], 'required': [('fine_type', 'in', ('جزاء','محددة'))]}"/>
+                            <field name="high_fine" attrs="{'invisible': [('fine_type', 'not in', ('لا تزيد','حد أدنى وأعلى'))], 'required': [('fine_type', 'in', ('لا تزيد','حد أدنى وأعلى'))]}"/>
+                            <field name="low_fine" attrs="{'invisible': [('fine_type', '!=', 'حد أدنى وأعلى')], 'required': [('fine_type', '=', 'حد أدنى وأعلى')]}"/>
+                            <field name="penal" attrs="{'invisible': [('fine_type', 'not in', ('عقوبة','جزاء'))], 'required': [('fine_type', 'in', ('عقوبة','جزاء'))]}"/>
+                            <field name="fine"/>
+                         </group>
+                     </group>
+                     <group>
+                        <field name="notes"/>
+                     </group>
+               </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="view_commitments_questions">
+      <field name="name">المخالفات</field>
+      <field name="res_model">commitments.questions</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="المخالفات" id="commitments.menu_commitments_questions" parent="commitments.menu_commitments" action="view_commitments_questions" sequence="2"/>
+      
+      
+    <!-- commitments -->
+
+    <record model="ir.ui.view" id="company_commitments_list">
+      <field name="name">company.commitments list</field>
+      <field name="model">company.commitments</field>
+      <field name="arch" type="xml">
+        <tree string="الالتزام">
+          <field name="name"/>
+          <field name="partner_id"/>
+          <field name="date"/>
+          <field name="fines"/>
+          <field name="commitments_percentage" widget="percentpie"/>
+        </tree>
+      </field>
+    </record>
+      
+    <record id="edit_company_commitments" model="ir.ui.view">
+        <field name="name">company.commitments.form</field>
+        <field name="model">company.commitments</field>
+        <field name="arch" type="xml">
+            <form string="الالتزام">
+                <sheet string="الالتزام">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="preview_commitments" type="object" class="oe_stat_button" icon="fa-check icon">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">بدأ مراجعة الإلتزام</span>
+                            </div>
+                        </button>
+                    </div>
+                     <field name="commitments_percentage" widget="percentpie" class="oe_avatar"/>
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name"/>
+                       </h1>
+                     </div>
+                    <group>
+                         <group>
+                            <field name="user_id"/>
+                            <field name="partner_id"/>
+                            <field name="date"/>
+                         </group>
+                         <group>
+                            <field name="activities_ids" widget="many2many_tags"/>
+                         </group>
+                    </group>
+                    <notebook>
+                        <page name="commitments_line" string="مقدار الالتزام">
+                            <field name="commitments_line" widget="section_and_note_one2many">
+                                <tree string="مقدار الالتزام" decoration-danger="commitment_type == 'غير ملتزم'" editable="bottom">
+                                    <control>
+                                        <create name="add_section_control" string="إضافة قسم" context="{'default_display_type': 'line_section'}"/>
+                                        <create name="add_note_control" string="إضافة ملاحظة" context="{'default_display_type': 'line_note'}"/>
+                                    </control>
+                                    <field name="display_type" invisible="1"/>
+                                    <field name="question"/>
+                                    <field name="commitment_type"/>
+                                    <field name="fine"/>
+                                    <field name="notes"/>
+                                    <field name="name"/>
+                                </tree>
+
+                            </field>
+                        </page>
+                        <page name="commitments_report" string="تقرير الالتزام">
+                            <group>
+                             <field name="fine_numbers"/>
+                             <field name="fines"/>
+                             <field name="report"/>
+                            </group>
+                        </page>
+                    </notebook>
+               </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="view_company_commitments">
+      <field name="name">الالتزام</field>
+      <field name="res_model">company.commitments</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="الالتزام" id="commitments.menu_company_commitments" parent="commitments.menu_commitments" action="view_company_commitments" sequence="1"/>
+      
+      
+    <record model="ir.actions.act_window" id="viewـorganization_types">
+      <field name="name">مجموعات الالتزام</field>
+      <field name="res_model">organization.types</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+  </data>
+</odoo>
+

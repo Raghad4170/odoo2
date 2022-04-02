@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_commitments" model="ir.actions.report">
+            <field name="name">تقرير الالتزام</field>
+            <field name="model">company.commitments</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">commitments.report_commitments</field>
+            <field name="report_file">commitments.report_commitments</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_company_commitments"/>
+            <field name="binding_type">report</field>
+        </record>        
+    </data>
+</odoo>

@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_commitments_organization,commitments.organization,model_commitments_organization,commitments.group_commitments_manager,1,1,1,1
+access_commitments_organization_user,commitments.organization,model_commitments_organization,,1,1,1,0
+access_organization_systems,organization.systems,model_organization_systems,commitments.group_commitments_manager,1,1,1,1
+access_organization_systems_user,organization.systems,model_organization_systems,,1,1,1,0
+access_organization_types,organization.types,model_organization_types,commitments.group_commitments_manager,1,1,1,1
+access_organization_types_user,organization.types,model_organization_types,,1,1,1,0
+access_organization_activities,organization.activities,model_organization_activities,commitments.group_commitments_manager,1,1,1,1
+access_organization_activities_user,organization.activities,model_organization_activities,,1,1,1,0
+access_activities_activities,activities.activities,model_activities_activities,commitments.group_commitments_manager,1,1,1,1
+access_activities_activities_user,activities.activities,model_activities_activities,,1,1,1,0
+access_commitments_questions,commitments.questions,model_commitments_questions,commitments.group_commitments_manager,1,1,1,1
+access_commitments_questions_user,commitments.questions,model_commitments_questions,,1,1,1,0
+access_commitments_line,commitments.line,model_commitments_line,,1,1,1,1
+access_company_commitments,company.commitments,model_company_commitments,,1,1,1,1

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_commitments_document">
+    <t t-call="web.external_layout">
+        <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div class="oe_structure"/>
+            <h3 class="mt16" id="informations"><strong><span t-field="doc.name"/></strong></h3>
+            <div class="row pt-5" id="informations">
+                <div t-if="doc.date" class="col-auto col-3 mw-100 mb-2">
+                    <strong>التاريخ:</strong>
+                    <p class="m-0" t-field="doc.date"/>
+                </div>
+                <div t-if="doc.commitments_percentage" class="col-auto col-3 mw-100 mb-2">
+                    <strong>نسبة الالتزام:</strong>
+                    <div>
+                        <span class="m-0" t-field="doc.commitments_percentage"/>٪
+                    </div>
+                </div>
+                <div t-if="doc.fine_numbers" class="col-auto col-3 mw-100 mb-2">
+                    <strong>عدد المخالفات:</strong>
+                    <p class="m-0" t-field="doc.fine_numbers"/>
+                </div>
+                <div t-if="doc.fines" class="col-auto col-3 mw-100 mb-2">
+                    <strong>مجموع الغرامات:</strong>
+                    <p class="m-0" t-field="doc.fines"/>
+                </div>
+            </div>
+            <div class="pt-5" id="informations">
+                <h4><strong>المخالفات</strong></h4>
+                <hr class="my-0"/>
+                <div class="pt-3" style="text-align: justify;text-justify: inter-word;" t-field="doc.report"/>
+            </div>
+        </div>
+    </t>
+</template>
+
+
+<template id="report_commitments">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="commitments.report_commitments_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

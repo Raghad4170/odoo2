@@ -1,0 +1,331 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="website_menu_commitment" model="website.menu">
+            <field name="name">برنامح الإلتزام</field>
+            <field name="url">/my/commitments</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">1</field>
+            <field name="group_ids" eval="[(4, ref('base.group_portal')),
+                                          (4,ref('base.group_user')),]"/>
+        </record>
+
+    </data>
+    <data>        
+        
+        
+    <template id="portal_layout_commitment" name="Portal layout: commitment menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'commitment' or commitment" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not commitment else ''}">
+                <a t-if="commitment" t-attf-href="/my/commitments?{{ keep_query() }}">الالتزام</a>
+                <t t-else="">الالتزام</t>
+            </li>
+        </xpath>
+    </template>
+
+        
+        
+    <template id="portal_my_commitments" name="برنامج الالتزام">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">برنامج الالتزام</t>
+            </t>
+            <t t-if="not commitments">
+                <div class="alert alert-warning mt8" role="alert">
+                    لا يوجد لديك مراجعة لإلتزام شركتك
+                </div>
+            </t>
+            <t t-if="commitments" t-call="portal.portal_table">
+             <thead>
+                <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                    <th class="text-left">الإلتزام</th>
+                    <th class="text-left">نسبة الالتزام</th>
+                    <th class="text-left">عدد المخالفات</th>
+                    <th class="text-left">مجموع الغرامات</th>
+                 </tr>
+             </thead>
+                <tbody>
+                    <tr t-foreach="commitments" t-as="commitment">
+                        <td>
+                        <t t-if="not commitment.is_answered">
+                             <a t-attf-href="/company_commitments/#{commitment.id}?access_token=#{commitment.access_token}">
+                                 <span t-field="commitment.name"/>
+                             </a>
+                        </t>
+                        <t t-else="">
+                             <a t-attf-href="/my/commitment/#{commitment.id}?access_token=#{commitment.access_token}">
+                                 <span t-field="commitment.name"/>
+                             </a>
+                        </t>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="commitment.commitments_percentage"/>%
+                        </td>
+                        <td class="text-left">
+                          <span t-field="commitment.fine_numbers"/>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="commitment.fines"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+        
+    <template id="portal_my_commitment" name="برنامج الالتزام">
+            <t t-set="o_portal_fullwidth_alert" groups="commitment.group_commitments_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=company.commitments&amp;id=%s&amp;view_type=form' % (commitment.id)"/>
+                </t>
+            </t>
+            <input type="hidden"  t-att-value="commitment.id" name="commitment_id"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="title">
+                        <h5><span t-field="commitment.date"/></h5>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li t-if="commitment.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المسؤول</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="commitment.user_id.image_1024" t-att-src="image_data_uri(commitment.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not commitment.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="commitment.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                    </div>
+                                </div>
+                            </li>
+                            <li t-if="commitment.user_id" class="list-group-item flex-grow-1">
+                                <div class="row flex-nowrap">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-sm btn-primary btn-block o_download_btn" t-att-href="commitment.get_portal_url_pdf_download(report_type='pdf', download=True)" title="Download">
+                                            <i class="fa fa-download"/> تحميل</a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1">
+                                        <a class="btn btn-sm btn-primary btn-block o_print_btn" t-att-href="commitment.get_portal_url_pdf_download(report_type='pdf')" title="Print" target="_blank">
+                                            <i class="fa fa-print"/> طباعة</a>
+                                    </div>
+                                </div>
+                            </li>                            
+                        </ul>
+                    </t>
+                </t>
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                        <div class="card-body">
+                            <div class="col-12 col-lg">
+                                <div class="card oe_website_contract">
+                                <div class="card_header">
+                                    <div class="card-body">
+                                        <div class="o_portal_html_view shadow p-3">
+                                            <div class="o_portal_html_loader text-center">
+                                                <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw text-black-50"></i>
+                                            </div>
+                                            <iframe class="mt8 mb8" width="100%" height="100%" style="height: 1100px;" frameborder="0" t-att-src="commitment.get_portal_url_pdf_download(report_type='pdf')"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+        
+
+    <template id="question_container_commitments_main" name="الالتزام">
+        <t t-call="website.layout">
+        <form id="submit_commitemts" t-att-action="'/commitments_submit/%s/%s/%s' % (commitment_list,commitment.id,request.session.page_no)" method="post" enctype="multipart/form-data" >
+            <div class="wrap d-flex">
+                <div class="container commitment_box d-flex flex-column mb-5">
+                    <span t-raw="commitment_division" style="padding-top:20px;"/>
+                    <div  style="padding-top:20px;">            
+                        <h2><span t-esc='commitment.name'/></h2>
+                    </div>
+                    <t t-set="index" t-value="0"/> 
+                    <t t-foreach='questions' t-as='question'>
+                        <div class="pt-3">
+                            <h4>
+                                <span t-esc='question.questions_id.name'/>
+                            </h4>
+                        </div>
+                        <div> 
+                            <t t-if="question.display_type!='line_section'">
+                                <t t-set="index" t-value="index+1"/> 
+                                <t t-if="question.is_answered==False">
+                                    <div class="commitment" t-att-id="'container_%d'% index">
+                                        <span class="col-auto col-3 mw-100 mb-2">
+                                            <input type="radio" class="radio" t-att-class="'ans_%i' % question.id" id="op1" t-att-name="question.id" value="ملتزم"/>
+                                            <label for="op1">ملتزم</label>
+                                        </span>
+                                        <span class="col-auto col-3 mw-100 mb-2">
+                                            <input type="radio" class="radio" t-att-class="'ans_%i' % question.id" id="op2" t-att-name= "question.id" value="غير ملتزم"/>
+                                            <label for="op2">غير ملتزم</label>
+                                        </span>
+                                    </div>
+                                    <div t-att-id="'containers_%d'% index">
+                                        <div class="commitment" style="padding:5px;">
+                                            <p style="margin:0;padding:0;">
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input  type="radio" class="radio" style="display:none;margin:0;padding:0;" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id"  id="oo1" value="بسبب عدم العلم بالشرط"/>
+                                                    <label for="oo1" t-att-class="'ans_%i_container_ot' % question.id"  style="display:none;" >بسبب عدم العلم بالشرط</label>
+                                                </span>
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input  type="radio" class="radio" style="display:none;" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo2" value="بسبب رفض إدارة الشركة"/>
+                                                    <label for="oo2" t-att-class="'ans_%i_container_ot' % question.id" style="display:none;" >بسبب رفض إدارة الشركة</label>
+                                                </span>
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input  type="radio" class="radio" style="display:none;"  t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo3" value="اخرى"/>
+                                                    <label for="oo3" t-att-class="'ans_%i_container_ot' % question.id"  style="display:none;" >اخرى</label>
+                                                </span>
+                                                    <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type='text' style="display:none;" t-att-class="'ans_%i_container_ot_text' % question.id" t-att-name="'ans_%i_container' % question.id" t-att-id="'ans_%i' % question.id" placeholder=' تذكر : ……'/>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-if="question.commitment_type=='ملتزم'">
+                                    <div class="commitment" t-att-id="'container_%d'% index">
+                                        <span class="col-auto col-3 mw-100 mb-2">
+                                            <input type="radio" class="radio" t-att-class="'ans_%i' % question.id" id="op1" t-att-name="question.id" value="ملتزم" checked="True"/>
+                                            <label for="op1">ملتزم</label>
+                                        </span>
+                                        <span class="col-auto col-3 mw-100 mb-2">
+                                            <input type="radio" class="radio" t-att-class="'ans_%i' % question.id" id="op2" t-att-name= "question.id" value="غير ملتزم"/>
+                                            <label for="op2">غير ملتزم</label>
+                                        </span>
+                                    </div>
+                                    <div t-att-id="'containers_%d'% index">
+                                        <div class="commitment" style="padding:5px;">
+                                            <p>
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type="radio" class="radio" style="display:none;" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo1" value="بسبب عدم العلم بالشرط"/>
+                                                    <label for="oo1" t-att-class="'ans_%i_container_ot' % question.id" style="display:none;" >بسبب عدم العلم بالشرط</label>
+                                                </span>
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input  type="radio" class="radio" style="display:none;" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo2" value="بسبب رفض إدارة الشركة"/>
+                                                    <label for="oo2" t-att-class="'ans_%i_container_ot' % question.id" style="display:none;" >بسبب رفض إدارة الشركة</label>
+                                                </span>
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type="radio" class="radio" style="display:none;"  t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo3" value="اخرى"/>
+                                                    <label for="oo3" t-att-class="'ans_%i_container_ot' % question.id" style="display:none;" >اخرى</label>
+                                                </span>
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type='text' style="display:none;" t-att-class="'ans_%i_container_ot_text' % question.id" t-att-name="'ans_%i_container' % question.id" t-att-id="'ans_%i' % question.id" placeholder=' تذكر : ……'/>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-if="question.commitment_type=='غير ملتزم'">
+                                    <div class="commitment" t-att-id="'container_%d'% index">
+                                        <span class="col-auto col-3 mw-100 mb-2">
+                                            <input type="radio" class="radio" t-att-class="'ans_%i' % question.id" id="op1" t-att-name="question.id" value="ملتزم"/>
+                                            <label for="op1">ملتزم</label>
+                                        </span>
+                                        <span class="col-auto col-3 mw-100 mb-2">
+                                            <input type="radio" class="radio" t-att-class="'ans_%i' % question.id" id="op2" t-att-name= "question.id" value="غير ملتزم" checked="True"/>
+                                            <label for="op2">غير ملتزم</label>
+                                        </span>
+                                    </div>
+                                    <t t-set="chek" t-value="0"/> 
+                                    <div t-att-id="'containers_%d'% index">
+                                        <div class="commitment" style="padding:5px;">
+                                            <t t-if="question.name=='بسبب عدم العلم بالشرط'">
+                                                <t t-set="chek" t-value="1"/> 
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type="radio" class="radio" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo1" value="بسبب عدم العلم بالشرط"  checked="True"/>
+                                                    <label for="oo1" t-att-class="'ans_%i_container_ot' % question.id">بسبب عدم العلم بالشرط</label>
+                                                </span>
+                                            </t>
+                                            <t t-if="question.name!='بسبب عدم العلم بالشرط'">
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type="radio" class="radio" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo1" value="بسبب عدم العلم بالشرط"/>
+                                                    <label for="oo1" t-att-class="'ans_%i_container_ot' % question.id">بسبب عدم العلم بالشرط</label>
+                                                </span>
+                                            </t>
+                                            <t t-if="question.name=='بسبب رفض إدارة الشركة'">
+                                                <t t-set="chek" t-value="2"/> 
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type="radio" class="radio" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo2" value="بسبب رفض إدارة الشركة"   checked="True"/>
+                                                    <label for="oo2" t-att-class="'ans_%i_container_ot' % question.id"  >بسبب رفض إدارة الشركة</label>
+                                                </span>
+                                            </t>
+                                            <t t-if="question.name!='بسبب رفض إدارة الشركة'">
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input  type="radio" class="radio"   t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id"  id="oo2" value="بسبب رفض إدارة الشركة"/>
+                                                    <label for="oo2" t-att-class="'ans_%i_container_ot' % question.id"  >بسبب رفض إدارة الشركة</label>
+                                                </span>
+                                            </t>
+                                            <t t-if="chek==0">
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type="radio" class="radio" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo3" value="اخرى" checked="True"/>
+                                                    <label for="oo3" t-att-class="'ans_%i_container_ot' % question.id">اخرى</label>
+                                                </span>
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type='text' t-att-value="question.name" t-att-class="'ans_%i_container_ot_text' % question.id" t-att-name="'ans_%i_container' % question.id" t-att-id="'ans_%i' % question.id" placeholder=' تذكر : ……'/>
+                                                </span>
+                                            </t>
+                                            <t t-if="chek!=0">
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type="radio" class="radio" t-att-class="'ans_%i_container_ot' % question.id" t-att-name="'ans_%i_container_ot' % question.id" id="oo3" value="اخرى"/>
+                                                    <label for="oo3" t-att-class="'ans_%i_container_ot' % question.id">اخرى</label>
+                                                </span>
+                                                <span class="col-auto col-3 mw-100 mb-2">
+                                                    <input type='text' style="display:none;" t-att-class="'ans_%i_container_ot_text' % question.id" t-att-name="'ans_%i_container' % question.id" t-att-id="'ans_%i' % question.id" placeholder=' تذكر : ……'/>
+                                                </span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                    </t>
+                    <div>
+                        <div class="commitment_button_box">
+                            <t t-if="submit_button!=False">
+                                <button type="submit" class="commitment_button" id="submit_msg">
+                                   إرسال
+                                </button>
+                            </t>
+                            <t t-if="submit_button==False">
+                                <button type="continue" class="commitment_button" id="contiue_msg">
+                                   الاعتماد والمتابعة
+                                </button>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="py-2 m-0 p-0 text-right">
+                        <div class="d-inline-block pr-5 text-left">
+                            <t>
+                                <t t-set="percentage" t-value="round(100*(request.session.page_no/total_page_no))"/>
+                                <span t-esc="request.session.page_no"/> من <span t-esc="total_page_no"/>
+                                <span>الصفحات</span>
+                                <span>المجاب عليها</span>
+                                <div class="progress flex-grow-1">
+                                    <div class="progress-bar bg-primary" t-att-style="'width: ' + str(percentage) + '%'"/>
+                                </div>
+                            </t> 
+                        </div>              
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        </t>
+    </template>        
+        
+    </data>
+</odoo>
