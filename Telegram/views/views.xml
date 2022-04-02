@@ -1,0 +1,99 @@
+<odoo>
+  <data>
+      
+        <record id="base_users_inherit_telegram" model="ir.ui.view">
+            <field name="name">res.users.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="mail.view_users_form_mail"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='notification_type']" position="after">
+                    <field name="chat_id"/>
+                </xpath>
+            </field>
+        </record>
+           
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.telegram</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="55"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block" data-string="تليجرام" string="تليجرام" data-key="Telegram" groups="base.group_system" id="Telegram">
+                    <h2>إعدادات التليحرام</h2>
+                    <div class="row mt16 o_settings_container" name="telegram">
+
+                        <div class="col-12 col-lg-6 o_setting_box" id="telegram_token">
+                            <div>
+                                <label for="telegram_token"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <span class="col-lg-3"><field name="telegram_token"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="bank_telegram"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <span class="col-lg-3"><field name="bank_telegram"/></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="ticket_telegram"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <span class="col-lg-3"><field name="ticket_telegram"/></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="attendance_telegram"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <span class="col-lg-3"><field name="attendance_telegram"/></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="session_telegram"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <span class="col-lg-3"><field name="session_telegram"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+      
+      
+    <record id="Telegram_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'Telegram', 'bin_size': False}</field>
+    </record>      
+  </data>
+</odoo>

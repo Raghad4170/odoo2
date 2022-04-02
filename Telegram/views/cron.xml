@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="ir_cron_update_data_telegram" model="ir.cron">
+        <field name="name">مراجعة الحسابات البنكية</field>
+        <field name="model_id" ref="model_account_journal"/>
+        <field name="state">code</field>
+        <field name="code">model.update_data_telegram()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now()).strftime('%Y-%m-%d 20:59:00')"/>
+        <field name="active" eval="True"/>
+        <field name="doall" eval="True"/>
+    </record> 
+
+    <record id="ir_cron_update_total_exp_move" model="ir.cron">
+        <field name="name">تحديث الإيرادات</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model.tele_total_exp_move()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now()).strftime('%Y-%m-%d 20:58:00')"/>
+        <field name="active" eval="True"/>
+        <field name="doall" eval="True"/>
+    </record> 
+
+    
+    <record id="ir_cron_telegram_attendance" model="ir.cron">
+        <field name="name">تحديث التليجرام لساعات اليوم</field>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="state">code</field>
+        <field name="code">model.update_in_telegram()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now()).strftime('%Y-%m-%d 20:59:00')"/>
+        <field name="active" eval="True" />
+        <field name="doall" eval="True" />
+    </record>
+    
+    <record id="ir_cron_check_in_update_in_telegram" model="ir.cron">
+        <field name="name">تحديث التليجرام للحضور</field>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="state">code</field>
+        <field name="code">model.check_in_update_in_telegram()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 05:10:00')"/>
+        <field name="active" eval="True" />
+        <field name="doall" eval="True" />
+    </record>    
+
+    <record id="ir_cron_didnt_attend_telegram" model="ir.cron">
+        <field name="name">تذكير التليجرام للحضور</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model.didnt_attend()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(hours=1)).strftime('%Y-%m-%d 05:05:00')"/>
+        <field name="active" eval="True"/>
+        <field name="doall" eval="True"/>
+    </record>    
+
+    <record id="ir_cron_didnt_checked_out_telegram" model="ir.cron">
+        <field name="name">تذكير التليجرام لتسجيل الخروج</field>
+        <field name="model_id" ref="model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="code">model.didnt_checked_out()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 17:00:00')"/>
+        <field name="active" eval="True"/>
+        <field name="doall" eval="True"/>
+    </record>    
+</odoo>
