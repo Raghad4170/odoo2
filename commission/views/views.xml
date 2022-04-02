@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>     
+      
+      
+<!--       company -->
+            
+        <record id="edit_company" model="ir.ui.view">
+            <field name="name">company.company.form</field>
+            <field name="model">company.company</field>
+            <field name="arch" type="xml">
+                <form string="الشركة">
+                <sheet string="الشركة">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="user_id" readonly="1"/>
+                        </group>   
+                        <group>
+                         <field name="partner_id"/>
+                        </group>  
+                      </group>
+                    <notebook>
+                        <page name="commissions" string="المجلدات">
+                         <field name="commission_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                 </form>
+            </field>
+        </record>
+     
+        <record id="company_kanban_view" model="ir.ui.view">
+            <field name="name">company.company.kanban</field>
+            <field name="model">company.company</field>
+            <field name="arch" type="xml">
+              <kanban>
+                <field name="user_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                <div>
+                                    <field name="partner_id"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="user_id"/>
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+              </kanban>
+            </field>
+        </record>
+      
+        <record id="view_company" model="ir.actions.act_window">
+            <field name="name">الشركات</field>
+            <field name="res_model">company.company</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد شركة لنصنع واحدة!
+                </p>
+            </field>
+        </record>
+
+    <menuitem id="company_menu_root" name="الشركات" parent="sign.menu_document" action="view_company" sequence="1"/>
+      
+<!--       commission -->
+            
+      
+ 
+      
+        <record id="edit_commission" model="ir.ui.view">
+            <field name="name">commission.commission.form</field>
+            <field name="model">commission.commission</field>
+            <field name="arch" type="xml">
+                <form string="المجلد">
+                <sheet string="المجلد">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="company"/>
+                         <field name="user_id" readonly="1"/>
+                        </group>   
+                      </group>
+                    <notebook>
+                        <page name="sign" string="التواقيع">
+                         <field name="sign_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                 </form>
+            </field>
+        </record>
+      
+        <record id="commission_kanban_view" model="ir.ui.view">
+            <field name="name">commission.commission.kanban</field>
+            <field name="model">commission.commission</field>
+            <field name="arch" type="xml">
+              <kanban default_group_by="company" class="o_kanban_mobile" sample="1">
+                <field name="user_id"/>
+                <field name="company"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                <div>
+                                    <field name="company"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="user_id"/>
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+              </kanban>
+            </field>
+        </record>
+      
+        <record id="view_commission" model="ir.actions.act_window">
+            <field name="name">المجلدات</field>
+            <field name="res_model">commission.commission</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد لجنة لنصنع واحدة!
+                </p>
+            </field>
+        </record>
+      
+    <menuitem id="commission_root" name="المجلدات" parent="sign.menu_document" action="view_commission" sequence="2"/>
+      
+  </data>
+</odoo>
