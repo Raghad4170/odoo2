@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright to Mutn -->
+
+<odoo>
+    
+    <menuitem id="hr_attendance.menu_hr_attendance_root" name="الحضور" sequence="90" web_icon="attendance,static/description/icon.png"/>    
+    
+    <menuitem id="hr_attendance.menu_hr_attendance_my_attendances" groups="parentid.employee"/>
+
+    <menuitem id="hr_attendance.menu_hr_attendance_kiosk_no_user_mode" groups="hr_attendance.group_hr_attendance_kiosk"/>
+
+    <record id="hr_attendance.hr_employee_attendance_action_kanban" model="ir.actions.act_window">
+        <field name="name">الموظفين</field>
+        <field name="res_model">hr.employee.public</field>
+        <field name="view_mode">kanban</field>
+        <field name="domain">[('kiosk_employee','!=', False)]</field>
+        <field name="view_id" ref="hr_attendance.hr_employees_view_kanban"/>
+        <field name="target">fullscreen</field>
+    </record>
+    
+    <record id="hr_employee_kiosk_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tz']" position="after">
+                <field name="kiosk_employee"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="late_regeneration_wizard" model="ir.ui.view">
+        <field name="name">late_regeneration_wizard</field>
+        <field name="model">late.regeneration.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Regenerate Employee Work Entries">
+                <group>
+                    <group>
+                        <field name="employee_id"/>
+                        <label for="date_from"></label>
+                        <div name="date_from">
+                            <div class="text-info" attrs="{'invisible': [('earliest_available_date_message', '=', '')]}">
+                                <i class="fa fa-info-circle mr-1" title="Hint"/>
+                                <field name="earliest_available_date_message" nolabel="1"/>
+                            </div >
+                            <field name="date_from"/>
+                        </div>
+                        <label for="date_to"></label>
+                        <div name="date_to">
+                            <div class="text-info" attrs="{'invisible': [('latest_available_date_message', '=', '')]}">
+                                <i class="fa fa-info-circle mr-1" title="Hint"/>
+                                <field name="latest_available_date_message" nolabel="1"/>
+                            </div>
+                            <field name="date_to"/>
+                        </div>
+                    </group>
+                </group>
+                <field name="search_criteria_completed" invisible="1"/>
+                <field name="valid" invisible="1"/>
+                <div attrs="{'invisible': ['|', ('search_criteria_completed', '=', False), ('valid', '=', True)]}">
+                    <div class="text-danger"><i class="fa fa-exclamation-triangle mr-1" title="Warning"/>غير مسموح لك بإنشاء الغياب</div>
+                    <field name="validated_work_entry_ids" widget="many2many" nolabel="1">
+                        <tree string="Work Entries"
+                              default_order = "date_start"
+
+                              editable="bottom"
+                              no_open="1" decoration-danger="state == 'validated'">
+                            <field name="state" invisible="1"/>
+                            <field name="date_start"/>
+                            <field name="date_stop"/>
+                            <field name="work_entry_type_id"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                </div>
+                <footer>
+                    <button name="get_all_records_wiard"
+                            string="إنشاء الغياب"
+                            type="object" class="oe_highlight"
+                            attrs="{'invisible': ['|', ('search_criteria_completed', '=', False), ('valid', '=', False)]}"/>
+                    <button name="get_all_records_disabled"
+                            string="يجب إضافة جميع المعلومات المطلوبة"
+                            disabled="1"
+                            attrs="{'invisible': [('search_criteria_completed', '=', True), ('valid', '=', True)]}"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="late_regeneration_wizard_action" model="ir.actions.act_window">
+        <field name="name">Late Regeneration</field>
+        <field name="res_model">late.regeneration.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+</odoo>

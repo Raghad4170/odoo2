@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_late_wizard,Access.late.wizard,attendance.model_late_regeneration_wizard,,1,1,1,1
+access_attendance_correcting,attendance.correcting,attendance.model_attendance_correcting,,1,1,1,1

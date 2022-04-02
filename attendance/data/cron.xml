@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--  Copyright to The City Law Firm -->
+<odoo>
+    <record id="ir_cron_create_work_entry" model="ir.cron">
+        <field name="name">إنشاء تسجيلات الحضور للغائبين والمتأخرين</field>
+        <field name="model_id" ref="model_late_regeneration_wizard"/>
+        <field name="state">code</field>
+        <field name="code">model.get_all_records_cron()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now()).strftime('%Y-%m-%d 18:00:00')"/>
+        <field name="active" eval="True" />
+        <field name="doall" eval="True" />
+    </record>
+
+    <record id="ir_cron_send_late_attandance_ten_minutes" model="ir.cron">
+        <field name="name">إرسال إيميل للمتأخر</field>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="state">code</field>
+        <field name="code">model.send_mail_to_late_employees()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 05:10:00')"/>
+        <field name="active" eval="True" />
+        <field name="doall" eval="True" />
+    </record>
+
+    <record id="ir_cron_send_email_forgot_checkout" model="ir.cron">
+        <field name="name">إرسال إيميل لمن لم يسجل خروجه</field>
+        <field name="model_id" ref="model_hr_attendance"/>
+        <field name="state">code</field>
+        <field name="code">model.send_mail_to_uncheckedout_employees()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now() + timedelta(days=1)).strftime('%Y-%m-%d 14:10:00')"/>
+        <field name="active" eval="True" />
+        <field name="doall" eval="True" />
+    </record>
+    
+</odoo>
