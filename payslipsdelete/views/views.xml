@@ -1,0 +1,28 @@
+<odoo>
+  <data>
+      
+ <record id="hr_payslip_form_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_payslip_cancel']" position="after">
+                <button string="cancel" name="delete_payslip" type="object"/>
+            </xpath>
+        </field>
+    </record>
+
+      
+ <record id="hr_payslip_run_form_inherit" model="ir.ui.view">
+        <field name="name">hr.payslip.run.inherit</field>
+        <field name="model">hr.payslip.run</field>
+        <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <button string="cancel" name="delete_payslip_run" type="object"/>
+            </xpath>
+        </field>
+    </record>
+      
+  </data>
+</odoo>
