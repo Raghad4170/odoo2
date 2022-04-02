@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_litigation_document">
+    <t t-call="web.external_layout">
+    <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div class="oe_structure"/>
+            <h2 class="mt16" id="informations"><strong>رقم القضية: <span t-field="doc.litigation_number"/></strong></h2>
+        <div class="pt-4"/>
+            <h4 class="mt16" id="informations"><strong>معلومات القضية</strong></h4>
+            <hr class="my-0"/>
+            <div class="row pt-3" id="informations">
+                <div t-if="doc.partner_id.name" class="col-auto col-3 mw-100 mb-2">
+                    <strong>العميل:</strong>
+                    <p class="m-0" t-field="doc.partner_id"/>
+                </div>
+                <div t-if="doc.client_state" class="col-auto col-3 mw-100 mb-2">
+                    <strong>صفة الموكل:</strong>
+                    <p class="m-0" t-field="doc.client_state"/>
+                </div>
+                <div t-if="doc.litigation_state" class="col-auto col-3 mw-100 mb-2">
+                    <strong>حالة القضية:</strong>
+                    <p class="m-0" t-field="doc.litigation_state"/>
+                </div>
+                <div t-if="doc.lawsuit" class="col-auto col-3 mw-100 mb-2">
+                    <strong>نوع الدعوى:</strong>
+                    <p class="m-0" t-field="doc.lawsuit"/>
+                </div>
+                <div t-if="doc.case_amount" class="col-auto col-3 mw-100 mb-2">
+                    <strong>مبلغ محل الدعوى:</strong>
+                    <p class="m-0" t-field="doc.case_amount"/>
+                </div>
+            </div>
+            <div class="row pt-3" id="informations">
+                <div t-if="doc.next_court_date" class="col-auto col-3 mw-100 mb-2">
+                    <strong>موعد الجلسة القادمة:</strong>
+                    <p class="m-0" t-field="doc.next_court_date"/>
+                </div>
+                <div t-if="doc.city" class="col-auto col-3 mw-100 mb-2">
+                    <strong>المدينة:</strong>
+                    <p class="m-0" t-field="doc.city"/>
+                </div>
+                <div t-if="doc.court" class="col-auto col-3 mw-100 mb-2">
+                    <strong>المحكمة:</strong>
+                    <p class="m-0" t-field="doc.court"/>
+                </div>
+                <div t-if="doc.circuit" class="col-auto col-3 mw-100 mb-2">
+                    <strong>الدائرة القضائية:</strong>
+                    <p class="m-0" t-field="doc.circuit"/>
+                </div>
+                <div t-if="doc.establishment_date" class="col-auto col-3 mw-100 mb-2">
+                    <strong>تاريخ القيد:</strong>
+                    <p class="m-0" t-field="doc.establishment_date"/>
+                </div>
+                <div t-if="doc.opponent" class="col-auto col-3 mw-100 mb-2">
+                    <strong>الخصم:</strong>
+                    <p class="m-0" t-field="doc.opponent"/>
+                </div>
+            </div> 
+            <div class="row pt-3" id="informations">
+                <div t-if="doc.appeal_number" class="col-auto col-3 mw-100 mb-2">
+                    <strong>رقم القضية بالاستئناف:</strong>
+                    <p class="m-0" t-field="doc.appeal_number"/>
+                </div>
+                <div t-if="doc.appeal_circuit" class="col-auto col-3 mw-100 mb-2">
+                    <strong>الدائرة القضائية بالاستئناف:</strong>
+                    <p class="m-0" t-field="doc.appeal_circuit"/>
+                </div>
+            </div> 
+        <div class="pt-3" id="informations">
+            <h4><strong>ملخص القضية</strong></h4>
+            <hr class="my-0"/>
+            <div class="pt-3" t-if="doc.summary">
+                <h5><strong>موضوع الدعوى</strong></h5>
+                <div style="text-align: justify;text-justify: inter-word;" t-field="doc.summary"/>
+            </div>
+            <div class="pt-3" t-if="doc.requests_ids">
+                <h5><strong>طلبات الدعوى</strong></h5>
+                <t t-foreach="doc.requests_ids" t-as="requests">
+                    <div style="text-align: justify;text-justify: inter-word;" t-field="requests.name"/>
+                </t>
+            </div>
+            <div class="pt-3" t-if="doc.arguments_ids">
+                <h5><strong>أسانيد الدعوى</strong></h5>
+                <div t-foreach="doc.arguments_ids" t-as="arguments">
+                    <div class="col row">
+                         <a role="button" t-att-href="'%s' % arguments.url">
+                            <span class="fa fa-chain" role="img"/>
+                            <span class="col" t-field="arguments.name"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div t-if="doc.user_id" class="col-auto">
+                <div class="text-center">
+                    <strong>المحامي</strong>
+                </div>
+                <div t-if="doc.user_id.sign_signature" class="text-center">
+                    <img t-att-src="image_data_uri(doc.user_id.sign_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                </div>
+                <div class="text-center">
+                    <strong><span t-field="doc.user_id"/></strong>
+                </div>
+                <div t-if="doc.user_id.permit_no" class="text-center">
+                    <strong>ترخيص رقم ( <span t-field="doc.user_id.permit_no"/>)</strong>
+                </div>
+            </div>
+            <div t-if="doc.helper_ids" class="col-auto" t-foreach="doc.helper_ids" t-as="helper">
+                <div class="text-center">
+                    <strong>مساعد المحامي</strong>
+                </div>
+                <div t-if="helper.sign_signature" class="text-center">
+                    <img t-att-src="image_data_uri(helper.sign_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                </div>
+                <div class="text-center">
+                    <strong><span t-field="helper.name"/></strong>
+                </div>
+            </div>            
+        </div>
+
+    </div>
+    </t>
+</template>
+
+
+<template id="report_litigation">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="litigation.report_litigation_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+
+<template id="report_consulting_document">
+    <t t-call="web.external_layout">
+        <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div class="oe_structure"/>
+            <h2 class="mt16">
+                <span t-field="doc.name"/>
+            </h2>
+            <div class="pt-3"/>        
+            <div class="row mt32 mb32" id="informations">
+                <div t-if="doc.user_id.name" class="col-auto col-3 mw-100 mb-2">
+                    <strong>المستشار:</strong>
+                    <p class="m-0" t-field="doc.user_id"/>
+                </div>
+                <div t-if="doc.partner_id.name" class="col-auto col-3 mw-100 mb-2">
+                    <strong>العميل:</strong>
+                    <p class="m-0" t-field="doc.partner_id"/>
+                </div>
+                <div t-if="doc.consulting_type" class="col-auto col-3 mw-100 mb-2">
+                    <strong>نوع الاستشارة:</strong>
+                    <p class="m-0" t-field="doc.consulting_type"/>
+                </div>
+                <div t-if="doc.date" class="col-auto col-3 mw-100 mb-2">
+                    <strong>تاريخ الاستشارة:</strong>
+                    <p class="m-0" t-field="doc.date"/>
+                </div>
+            </div>
+            <div t-if="doc.summary" class="pt-3" id="informations">
+                <h4><strong>ملخص استشارة العميل</strong></h4>
+                <hr class="my-0"/>
+                <div class="pt-3" t-if="doc.summary">
+                    <div style="text-align: justify;text-justify: inter-word;" t-field="doc.summary"/>
+                </div>
+            </div>
+            <div t-if="doc.consult" class="pt-3" id="informations">
+                <h4><strong>الرأي الاستشاري المقترح</strong></h4>
+                <hr class="my-0"/>
+                <div class="pt-3" t-if="doc.consult">
+                    <div style="text-align: justify;text-justify: inter-word;" t-field="doc.consult"/>
+                </div>
+                <div class="pt-3"><strong>تنبيه: يعد الرأي الاستشاري المقدم توصية غير ملزمة ومبنية على المعطيات المقدمة من العميل، وتخلي 
+                <span t-field="doc.company_id.name"/>مسؤوليتها ومسؤولية منسوبيها عما يترتب على تطبيق التوصيات لكونها تخضع لعوامل أخرى تقع خارج النطاق القانوني.</strong></div>
+            </div>
+        <div class="row">
+            <div t-if="doc.user_id" class="col-auto">
+                <div class="text-center">
+                    <strong>المستشار</strong>
+                </div>
+                <div t-if="doc.user_id.sign_signature" class="text-center">
+                    <img t-att-src="image_data_uri(doc.user_id.sign_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                </div>
+                <div class="text-center">
+                    <strong><span t-field="doc.user_id"/></strong>
+                </div>
+            </div>
+            <div t-if="doc.helper_ids" class="col-auto" t-foreach="doc.helper_ids" t-as="helper">
+                <div class="text-center">
+                    <strong>مساعد المستشار</strong>
+                </div>
+                <div t-if="helper.sign_signature" class="text-center">
+                    <img t-att-src="image_data_uri(helper.sign_signature)" style="max-height: 4cm; max-width: 8cm;"/>
+                </div>
+                <div class="text-center">
+                    <strong><span t-field="helper.name"/></strong>
+                </div>
+            </div>            
+        </div>
+        </div>
+    </t>
+</template>
+
+
+<template id="report_consulting">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="litigation.report_consulting_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+
+
+</odoo>

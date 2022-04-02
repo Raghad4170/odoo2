@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>    
+    <data>
+    <template id="litigation_layout" name="Portal Layout">
+        <t t-call="portal.frontend_layout">
+            <t t-set="is_portal" t-value="True"/>
+
+            <div t-if="not no_breadcrumbs and not my_details and not breadcrumbs_searchbar" class="o_portal container mt-3">
+                <div class="row align-items-center bg-white no-gutters border rounded">
+                    <div class="col-10">
+                        <t t-call="portal.portal_breadcrumbs"></t>
+                    </div>
+                    <div t-if="prev_record or next_record" class="col-2 flex-grow-0 text-center">
+                        <t t-call='portal.record_pager'/>
+                    </div>
+                </div>
+            </div>
+            <div id="wrap" class='o_portal_wrap'>
+                <div class="mb64" style="margin-left: 30px;  margin-right: 30px;">
+                    <t t-if="my_details">
+                        <div class="row justify-content-between mt-4">
+                            <div t-attf-class="col-12 col-md col-lg-6">
+                                <t t-raw="0"/>
+                            </div>
+                            <div id="o_my_sidebar" class="pt-3 pt-lg-0 col-12 col-md col-lg-4 col-xl-3 o_my_sidebar">
+                                <div class="o_my_contact" t-if="sales_user">
+                                    <t t-call="portal.portal_contact"/>
+                                </div>
+                                <div class="o_portal_my_details">
+                                    <h4>Details <a role="button" href="/my/account" class="btn btn-sm btn-link"><i class="fa fa-pencil"/> Edit</a></h4>
+                                    <hr class="mt-1 mb-0"/>
+                                    <div t-field="user_id.partner_id" t-options='{"widget": "contact", "fields": ["email", "phone", "address", "name"]}'/>
+                                </div>
+                                <div class="o_portal_my_security mt-3">
+                                    <h4>Account Security </h4>
+                                    <hr class="mt-1 mb-1"/>
+                                    <a href="/my/security"><i class="fa fa-pencil mx-1"/>Edit Security Settings</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <t t-raw="0"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+        
+        
+        
+<!-- litigation -->
+        
+    <template id="portal_layout_litigation" name="Portal layout: litigation menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'litigation' or litigation" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not litigation else ''}">
+                <a t-if="litigation" t-attf-href="/my/litigations?{{ keep_query() }}">القضايا</a>
+                <t t-else="">القضايا</t>
+            </li>
+            <li t-if="litigation" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="litigation.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_litigation" name="Show Litigations" customize_show="True" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">القضايا</t>
+                <t t-set="url" t-value="'/my/litigations'"/>
+                <t t-set="placeholder_count" t-value="'litigation_count'"/>
+            </t>
+        </xpath>
+    </template>      
+        
+    <template id="portal_my_litigations" name="القضايا">
+        <t t-call="litigation.litigation_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">القضايا</t>
+            </t>
+            <t t-if="not litigations">
+                <div class="alert alert-warning mt8" role="alert">
+                    لا يوجد قضايا
+                </div>
+            </t>
+            <t t-if="litigations" t-call="portal.portal_table">
+             <thead>
+                <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                    <th class="text-left">#</th>
+                    <th class="text-left">صفة الموكل</th>
+                    <th class="text-left">حالة القضية</th>
+                    <th class="text-left">الخصم</th>
+                    <th class="text-left">نوع الدعوى</th>
+                    <th class="text-left">المحكمة</th>
+                    <th class="text-left">المدينة</th>
+                    <th class="text-left">موعد الجلسة القادمة</th>
+                    <th class="text-left">مبلغ محل الدعوى</th>
+                 </tr>
+             </thead>
+                <tbody>
+                    <tr t-foreach="litigations" t-as="litigation">
+                        <td>
+                         <a t-attf-href="/my/litigation/#{litigation.id}?access_token=#{litigation.access_token}">
+                             <span t-field="litigation.id"/>
+                         </a>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="litigation.client_state"/>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="litigation.litigation_state"/>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="litigation.opponent"/>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="litigation.case_type"/>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="litigation.court"/>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="litigation.city"/>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="litigation.next_court_date"/>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="litigation.case_amount"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+        
+    <template id="portal_my_litigation" name="القضايا">
+            <t t-set="o_portal_fullwidth_alert" groups="project.group_project_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=litigation.litigation&amp;id=%s&amp;view_type=form' % (litigation.id)"/>
+                </t>
+            </t>
+            <input type="hidden"  t-att-value="litigation.id" name="litigation_id"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-if="litigation.litigation_number" t-set="title">
+                        <div align='right'><strong>رقم القضية</strong></div>
+                        <h4><div t-field="litigation.litigation_number" data-id="litigation_number"/></h4>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1" t-if="litigation.litigation_state or litigation.next_court_date or litigation.case_amount">
+                                <strong><div t-if="litigation.partner_id">العميل</div></strong>
+                                <div t-field="litigation.partner_id.name"></div>
+                                <t t-if="litigation.state in ('Approve','close')">
+                                    <strong><div class="pt-1" t-if="litigation.client_state">صفة الموكل</div></strong>
+                                    <div t-field="litigation.client_state"></div>
+                                    <strong><div class="pt-1" t-if="litigation.litigation_state">حالة القضية</div></strong>
+                                    <div t-field="litigation.litigation_state"></div>
+                                    <strong><div class="pt-1" t-if="litigation.next_court_date">موعد الجلسة القادمة</div></strong>
+                                    <div t-field="litigation.next_court_date"></div>
+                                    <strong><div class="pt-1" t-if="litigation.case_amount">مبلغ محل الدعوى</div></strong>
+                                    <div t-if="litigation.case_amount" t-field="litigation.case_amount"></div>
+                                </t>
+                            </li>
+                            <t t-if="litigation.state in ('Approve','close')">
+                                <li class="list-group-item flex-grow-1" t-if="litigation.file">
+
+                                 <t t-if="litigation.file" t-foreach="litigation" t-as="f">
+                                   <a role="button" t-attf-href="/web/content?model=litigation.litigation&amp;field=file&amp;id={{ f.id }}" class="btn btn-sm btn-secondary">
+                                        <span class="fa fa-download" role="img" aria-label="Reports" title="ملف الحكم"/>
+                                        <small><b class="text">ملف الحكم</b></small>
+                                    </a>
+                                  </t>
+
+                                </li>
+                            </t>
+                            <li t-if="litigation.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المحامي</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="litigation.user_id.image_1024" t-att-src="image_data_uri(litigation.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not litigation.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="litigation.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item flex-grow-1" t-if="litigation.state in ('Approve','close')">
+                             <h6>قيمنا</h6>
+                                <div class="rate">
+                                    <input type="radio" class="rating form-control input-star-rate" id="star5" name="rate" value="5"/>
+                                    <label for="star5" id="s5" title="text"></label>
+                                    <input type="radio" class="rating form-control input-star-rate" id="star4" name="rate" value="4"/>
+                                    <label for="star4" id="s4" title="text"></label>
+                                    <input type="radio" class="rating form-control input-star-rate" id="star3" name="rate" value="3"/>
+                                    <label for="star3" id="s3" title="text"></label>
+                                    <input type="radio" class="rating form-control input-star-rate" id="star2" name="rate" value="2"/>
+                                    <label for="star2" id="s2" title="text"></label>
+                                    <input type="radio" class="rating form-control input-star-rate" id="star1" name="rate" value="1"/>
+                                    <label for="star1" id="s1" title="text"></label>
+                                </div>
+                                <div id="MyForm"  style="display: none;">
+                                    <br>
+                                     <div>
+                                        <textarea id="review" name="review" rows="4" cols="20">كيف يمكننا ان نحسن خدمتنا؟</textarea>
+                                     </div>
+                                    </br>
+                                    <br>
+                                        <button type="button" id="save_notes" class="o_portal_chatter_composer_btn btn btn-primary">إرسال</button>
+                                    </br>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div t-if="litigation.summary" class="card oe_website_contract">
+                        <div class="card-body">
+                            <div>
+                                <span class="float-right" t-if="litigation.state in ('Approve','close')">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-sm btn-secondary btn-block o_download_btn" t-att-href="litigation.get_portal_url_pdf_download(report_type='pdf', download=True)" title="Download">
+                                            <i class="fa fa-download"/> تحميل</a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1">
+                                        <a class="btn btn-sm btn-secondary btn-block o_print_btn" t-att-href="litigation.get_portal_url_pdf_download(report_type='pdf')" id="print_litigation_report" title="Print" target="_blank">
+                                            <i class="fa fa-print"/> طباعة</a>
+                                    </div>
+                                </span>
+                                <h5 class="mb-1"><b>ملخص القضية</b></h5>
+                                <hr class="my-0"/>
+                                <div class="pt-1" t-if="litigation.summary">
+                                    <h6>موضوع الدعوى</h6> 
+                                    <div style="text-align: justify;text-justify: inter-word;" id="content" t-field="litigation.summary"/>
+                                </div>
+                                <div class="pt-2" t-if="litigation.requests_ids">
+                                    <h6>طلبات الدعوى</h6>
+                                    <t t-foreach="litigation.requests_ids" t-as="requests">
+                                        <div style="text-align: justify;text-justify: inter-word;" id="content" t-field="requests.name"/>
+                                    </t>
+                                </div>
+                                <div class="pt-2" t-if="litigation.arguments_ids">
+                                    <h6>أسانيد الدعوى</h6>
+                                    <div t-foreach="litigation.arguments_ids" t-as="arguments">
+                                        <div class="col row">
+                                            <a role="button" t-att-href="'%s' % arguments.url">
+                                               <span class="fa fa-chain" role="img"/>
+                                               <span class="col" t-field="arguments.name"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="litigation.state in ('Approve','close')">
+                        <div t-if="litigation.court or litigation.city or litigation.opponent" class="pt-2"/>
+                        <div t-if="litigation.court or litigation.city or litigation.opponent" class="card oe_website_contract">
+                            <div class="card-body">
+                            <div class="row">
+                                <t t-if="litigation.court or litigation.city">
+                                    <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                                        <h5 class="mb-1"><b>معلومات القضية</b></h5>
+                                        <hr class="my-0"/>
+                                        <table class="table table-borderless table-sm">
+                                            <tbody style="white-space:nowrap">
+                                                <tr t-if="litigation.appeal_number">
+                                                    <th class="text-left pb-0">رقم القضية بالاستئناف:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="litigation.appeal_number"/></td>
+                                                </tr>
+                                                <tr t-if="litigation.court">
+                                                    <th class="text-left pb-0">المحكمة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="litigation.court"/></td>
+                                                </tr>
+                                                <tr t-if="litigation.circuit">
+                                                    <th class="text-left pb-0">الدائرة القضائية:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="litigation.circuit"/></td>
+                                                </tr>
+                                                <tr t-if="litigation.appeal_circuit">
+                                                    <th class="text-left pb-0">الدائرة القضائية بالاستئناف:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="litigation.appeal_circuit"/></td>
+                                                </tr>
+                                                <tr t-if="litigation.city">
+                                                    <th class="text-left pb-0">المدينة:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="litigation.city"/></td>
+                                                </tr>
+                                                <tr t-if="litigation.establishment_date">
+                                                    <th class="text-left pb-0">تاريخ القيد:</th>
+                                                    <td class="w-100 pb-0 text-wrap"><span t-field="litigation.establishment_date"/></td>
+                                                </tr>
+                                                <tr t-if="litigation.appeal_date">
+                                                    <th class="text-left pb-0">تاريخ الاستئناف:</th>
+                                                    <td  class="w-100 pb-0 text-wrap"><span t-field="litigation.appeal_date"/></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+                                <t t-if="litigation.opponent">
+                                    <div class="col-12 col-lg-6  mb-3 mb-lg-0">
+                                        <h5 class="mb-1"><b>معلومات الخصم</b></h5>
+                                        <hr class="my-0"/>
+                                        <table class="table table-borderless table-sm">
+                                            <tbody style="white-space:nowrap">
+                                                    <tr t-if="litigation.opponent">
+                                                        <th class="text-left pb-0">الخصم:</th>
+                                                        <td class="w-100 pb-0 text-wrap"><span t-field="litigation.opponent"/></td>
+                                                    </tr>
+                                                    <tr t-if="litigation.opponent_representative">
+                                                        <th class="text-left pb-0">ممثل الخصم:</th>
+                                                        <td class="w-100 pb-0 text-wrap"><span t-field="litigation.opponent_representative"/></td>
+                                                    </tr>
+                                                    <tr t-if="litigation.opponent_representative_state">
+                                                        <th class="text-left pb-0">صفة ممثل الخصم:</th>
+                                                        <td class="w-100 pb-0 text-wrap"><span t-field="litigation.opponent_representative_state"/></td>
+                                                    </tr>
+                                                    <tr t-if="litigation.opponent_according">
+                                                        <th class="text-left pb-0">بموجب الخصم:</th>
+                                                        <td class="w-100 pb-0 text-wrap"><span t-field="litigation.opponent_according"/></td>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </t>
+                            </div>                          
+                            </div>
+                        </div>
+
+                        <div t-if="litigation.notes_ids" class="pt-2"/>
+                        <div t-if="litigation.notes_ids" class="card oe_website_contract">
+                            <div class="card-body">
+                                <div t-if="litigation.notes_ids">
+                                    <h5 class="mb-1"><b>مذكرات الدعوى</b></h5>
+                                    <hr class="my-0"/>
+                                    <div class="row">
+                                        <span class="col-12 col-lg-5  mb-3 mb-lg-0" t-foreach="litigation.notes_ids" t-as="notes">
+                                            <table class="table table-borderless table-sm">
+                                                <tbody style="white-space:nowrap">
+                                                        <tr t-if="notes.name">
+                                                            <th class="text-left pb-0">كاتب المذكرة:</th>
+                                                            <td class="w-100 pb-0 text-wrap"><span t-field="notes.name"/></td>
+                                                        </tr>
+                                                        <tr t-if="notes.date">
+                                                            <th class="text-left pb-0">التاريخ:</th>
+                                                            <td class="w-100 pb-0 text-wrap"><span t-field="notes.date"/></td>
+                                                        </tr>
+                                                        <tr t-if="notes.by">
+                                                            <th class="text-left pb-0">طريقة الاستلام:</th>
+                                                            <td class="w-100 pb-0 text-wrap"><span t-field="notes.by"/></td>
+                                                        </tr>
+                                                        <tr t-if="notes.file">
+                                                            <th class="text-left pb-0">الملف:</th>
+                                                            <td class="w-100 pb-0 text-wrap">
+                                                                <a role="button" t-attf-href="/web/content?model=litigation.notes&amp;field=file&amp;id={{ notes.id }}" class="btn btn-sm btn-secondary">
+                                                                   <span class="fa fa-download" role="img"/>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                       </span>     
+                                    </div>
+                                </div>                            
+                            </div>
+                        </div>
+
+                        <div t-if="litigation.judgment" class="pt-2"/>
+                        <div t-if="litigation.judgment" class="card oe_website_contract">
+                            <div class="card-body">
+                                <div t-if="litigation.judgment">
+                                    <h5 class="mb-1"><b>الحكم</b></h5>
+                                    <hr class="my-0"/>
+                                    <div t-field="litigation.judgment"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div t-if="litigation.report_ids" class="pt-2"/>
+                        <div t-if="litigation.report_ids" class="card oe_website_contract">
+                            <div class="card-body">
+                                <div t-if="litigation.report_ids">
+                                    <h5 class="mb-1"><b>الجلسات</b></h5>
+                                    <hr class="my-0"/>
+                                </div>
+                                <div name="tab" class="tab">
+                                    </div>
+                                        <div name="subtab">
+                                    </div>
+                                </div>
+                        </div>
+                    </t>
+                    <!-- ======  Chatter ====== -->
+                    <div id="discussion"/>
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="litigation"/>
+                            <t t-set="token" t-value="litigation.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>    
+        
+<!-- Consulting -->
+        
+    <template id="portal_layout_consulting" name="Portal layout: consulting menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'consulting' or consulting" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not consulting else ''}">
+                <a t-if="consulting" t-attf-href="/my/consultings?{{ keep_query() }}">الاستشارات</a>
+                <t t-else="">الاستشارات</t>
+            </li>
+            <li t-if="consulting" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="consulting.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_consulting" name="Show Consultings" customize_show="True" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">الاستشارات</t>
+                <t t-set="url" t-value="'/my/consultings'"/>
+                <t t-set="placeholder_count" t-value="'consulting_count'"/>
+            </t>
+        </xpath>
+    </template>      
+
+    <template id="portal_my_consultings" name="الاستشارات">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">الاستشارات</t>
+            </t>
+            <t t-if="not consultings">
+                <div class="alert alert-warning mt8" role="alert">
+                    .لا توجد استشارات
+                </div>
+            </t>
+            <t t-if="consultings" t-call="portal.portal_table">
+             <thead>
+                <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                    <th>الاستشارة</th>
+                    <th style="width: 200px;" class="text-center">نوع الاستشارة</th>
+                    <th style="width: 200px;" class="text-center">تاريخ الطلب</th>
+                 </tr>
+             </thead>
+                <tbody>
+                    <tr t-foreach="consultings" t-as="consulting">
+                        <td>
+                            <a t-attf-href="/my/consulting/#{consulting.id}?access_token=#{consulting.access_token}"><span t-field="consulting.name"/></a>
+                        </td>
+                        <td class="text-center">
+                          <span t-field="consulting.consulting_type"/>
+                        </td>
+                        <td class="text-center">
+                          <span t-field="consulting.date"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+        
+    <template id="portal_my_consulting" name="الاستشارات">
+            <t t-set="o_portal_fullwidth_alert" groups="project.group_project_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=consulting.consulting&amp;id=%s&amp;view_type=form' % (consulting.id)"/>
+                </t>
+            </t>
+            <input type="hidden"  t-att-value="consulting.id" name="consulting_id"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1" t-if="consulting.date or consulting.consulting_type">
+                                <strong><div t-if="consulting.partner_id">مقدم الطلب</div></strong>
+                                <div t-field="consulting.partner_id.name"></div>
+                                <strong><div class="pt-1" t-if="consulting.date">تاريخ الطلب</div></strong>
+                                <div t-field="consulting.date"></div>
+                                <t t-if="consulting.state in ('Approve','close')">
+                                    <strong><div class="pt-1" t-if="consulting.served_date">تاريخ تقديمه</div></strong>
+                                    <div t-field="consulting.served_date"></div>
+                                    <strong><div class="pt-1" t-if="consulting.consulting_type">نوع الاستشارة</div></strong>
+                                    <div t-field="consulting.consulting_type"></div>
+                                </t>
+                            </li>
+                            <li t-if="consulting.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المستشار</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="consulting.user_id.image_1024" t-att-src="image_data_uri(consulting.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not consulting.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="consulting.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item flex-grow-1" t-if="consulting.state in ('Approve','close')">
+                                <br t-if='consulting.state != "close"'>
+                                    <button type="button" id="close_rate_2" class="o_portal_chatter_composer_btn btn btn-primary">إغلاق الاستشارة</button>
+                                </br>
+                                <div class="rate_2" id="rate_2">
+                                <h6>قيمنا</h6>
+                                    <input type="radio" class="rating_2  orm-control input-star-rate_2" id="star5_2" name="rate_2" value="5"/>
+                                    <label for="star5_2" id="s5_2" title="text"></label>
+                                    <input type="radio" class="rating_2 form-control input-star-rate_2" id="star4_2" name="rate_2" value="4"/>
+                                    <label for="star4_2" id="s4_2" title="text"></label>
+                                    <input type="radio" class="rating_2 form-control input-star-rate_2" id="star3_2" name="rate_2" value="3"/>
+                                    <label for="star3_2" id="s3_2" title="text"></label>
+                                    <input type="radio" class="rating_2 form-control input-star-rate_2" id="star2_2" name="rate_2" value="2"/>
+                                    <label for="star2_2" id="s2_2" title="text"></label>
+                                    <input type="radio" class="rating_2 form-control input-star-rate_2" id="star1_2" name="rate_2" value="1"/>
+                                    <label for="star1_2" id="s1_2" title="text"></label>
+                                </div>
+                                <div id="MyForm_2"  style="display: none;">
+                                    <br>
+                                     <div>
+                                        <textarea id="review_2" name="review_2" rows="4" cols="20">كيف يمكننا ان نحسن خدمتنا؟</textarea>
+                                     </div>
+                                    </br>
+                                    <br>
+                                        <button type="button" id="save_notes_2" class="o_portal_chatter_composer_btn btn btn-primary">إرسال</button>
+                                    </br>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div t-if="consulting.summary" class="card oe_website_contract">
+                        <div class="card-body">
+                            <div>
+                                <span class="float-right" t-if="consulting.state in ('Approve','close')">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-sm btn-secondary btn-block o_download_btn" t-att-href="consulting.get_portal_url_pdf_download(report_type='pdf', download=True)" title="Download">
+                                            <i class="fa fa-download"/> تحميل</a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1">
+                                        <a class="btn btn-sm btn-secondary btn-block o_print_btn" t-att-href="consulting.get_portal_url_pdf_download(report_type='pdf')" id="print_consulting_report" title="Print" target="_blank">
+                                            <i class="fa fa-print"/> طباعة</a>
+                                    </div>
+                                </span>
+                                <h5 class="mb-1"><b>ملخص الاستشارة</b></h5>
+                                <hr class="my-0"/>
+                                <div style="text-align: justify;text-justify: inter-word;" id="content" t-field="consulting.summary"/>
+                            </div>
+                        </div>
+                    </div>
+                    <t t-if="consulting.state in ('Approve','close')">
+                        <div t-if="consulting.consult" class="pt-2"/>
+                        <div t-if="consulting.consult" class="card oe_website_contract">
+                            <div class="card-body">
+                                <div>
+                                    <h5 class="mb-1"><b>الرأي القانوني المقترح</b></h5>
+                                    <hr class="my-0"/>
+                                    <div style="text-align: justify;text-justify: inter-word;" id="content" t-field="consulting.consult"/>
+                                    <div class="pt-3"><strong>تنبيه: يعد الرأي الاستشاري المقدم توصية غير ملزمة ومبنية على المعطيات المقدمة من العميل، وتخلي 
+                                    <span t-field="consulting.company_id.name"/>مسؤوليتها ومسؤولية منسوبيها عما يترتب على تطبيق التوصيات لكونها تخضع لعوامل أخرى تقع خارج النطاق القانوني.</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <!-- ======  Chatter ====== -->
+                    <div id="discussion"/>
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="consulting"/>
+                            <t t-set="token" t-value="consulting.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+        
+        
+        
+        
+<!-- Contract Consulting -->
+        
+    <template id="portal_layout_contractconsulting" name="Portal layout: contractconsulting menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'contractconsulting' or contractconsulting" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not contractconsulting else ''}">
+                <a t-if="contractconsulting" t-attf-href="/my/contractconsultings?{{ keep_query() }}">استشارات العقود</a>
+                <t t-else="">استشارات العقود</t>
+            </li>
+            <li t-if="contractconsulting" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="contractconsulting.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_contractconsulting" name="Show Contract Consultings" customize_show="True" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">استشارات العقود</t>
+                <t t-set="url" t-value="'/my/contractconsultings'"/>
+                <t t-set="placeholder_count" t-value="'contractconsulting_count'"/>
+            </t>
+        </xpath>
+    </template>      
+
+    <template id="portal_my_contractconsultings" name="استشارات العقود">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">استشارات العقود</t>
+            </t>
+            <t t-if="not contractconsultings">
+                <div class="alert alert-warning mt8" role="alert">
+                    .لا توجد استشارات عقود
+                </div>
+            </t>
+            <t t-if="contractconsultings" t-call="portal.portal_table">
+             <thead>
+                <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                    <th>العقد</th>
+                    <th style="width: 200px;" class="text-center">تاريخ الطلب</th>
+                    <th style="width: 100px;" class="text-center">المسودة</th>
+                    <th style="width: 100px;" class="text-center">الموصى به</th>
+                    <th style="width: 100px;" class="text-center">النهائي</th>
+                 </tr>
+             </thead>
+                <tbody>
+                    <tr t-foreach="contractconsultings" t-as="contractconsulting">
+                        <td>
+                            <a t-attf-href="/my/contractconsulting/#{contractconsulting.id}?access_token=#{contractconsulting.access_token}"><span t-field="contractconsulting.name"/></a>
+                        </td>
+                        <td class="text-center">
+                          <span t-field="contractconsulting.date"/>
+                        </td>
+                        <td class="text-center">
+                        <t t-if="contractconsulting.draft_contract and contractconsulting.is_draft_contract">
+                           <a role="button" t-att-href="'%s' % contractconsulting.draft_contract" class="btn btn-sm btn-secondary">
+                                <span class="fa fa-file-text-o" role="img" aria-label="Reports" title="المسودة"/>
+                            </a>
+                        </t>
+                        </td>
+                        <td class="text-center">
+                        <t t-if="contractconsulting.recommended_contract and contractconsulting.is_recommended_contract">
+                           <a role="button" t-att-href="'%s' % contractconsulting.recommended_contract" class="btn btn-sm btn-secondary">
+                                <span class="fa fa-check-square" role="img" aria-label="Reports" title="الموصى به"/>
+                            </a>
+                        </t>
+                        </td>
+                        <td class="text-center">
+                        <t t-if="contractconsulting.sign_contract and contractconsulting.is_sign_contract">
+                           <a role="button" t-att-href="'%s' % contractconsulting.sign_contract" class="btn btn-sm btn-secondary">
+                                <span class="fa fa-edit" role="img" aria-label="Reports" title="النهائي"/>
+                            </a>
+                        </t>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+        
+    <template id="portal_my_contractconsulting" name="استشارات العقود">
+            <t t-set="o_portal_fullwidth_alert" groups="project.group_project_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=contractconsulting.contractconsulting&amp;id=%s&amp;view_type=form' % (contractconsulting.id)"/>
+                </t>
+            </t>
+            <input type="hidden"  t-att-value="contractconsulting.id" name="contractconsulting_id"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li class="list-group-item flex-grow-1" t-if="contractconsulting.date or contractconsulting.consulting_type">
+                                <strong><div class="pt-1" t-if="contractconsulting.partner_id">مقدم الطلب</div></strong>
+                                <div t-field="contractconsulting.partner_id.name"></div>
+                                <strong><div class="pt-1" t-if="contractconsulting.date">تاريخ الطلب</div></strong>
+                                <div t-field="contractconsulting.date"></div>
+                                <t t-if="contractconsulting.state in ('Approve','close')">
+                                    <strong><div class="pt-1" t-if="contractconsulting.served_date">تاريخ تقديمه</div></strong>
+                                    <div t-field="contractconsulting.served_date"></div>
+                                    <strong><div class="pt-1" t-if="contractconsulting.consulting_type">نوع الاستشارة</div></strong>
+                                    <div t-field="contractconsulting.consulting_type"></div>
+                                </t>
+                            </li>
+                            <li t-if="contractconsulting.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المستشار</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="contractconsulting.user_id.image_1024" t-att-src="image_data_uri(contractconsulting.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not contractconsulting.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="contractconsulting.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item flex-grow-1" t-if="contractconsulting.state in ('Approve','close')">
+                                <br t-if='contractconsulting.state != "close"'>
+                                    <button type="button" id="close_rate_3" class="o_portal_chatter_composer_btn btn btn-primary">إغلاق الاستشارة</button>
+                                </br>
+                                <div class="rate_3" id="rate_3">
+                                    <h6>قيمنا</h6>
+                                    <input type="radio" class="rating_3 form-control input-star-rate_3" id="star5_3" name="rate_3" value="5"/>
+                                    <label for="star5_3" id="s5_3" title="text"></label>
+                                    <input type="radio" class="rating_3 form-control input-star-rate_3" id="star4_3" name="rate_3" value="4"/>
+                                    <label for="star4_3" id="s4_3" title="text"></label>
+                                    <input type="radio" class="rating_3 form-control input-star-rate_3" id="star3_3" name="rate_3" value="3"/>
+                                    <label for="star3_3" id="s3_3" title="text"></label>
+                                    <input type="radio" class="rating_3 form-control input-star-rate_3" id="star2_3" name="rate_3" value="2"/>
+                                    <label for="star2_3" id="s2_3" title="text"></label>
+                                    <input type="radio" class="rating_3 form-control input-star-rate_3" id="star1_3" name="rate_3" value="1"/>
+                                    <label for="star1_3" id="s1_3" title="text"></label>
+                                </div>
+                                <div id="MyForm_3" style="display: none;">
+                                    <br>
+                                     <div>
+                                        <textarea id="review_3" name="review_3" rows="4" cols="20">كيف يمكننا ان نحسن خدمتنا؟</textarea>
+                                     </div>
+                                    </br>
+                                    <br>
+                                        <button type="button" id="save_notes_3" class="o_portal_chatter_composer_btn btn btn-primary">إرسال</button>
+                                    </br>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                        <div class="card_header">
+                            <div class="card-body">
+                                <div t-if="contractconsulting.summary">
+                                    <h5 class="mb-1"><b>ملخص الاستشارة</b></h5>
+                                    <hr class="my-0"/>
+                                    <div style="text-align: justify;text-justify: inter-word;" id="content" t-field="contractconsulting.summary"/>
+                                </div>
+                            </div>
+                            <div class="card-body" t-if="contractconsulting.state in ('Approve','close')">
+                                <span>
+                                    <t t-if="contractconsulting.draft_contract and contractconsulting.is_draft_contract">
+                                       <a role="button" t-att-href="'%s' % contractconsulting.draft_contract" class="btn btn-sm btn-secondary">
+                                            <span class="fa fa-file-text-o" role="img" aria-label="Reports" title="المسودة"/>
+                                            <small><b class="text">المسودة</b></small>
+                                        </a>
+                                    </t>
+                                    <t t-if="contractconsulting.recommended_contract and contractconsulting.is_recommended_contract">
+                                       <a role="button" t-att-href="'%s' % contractconsulting.recommended_contract" class="btn btn-sm btn-secondary">
+                                            <span class="fa fa-check-square" role="img" aria-label="Reports" title="الموصى به"/>
+                                            <small><b class="text">الموصى به</b></small>
+                                        </a>
+                                    </t>
+                                    <t t-if="contractconsulting.sign_contract and contractconsulting.is_sign_contract">
+                                       <a role="button" t-att-href="'%s' % contractconsulting.sign_contract" class="btn btn-sm btn-secondary">
+                                            <span class="fa fa-edit" role="img" aria-label="Reports" title="النهائي"/>
+                                            <small><b class="text">النهائي</b></small>
+                                        </a>
+                                    </t>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ======  Chatter ====== -->
+                    <div id="discussion"/>
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="contractconsulting"/>
+                            <t t-set="token" t-value="contractconsulting.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+        
+        
+    <template id="portal_company_document" name="المستند">
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                    <div class="card_header">
+                        <div class="card-body">
+                            <div class="o_portal_html_view shadow p-3">
+                                <div class="o_portal_html_loader text-center">
+                                    <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw text-black-50"></i>
+                                </div>
+                                <iframe class="mt8 mb8" width="100%" height="100%" style="height: 1100px;" frameborder="0" t-att-src="document.get_portal_url_pdf_download(report_type='pdf')"/>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>    
+
+        
+        
+    </data>
+</odoo>

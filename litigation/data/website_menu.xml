@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="website_menu_litigation" model="website.menu">
+            <field name="name">القضايا</field>
+            <field name="url">/my/litigations</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">1</field>
+            <field name="group_ids" eval="[(4, ref('base.group_portal')),
+                                          (4,ref('base.group_user')),]"/>
+        </record>
+        
+        <record id="website_menu_consultings" model="website.menu">
+            <field name="name">الاستشارات</field>
+            <field name="url">/my/consultings</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">2</field>
+            <field name="group_ids" eval="[(4, ref('base.group_portal')),
+                                          (4,ref('base.group_user')),]"/>
+        </record>
+
+        <record id="website_menu_contractconsultings" model="website.menu">
+            <field name="name">استشارات العقود</field>
+            <field name="url">/my/contractconsultings</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">3</field>
+            <field name="group_ids" eval="[(4, ref('base.group_portal')),
+                                          (4,ref('base.group_user')),]"/>
+        </record>
+        
+    </data>
+</odoo>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+ <!-- EXCUTION -->
+
+        <record model="execute.type" id="execute_1">
+          <field name="name">الامتناع عن قبول السند</field>
+          <field name="type">1</field>
+        </record>        
+        <record model="execute.type" id="execute_2">
+          <field name="name">دعوى الإعسار</field>
+          <field name="type">2</field>
+        </record>
+        <record model="execute.type" id="execute_3">
+          <field name="name">دعوى الملاءة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="execute.type" id="execute_4">
+          <field name="name">عدم توفر شرط شكلي للسند أو تزويره أو إنكار التوقيع</field>
+          <field name="type">3</field>
+        </record>
+        <record model="execute.type" id="execute_5">
+          <field name="name">عدم الصفة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="execute.type" id="execute_6">
+          <field name="name">الإبراء بعد صدور السند التنفيذي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_7">
+          <field name="name">التأجيل بعد صدور السند التنفيذي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_8">
+          <field name="name">الحوالة بعد صدور السند التنفيذي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_9">
+          <field name="name">الصلح بعد صدور السند التنفيذي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_10">
+          <field name="name">المال المحجوز يفوق مقدار الدين المطالب به</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_11">
+          <field name="name">المقاصة بموجب سند تنفيذي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_12">
+          <field name="name">الوفاء بعد صدور السند التنفيذي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_13">
+          <field name="name">امتناع شاغل العقار عن الإخلاء لحمه سند تنفيذي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_14">
+          <field name="name">تواطؤ أثناء المزاد أو التأثير على سعر المزاد</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_15">
+          <field name="name">رد ما استوفي خطأ</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_16">
+          <field name="name">صحة تقرير المحجوز لديه بما في ذمته</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_17">
+          <field name="name">عيب في العين المباعة</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_18">
+          <field name="name">دعوى التعويض</field>
+          <field name="type">4</field>
+        </record>
+        <record model="execute.type" id="execute_19">
+          <field name="name">المنازعة في أجرة الحارس القضائي أو محاسبته أو استبداله</field>
+          <field name="type">4</field>
+        </record>
+    </data>
+</odoo>

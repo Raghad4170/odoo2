@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="litigation_report_view_dashboard" model="ir.ui.view">
+            <field name="name">litigation.report.view.dashboard</field>
+            <field name="model">litigation.litigation</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <dashboard sample="1">
+                    <view type="graph" ref="litigation.litigation_report_view_graph"/>
+                    <group>
+                        <group col="4">
+                            <aggregate name="count" string="عدد القضايا" field="count"/>
+                            <aggregate name="is_draft" string="قضايا مسودة" field="is_draft"/>
+                            <aggregate name="is_confirm" string="قضايا بإنتظار الموافقة" field="is_confirm"/>
+                            <aggregate name="is_suspended" string="قضايا معلقة" field="is_suspended"/>
+                            <aggregate name="is_refuse" string="قضايا مرفوضة" field="is_refuse"/>
+                            <aggregate name="is_approve" string="قضايا لدى العميل" field="is_approve"/>
+                            <aggregate name="is_close" string="قضايا مغلقة" field="is_close"/>
+                            <aggregate name="case_amount" string="مبالغ محل الدعوى" field="case_amount"/>
+                        </group>
+                        <group col="1">
+                            <widget name="pie_chart" title="الحالات" attrs="{'groupby': 'state'}"/>
+                        </group>
+                    </group>
+                    <view type="pivot" ref="litigation.litigation_report_view_pivot"/>
+                </dashboard>
+            </field>
+        </record>
+        
+        <record id="litigation_report_view_pivot" model="ir.ui.view">
+            <field name="name">litigation.report.view.pivot</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+                <pivot string="تحليل القضايا" sample="1">
+                    <field name="partner_id" type="row"/>
+                    <field name="count" type="measure"/>
+                    <field name="case_amount" type="measure"/>
+                    <field name="entry_progress" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="litigation_report_view_graph" model="ir.ui.view">
+            <field name="name">litigation.report.view.graph</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+                <graph string="تحليل القضايا" sample="1">
+                    <field name="user_id"/>
+                    <field name="state" type="row"/>
+                    <field name="count" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="litigation_report_view_search" model="ir.ui.view">
+            <field name="name">litigation.report.view.search</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+                <search string="تحليل القضايا">
+                    <field name="user_id" filter_domain="[('user_id', 'ilike', self)]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="المحامي" name="user_id" context="{'group_by':'user_id'}"/>
+                        <filter string="العميل" name="partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="القضية" name="name" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="litigation_report_action" model="ir.actions.act_window">
+            <field name="name">تحليل القضايا</field>
+            <field name="res_model">litigation.litigation</field>
+            <field name="view_mode">dashboard,graph,pivot</field>
+            <field name="search_view_id" ref="litigation_report_view_search"/>
+        </record>
+
+
+        <menuitem id="litigation_menu_report"
+            name="تقارير القضايا"
+            action="litigation_report_action"
+            parent="project.menu_project_report"
+            sequence="-1"/>
+
+        
+        
+<!--         consulting -->
+        
+        <record id="consulting_report_view_dashboard" model="ir.ui.view">
+            <field name="name">consulting.report.view.dashboard</field>
+            <field name="model">consulting.consulting</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <dashboard sample="1">
+                    <view type="graph" ref="litigation.consulting_report_view_graph"/>
+                    <group>
+                        <group col="4">
+                            <aggregate name="count" string="عدد الاستشارات" field="count"/>
+                            <aggregate name="is_draft" string="استشارات مسودة" field="is_draft"/>
+                            <aggregate name="is_confirm" string="استشارات بإنتظار الموافقة" field="is_confirm"/>
+                            <aggregate name="is_suspended" string="استشارات معلقة" field="is_suspended"/>
+                            <aggregate name="is_refuse" string="استشارات مرفوضة" field="is_refuse"/>
+                            <aggregate name="is_approve" string="استشارات لدى العميل" field="is_approve"/>
+                            <aggregate name="is_close" string="استشارات مغلقة" field="is_close"/>
+                        </group>
+                        <group col="1">
+                            <widget name="pie_chart" title="الحالات" attrs="{'groupby': 'state'}"/>
+                            <widget name="pie_chart" title="الانواع" attrs="{'groupby': 'consulting_type'}"/>
+                        </group>
+                    </group>
+                    <view type="pivot" ref="litigation.consulting_report_view_pivot"/>
+                </dashboard>
+            </field>
+        </record>
+        
+        <record id="consulting_report_view_pivot" model="ir.ui.view">
+            <field name="name">consulting.report.view.pivot</field>
+            <field name="model">consulting.consulting</field>
+            <field name="arch" type="xml">
+                <pivot string="تحليل الاستشارات" sample="1">
+                    <field name="partner_id" type="row"/>
+                    <field name="count" type="measure"/>
+                    <field name="entry_progress" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="consulting_report_view_graph" model="ir.ui.view">
+            <field name="name">consulting.report.view.graph</field>
+            <field name="model">consulting.consulting</field>
+            <field name="arch" type="xml">
+                <graph string="تحليل الاستشارات" sample="1">
+                    <field name="user_id"/>
+                    <field name="state" type="row"/>
+                    <field name="consulting_type" type="row"/>
+                    <field name="count" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="consulting_report_view_search" model="ir.ui.view">
+            <field name="name">consulting.report.view.search</field>
+            <field name="model">consulting.consulting</field>
+            <field name="arch" type="xml">
+                <search string="تحليل الاستشارات">
+                    <field name="user_id" filter_domain="[('user_id', 'ilike', self)]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="المستشار" name="user_id" context="{'group_by':'user_id'}"/>
+                        <filter string="العميل" name="partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="الاستشارة" name="name" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="consulting_report_action" model="ir.actions.act_window">
+            <field name="name">تحليل الاستشارات</field>
+            <field name="res_model">consulting.consulting</field>
+            <field name="view_mode">dashboard,graph,pivot</field>
+            <field name="search_view_id" ref="consulting_report_view_search"/>
+        </record>
+
+        <menuitem id="consulting_menu_report"
+            name="تقارير الاستشارات"
+            action="consulting_report_action"
+            parent="project.menu_project_report"
+            sequence="-1"/>
+
+<!--         contractconsulting -->
+        
+        <record id="contractconsulting_report_view_dashboard" model="ir.ui.view">
+            <field name="name">contractconsulting.report.view.dashboard</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <dashboard sample="1">
+                    <view type="graph" ref="litigation.contractconsulting_report_view_graph"/>
+                    <group>
+                        <group col="4">
+                            <aggregate name="count" string="عدد العقود" field="count"/>
+                            <aggregate name="is_draft" string="عقود مسودة" field="is_draft"/>
+                            <aggregate name="is_confirm" string="عقود بإنتظار الموافقة" field="is_confirm"/>
+                            <aggregate name="is_suspended" string="عقود معلقة" field="is_suspended"/>
+                            <aggregate name="is_refuse" string="عقود مرفوضة" field="is_refuse"/>
+                            <aggregate name="is_approve" string="عقود لدى العميل" field="is_approve"/>
+                            <aggregate name="is_close" string="عقود مغلقة" field="is_close"/>
+                        </group>
+                        <group col="1">
+                            <widget name="pie_chart" title="الحالات" attrs="{'groupby': 'state'}"/>
+                            <widget name="pie_chart" title="الانواع" attrs="{'groupby': 'consulting_type'}"/>
+                        </group>
+                    </group>
+                    <view type="pivot" ref="litigation.contractconsulting_report_view_pivot"/>
+                </dashboard>
+            </field>
+        </record>
+        
+        <record id="contractconsulting_report_view_pivot" model="ir.ui.view">
+            <field name="name">contractconsulting.report.view.pivot</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="arch" type="xml">
+                <pivot string="تحليل العقود" sample="1">
+                    <field name="partner_id" type="row"/>
+                    <field name="count" type="measure"/>
+                    <field name="entry_progress" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="contractconsulting_report_view_graph" model="ir.ui.view">
+            <field name="name">contractconsulting.report.view.graph</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="arch" type="xml">
+                <graph string="تحليل العقود" sample="1">
+                    <field name="user_id"/>
+                    <field name="state" type="row"/>
+                    <field name="consulting_type" type="row"/>
+                    <field name="count" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="contractconsulting_report_view_search" model="ir.ui.view">
+            <field name="name">contractconsulting.report.view.search</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="arch" type="xml">
+                <search string="تحليل العقود">
+                    <field name="user_id" filter_domain="[('user_id', 'ilike', self)]"/>
+                    <separator/>
+                    <group expand="1" string="Group By">
+                        <filter string="المستشار" name="user_id" context="{'group_by':'user_id'}"/>
+                        <filter string="العميل" name="partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="العقد" name="name" context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="contractconsulting_report_action" model="ir.actions.act_window">
+            <field name="name">تحليل العقود</field>
+            <field name="res_model">contractconsulting.contractconsulting</field>
+            <field name="view_mode">dashboard,graph,pivot</field>
+            <field name="search_view_id" ref="contractconsulting_report_view_search"/>
+        </record>
+
+        <menuitem id="contractconsulting_menu_report"
+            name="تقارير العقود"
+            action="contractconsulting_report_action"
+            parent="project.menu_project_report"
+            sequence="-1"/>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+<!-- expropriation -->
+        <record model="expropriation.type" id="managerial_1">
+          <field name="name">طعن في الامتناع</field>
+          <field name="type">1</field>
+        </record>
+        <record model="expropriation.type" id="managerial_2">
+          <field name="name">وضع اليد المؤقت</field>
+          <field name="type">1</field>
+        </record>
+        <record model="expropriation.type" id="managerial_3">
+          <field name="name">طعن في أصل القرار</field>
+          <field name="type">1</field>
+        </record>
+        <record model="expropriation.type" id="managerial_4">
+          <field name="name">طعن في قرار الحصر</field>
+          <field name="type">1</field>
+        </record>
+        <record model="expropriation.type" id="managerial_5">
+          <field name="name">نزع باقي عقار منزوع</field>
+          <field name="type">1</field>
+        </record>
+
+        <record model="expropriation.type" id="managerial_6">
+          <field name="name">طعن في تقدير</field>
+          <field name="type">2</field>
+        </record>
+        <record model="expropriation.type" id="managerial_7">
+          <field name="name">الضرر من المشروع</field>
+          <field name="type">2</field>
+        </record>
+        <record model="expropriation.type" id="managerial_8">
+          <field name="name">نقص قيمة الجزء غير المنزوع</field>
+          <field name="type">2</field>
+        </record>
+        <record model="expropriation.type" id="managerial_9">
+          <field name="name">تعويض بأرض بديلة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="expropriation.type" id="managerial_10">
+          <field name="name">أجرة المثل</field>
+          <field name="type">2</field>
+        </record>
+
+        <record model="expropriation.type" id="managerial_11">
+          <field name="name">إعادة العقار المنزوع بعد استغناء الجهة</field>
+          <field name="type">3</field>
+        </record>
+
+<!-- invention -->
+        <record model="invention.type" id="managerial_12">
+          <field name="name">طعن في قرار لجنة النظر في دعاوى براءات الاختراع لإختراع</field>
+          <field name="type">1</field>
+        </record>
+        <record model="invention.type" id="managerial_13">
+          <field name="name">طلب تسجيل اختراع</field>
+          <field name="type">1</field>
+        </record>
+        <record model="invention.type" id="managerial_14">
+          <field name="name">طلب حماية اختراع</field>
+          <field name="type">1</field>
+        </record>
+
+        <record model="invention.type" id="managerial_15">
+          <field name="name">طعن في قرار لجنة النظر في دعاوى براءات الاختراع لتصميمات تخطيط للدارات المتكاملة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="invention.type" id="managerial_16">
+          <field name="name">طلب تسجيل تصميمات تخطيط للدارات المتكاملة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="invention.type" id="managerial_17">
+          <field name="name">طلب حماية تصميمات تخطيط للدارات المتكاملة</field>
+          <field name="type">2</field>
+        </record>
+
+        <record model="invention.type" id="managerial_18">
+          <field name="name">طعن في قرار لجنة النظر في دعاوى براءات الاختراع لأصناف نباتية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="invention.type" id="managerial_19">
+          <field name="name">طلب تسجيل أصناف نباتية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="invention.type" id="managerial_20">
+          <field name="name">طلب حماية أصناف نباتية</field>
+          <field name="type">3</field>
+        </record>
+
+        <record model="invention.type" id="managerial_21">
+          <field name="name">طعن في قرار لجنة النظر في دعاوى براءات الاختراع لنماذج صناعية</field>
+          <field name="type">4</field>
+        </record>
+        <record model="invention.type" id="managerial_22">
+          <field name="name">طلب تسجيل نماذج صناعية</field>
+          <field name="type">4</field>
+        </record>
+        <record model="invention.type" id="managerial_23">
+          <field name="name">طلب حماية نماذج صناعية</field>
+          <field name="type">4</field>
+        </record>
+
+        <record model="invention.type" id="managerial_24">
+          <field name="name">اعتراض على تسجيل علامة تجارية</field>
+          <field name="type">5</field>
+        </record>
+        <record model="invention.type" id="managerial_25">
+          <field name="name">رفض تسجيل علامة تجارية</field>
+          <field name="type">5</field>
+        </record>
+        <record model="invention.type" id="managerial_26">
+          <field name="name">تجديد علامة مسجلة</field>
+          <field name="type">5</field>
+        </record>
+        <record model="invention.type" id="managerial_27">
+          <field name="name">تجديد علامة مسجلة</field>
+          <field name="type">5</field>
+        </record>
+        <record model="invention.type" id="managerial_28">
+          <field name="name">شطب علامة</field>
+          <field name="type">5</field>
+        </record>
+
+        <record model="invention.type" id="managerial_29">
+          <field name="name">اعتراض على تسجيل اسم تجاري</field>
+          <field name="type">6</field>
+        </record>
+        <record model="invention.type" id="managerial_30">
+          <field name="name">رفض تسجيل اسم تجاري</field>
+          <field name="type">6</field>
+        </record>
+        <record model="invention.type" id="managerial_31">
+          <field name="name">شطب اسم تجاري</field>
+          <field name="type">6</field>
+        </record>
+        <record model="invention.type" id="managerial_32">
+          <field name="name">قرار لجنة النظر في المخالفات الناشئة عن تطبيق نظام حماية حقوق المؤلف</field>
+          <field name="type">7</field>
+        </record>
+        <record model="invention.type" id="managerial_33">
+          <field name="name">فسح مصنف</field>
+          <field name="type">7</field>
+        </record>
+
+<!-- health -->
+
+        <record model="health.type" id="managerial_34">
+          <field name="name">قرار لجنة النظر في مخالفات المؤسسات الصحية الخاصة</field>
+          <field name="type">1</field>
+        </record>
+        <record model="health.type" id="managerial_35">
+          <field name="name">تصنيف مؤسسة صحية</field>
+          <field name="type">1</field>
+        </record>
+
+        <record model="health.type" id="managerial_36">
+          <field name="name">قرار لجنة النظر في مخالفات نظام مزاولة المهن الصحية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="health.type" id="managerial_37">
+          <field name="name">قرار الهيئة الصحية الشرعية</field>
+          <field name="type">2</field>
+        </record>
+
+        <record model="health.type" id="managerial_38">
+          <field name="name">قرار لجنة النظر في مخالفات المؤسسات الصحية الخاصة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="health.type" id="managerial_39">
+          <field name="name">قرار تسعير الأدوية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="health.type" id="managerial_40">
+          <field name="name">تسجيل مصنع المستحضرات الصيدلانية والعشبية</field>
+          <field name="type">3</field>
+        </record>
+
+        <record model="health.type" id="managerial_41">
+          <field name="name">أمر علاج</field>
+          <field name="type">4</field>
+        </record>
+        <record model="health.type" id="managerial_42">
+          <field name="name">تقارير طبية</field>
+          <field name="type">4</field>
+        </record>
+
+<!-- compensation -->
+
+        <record model="compensation.type" id="managerial_43">
+          <field name="name">ضرر مادي</field>
+          <field name="type">1</field>
+        </record>
+        <record model="compensation.type" id="managerial_44">
+          <field name="name">ضرر معنوي</field>
+          <field name="type">1</field>
+        </record>
+        <record model="compensation.type" id="managerial_45">
+          <field name="name">ضرر مادي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="compensation.type" id="managerial_46">
+          <field name="name">ضرر معنوي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="compensation.type" id="managerial_47">
+          <field name="name">ضرر مادي</field>
+          <field name="type">3</field>
+        </record>
+        <record model="compensation.type" id="managerial_48">
+          <field name="name">ضرر معنوي</field>
+          <field name="type">3</field>
+        </record>
+        <record model="compensation.type" id="managerial_49">
+          <field name="name">ضرر مادي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="compensation.type" id="managerial_50">
+          <field name="name">ضرر معنوي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="compensation.type" id="managerial_51">
+          <field name="name">ضرر مادي</field>
+          <field name="type">5</field>
+        </record>
+        <record model="compensation.type" id="managerial_52">
+          <field name="name">ضرر معنوي</field>
+          <field name="type">5</field>
+        </record>
+        <record model="compensation.type" id="managerial_53">
+          <field name="name">ضرر مادي</field>
+          <field name="type">6</field>
+        </record>
+        <record model="compensation.type" id="managerial_54">
+          <field name="name">ضرر معنوي</field>
+          <field name="type">6</field>
+        </record>
+        <record model="compensation.type" id="managerial_55">
+          <field name="name">ضرر مادي</field>
+          <field name="type">7</field>
+        </record>
+        <record model="compensation.type" id="managerial_56">
+          <field name="name">ضرر معنوي</field>
+          <field name="type">7</field>
+        </record>
+        <record model="compensation.type" id="managerial_57">
+          <field name="name">ضرر مادي</field>
+          <field name="type">8</field>
+        </record>
+        <record model="compensation.type" id="managerial_58">
+          <field name="name">ضرر معنوي</field>
+          <field name="type">8</field>
+        </record>
+        <record model="compensation.type" id="managerial_59">
+          <field name="name">أتعاب محاماة</field>
+          <field name="type">9</field>
+        </record>
+
+        
+<!-- contracting -->
+        <record model="contracting.type" id="managerial_60">
+          <field name="name">الطعن في قرار لجنة فتح المظاريف</field>
+          <field name="type">1</field>
+        </record>
+        <record model="contracting.type" id="managerial_61">
+          <field name="name">الطعن في قرار لجنة فحص العروض</field>
+          <field name="type">1</field>
+        </record>
+        <record model="contracting.type" id="managerial_62">
+          <field name="name">الطعن في استبعاد العرض</field>
+          <field name="type">1</field>
+        </record>
+        <record model="contracting.type" id="managerial_63">
+          <field name="name">الطعن في إلغاء المنافسة</field>
+          <field name="type">1</field>
+        </record>
+        <record model="contracting.type" id="managerial_64">
+          <field name="name">الطعن في قرار الترسية</field>
+          <field name="type">1</field>
+        </record>
+        <record model="contracting.type" id="managerial_65">
+          <field name="name">طلب إعادة الضمان الابتدائي</field>
+          <field name="type">1</field>
+        </record>
+        <record model="contracting.type" id="managerial_66">
+          <field name="name">الطعن في إجراءات المنافسة</field>
+          <field name="type">1</field>
+        </record>
+        
+        
+        <record model="contracting.type" id="managerial_66">
+          <field name="name">الاستلام الابتدائي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_67">
+          <field name="name">الاستلام النهائي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_68">
+          <field name="name">الإعفاء من تقديم الضمان النهائي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_69">
+          <field name="name">إنهاء العقد</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_70">
+          <field name="name">بيع المنقولات</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_71">
+          <field name="name">تجديد العقد</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_72">
+          <field name="name">تخفيض التزامات المتعاقد</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_73">
+          <field name="name">تخفيض الضمان النهائي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_74">
+          <field name="name">التزامات العقد</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_75">
+          <field name="name">تعديل العقد</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_76">
+          <field name="name">تعويض</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_77">
+          <field name="name">تمديد العقد</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_78">
+          <field name="name">التنفيذ على الحساب</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_79">
+          <field name="name">زيادة التزامات المتعاقد</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_80">
+          <field name="name">سحب العمل والفسخ</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_81">
+          <field name="name">شرط جزائي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_82">
+          <field name="name">صرف مستخلصات</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_83">
+          <field name="name">ضمان التنفيذ</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_84">
+          <field name="name">قرار اللجنة المنصوص عليها في نظام المنافسات</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_85">
+          <field name="name">غرامة إشراف</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_86">
+          <field name="name">غرامة تأخير</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_87">
+          <field name="name">غرامة تقصير</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_88">
+          <field name="name">مستحقات العقد</field>
+          <field name="type">2</field>
+        </record>
+        <record model="contracting.type" id="managerial_89">
+          <field name="name">فروق أسعار</field>
+          <field name="type">2</field>
+        </record>
+
+
+<!-- discipline -->
+        
+        <record model="discipline.type" id="managerial_90">
+          <field name="name">مخالفة داخل جهة العمل</field>
+          <field name="type">1</field>
+        </record>
+        <record model="discipline.type" id="managerial_91">
+          <field name="name">مخالفة خارج جهة العمل</field>
+          <field name="type">1</field>
+        </record>
+        <record model="discipline.type" id="managerial_92">
+          <field name="name">الزواج من أجنبي بدون إذن</field>
+          <field name="type">1</field>
+        </record>
+
+        <record model="discipline.type" id="managerial_93">
+          <field name="name">طعن على عقوبة بحق طالب</field>
+          <field name="type">2</field>
+        </record>
+        <record model="discipline.type" id="managerial_94">
+          <field name="name">طعن على عقوبة بحق عضو هيئة تدريس</field>
+          <field name="type">2</field>
+        </record>
+        <record model="discipline.type" id="managerial_95">
+          <field name="name">طعن على عقوبة بحق موظف عام</field>
+          <field name="type">2</field>
+        </record>
+        <record model="discipline.type" id="managerial_96">
+          <field name="name">طعن في عقوبات صادرة من لجان التأديب</field>
+          <field name="type">2</field>
+        </record>
+        <record model="discipline.type" id="managerial_97">
+          <field name="name">طعن في قرارات مجالس التأديب العسكرية</field>
+          <field name="type">2</field>
+        </record>
+
+
+<!-- retirement -->
+        <record model="retirement.type" id="managerial_98">
+          <field name="name">استحقاق عن صاحب المعاش</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_99">
+          <field name="name">توقف صرف المعاش لمستحق عن متوفى</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_100">
+          <field name="name">حجز على المعاش</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_101">
+          <field name="name">حرمان صاحب المعاش من معاشه</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_102">
+          <field name="name">حرمان مستحق من معاش</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_103">
+          <field name="name">ضم خدمة</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_104">
+          <field name="name">معاش متوفى</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_105">
+          <field name="name">معاش تقاعدي</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_106">
+          <field name="name">معاش من أنهيت خدمته بسبب عجزه عن العمل</field>
+          <field name="type">1</field>
+        </record>
+        <record model="retirement.type" id="managerial_107">
+          <field name="name">مكافأة تقاعد</field>
+          <field name="type">1</field>
+        </record>
+
+        
+        <record model="retirement.type" id="managerial_108">
+          <field name="name">استحقاق عن صاحب المعاش</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_109">
+          <field name="name">توقف صرف المعاش لمستحق عن متوفى</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_110">
+          <field name="name">حجز على المعاش</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_111">
+          <field name="name">حرمان صاحب المعاش من معاشه</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_112">
+          <field name="name">حرمان مستحق من معاش</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_113">
+          <field name="name">ضم خدمة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_114">
+          <field name="name">معاش متوفى</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_115">
+          <field name="name">معاش تقاعدي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_116">
+          <field name="name">معاش من أنهيت خدمته بسبب عجزه عن العمل</field>
+          <field name="type">2</field>
+        </record>
+        <record model="retirement.type" id="managerial_117">
+          <field name="name">مكافأة تقاعد</field>
+          <field name="type">2</field>
+        </record>
+
+        
+        
+<!-- judicial -->
+        
+        <record model="judicial.type" id="managerial_118">
+          <field name="name">خطأ مادي كتابي</field>
+          <field name="type">1</field>
+        </record>
+        <record model="judicial.type" id="managerial_119">
+          <field name="name">خطأ مادي حسابي</field>
+          <field name="type">1</field>
+        </record>
+        
+        <record model="judicial.type" id="managerial_120">
+          <field name="name">تفسير الحكم</field>
+          <field name="type">2</field>
+        </record>
+
+        <record model="judicial.type" id="managerial_121">
+          <field name="name">منع من السفر</field>
+          <field name="type">3</field>
+        </record>
+        <record model="judicial.type" id="managerial_122">
+          <field name="name">وقف تنفيذ قرار</field>
+          <field name="type">3</field>
+        </record>
+        <record model="judicial.type" id="managerial_123">
+          <field name="name">وقف تنفيذ حكم</field>
+          <field name="type">3</field>
+        </record>
+        <record model="judicial.type" id="managerial_124">
+          <field name="name">حجز تحفظي</field>
+          <field name="type">3</field>
+        </record>
+        <record model="judicial.type" id="managerial_125">
+          <field name="name">إثبات الحالة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="judicial.type" id="managerial_126">
+          <field name="name">وقف أعمال</field>
+          <field name="type">3</field>
+        </record>
+        
+        <record model="judicial.type" id="managerial_127">
+          <field name="name">الحكم بني على أوراق ثبت تزويرها</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_128">
+          <field name="name">الحكم بني على شهادة زور</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_129">
+          <field name="name">الحصول بعد الحكم على أوراق قاطعة في الدعوى</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_130">
+          <field name="name">حصول غش من الخصم له تأثير في الحكم</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_131">
+          <field name="name">الحكم قضى بما لم يطلبه الخصوم</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_132">
+          <field name="name">الحكم قضى بأكثر مما يطلبه الخصوم</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_133">
+          <field name="name">منطوق الحكم يناقض بعضه بعضًا</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_134">
+          <field name="name">الحكم غيابي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_135">
+          <field name="name">عدم تمثيل من صدر عليه الحكم تمثيلًا صحيحًا</field>
+          <field name="type">4</field>
+        </record>
+        <record model="judicial.type" id="managerial_136">
+          <field name="name">صدور الحكم على من كان حجة في حقه ولم يكن أدخل أو تدخل</field>
+          <field name="type">4</field>
+        </record>
+        
+        <record model="judicial.type" id="managerial_137">
+          <field name="name">منطوق الحكم يناقض بعضه بعضًا</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_138">
+          <field name="name">الحكم غيابي</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_139">
+          <field name="name">عدم تمثيل من صدر عليه الحكم تمثيلًا صحيحًا</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_140">
+          <field name="name">صدور الحكم على من كان حجة في حقه ولم يكن أدخل أو تدخل</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_141">
+          <field name="name">الحكم بني على أوراق ثبت تزويرها</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_142">
+          <field name="name">الحكم بني على شهادة زور</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_143">
+          <field name="name">الحصول بعد الحكم على أوراق قاطعة في الدعوى</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_144">
+          <field name="name">حصول غش من الخصم له تأثير في الحكم</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_145">
+          <field name="name">الحكم قضى بما لم يطلبه الخصوم</field>
+          <field name="type">5</field>
+        </record>
+        <record model="judicial.type" id="managerial_146">
+          <field name="name">الحكم قضى بأكثر مما يطلبه الخصوم</field>
+          <field name="type">5</field>
+        </record>
+
+
+
+<!-- fine -->
+
+
+        <record model="fine.type" id="managerial_183">
+          <field name="name">مخالفات المقاولين</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_184">
+          <field name="name">البناء في أرض مملوكة للغير</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_185">
+          <field name="name">زيادة عدد الأدوار عن الحد المسموح به نظامًا</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_186">
+          <field name="name">زيادة نسبة البناء في الموقع</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_187">
+          <field name="name">عدم تجديد رخصة البناء</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_188">
+          <field name="name">استخدام المبنى لغير ما خصص له</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_189">
+          <field name="name">البناء دون رخصة</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_190">
+          <field name="name">البناء المخالف لاستعمالات المنطقة</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_191">
+          <field name="name">البناء في أرض حكومية</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_192">
+          <field name="name">مخالفة الارتدادات النظامية</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_193">
+          <field name="name">الاعتداء على خطوط التنظيم</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_194">
+          <field name="name">الترميم دون رخصة</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_195">
+          <field name="name">زيادة مساحة البناء للملاحق العلوية</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_196">
+          <field name="name">مخالفات المكاتب الهندسية</field>
+          <field name="type">6.1</field>
+        </record>
+        <record model="fine.type" id="managerial_197">
+          <field name="name">الأبنية الخربة أو الآيلة للسقوط</field>
+          <field name="type">6.1</field>
+        </record>
+        
+        
+        <record model="fine.type" id="managerial_198">
+          <field name="name">فتح محل دون رخصة</field>
+          <field name="type">6.2</field>
+        </record>
+        <record model="fine.type" id="managerial_199">
+          <field name="name">مخالفات البسطات</field>
+          <field name="type">6.2</field>
+        </record>
+        
+        <record model="fine.type" id="managerial_200">
+          <field name="name">ترك المواشي والإبل سائبة</field>
+          <field name="type">6.3</field>
+        </record>
+        <record model="fine.type" id="managerial_201">
+          <field name="name">مخالفات الذبح في غير الأماكن المعدة لذلك</field>
+          <field name="type">6.3</field>
+        </record>
+        
+        
+        <record model="fine.type" id="managerial_202">
+          <field name="name">فضلات الطعام</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_203">
+          <field name="name">مخالفات صالونات الحلاقة</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_204">
+          <field name="name">مخالفات النظافة العامة</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_205">
+          <field name="name">نفايات المستشفيات والمستوصفات</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_206">
+          <field name="name">مخالفات مصانع الأغذية والمياه</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_207">
+          <field name="name">النفايات التجارية</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_208">
+          <field name="name">النفايات الصناعية</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_209">
+          <field name="name">مخالفات محلات اللحوم</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_210">
+          <field name="name">النفايات الصلبة</field>
+          <field name="type">6.4</field>
+        </record>
+        <record model="fine.type" id="managerial_211">
+          <field name="name">مخالفات عامة</field>
+          <field name="type">6.4</field>
+        </record>
+        
+        <record model="fine.type" id="managerial_212">
+          <field name="name">الاتلاف</field>
+          <field name="type">6.5</field>
+        </record>
+        <record model="fine.type" id="managerial_213">
+          <field name="name">الحفر دون ترخيص</field>
+          <field name="type">6.5</field>
+        </record>
+        <record model="fine.type" id="managerial_214">
+          <field name="name">الاشتراطات الفنية للطرق</field>
+          <field name="type">6.5</field>
+        </record>
+        
+    </data>
+</odoo>

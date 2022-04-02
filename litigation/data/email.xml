@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright to Mutn -->
+<odoo>
+    <data>
+        <record id="send_week_task_male" model="mail.template">
+            <field name="name">المهام الأسبوعية</field>        
+            <field name="email_from">{{ (object.company_id.partner_id.email_formatted or object.user_id.email_formatted) }}</field>
+            <field name="email_to">{{object.work_email}}</field>
+            <field name="subject">خطة جدولة مهامكم الأسبوعية (تحت التجربة)</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ object.partner_id.lang or object.user_id.lang or user.lang }}</field>
+            <field name="body_html" type="xml">
+
+            <div>
+                    <p>       
+            سعادة: <t t-out="object.name or ''"/> وفقه الله
+                    </p>
+                    <p>       
+            السلام عليكم ورحمة الله وبركاته
+                    </p>
+                    <p>    
+            وبعد؛ فإن عدد مهامك المخططة لهذا الأسبوع التي قمت بجدولتها هي: <t t-out="object.week_task_count or ''"/> مهمة
+                    </p>
+                    <p>    
+            تفاصيل المهام
+                    </p>
+                    <p>    
+                        <t t-out="object.week_task or ''"/>
+                    </p>
+            </div>
+            </field>
+        </record>
+        
+        <record id="send_week_task_female" model="mail.template">
+            <field name="name">المهام الأسبوعية</field>
+            <field name="email_from">{{ (object.company_id.partner_id.email_formatted or object.user_id.email_formatted) }}</field>
+            <field name="email_to">{{object.work_email}}</field>
+            <field name="subject">خطة جدولة مهامكم الأسبوعية (تحت التجربة)</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ object.partner_id.lang or object.user_id.lang or user.lang }}</field>
+            <field name="body_html" type="xml">
+            <div>
+                    <p>       
+            سعادة: <t t-out="object.name or ''"/> وفقها الله
+                    </p>
+                    <p>       
+            السلام عليكم ورحمة الله وبركاته
+                    </p>
+                    <p>    
+            وبعد؛ فإن عدد مهامك المخططة لهذا الأسبوع التي قمت بجدولتها هي: <t t-out="object.week_task_count or ''"/> مهمة
+                    </p>
+                    <p>    
+            تفاصيل المهام
+                    </p>
+                    <p>    
+                        <t t-out="object.week_task or ''"/>
+                    </p>
+            </div>
+            </field>
+        </record>
+        
+        <record id="check_on_sign_contract" model="mail.template">
+            <field name="name">إضافة العقد الموقع مع العميل</field>
+            <field name="email_from">{{ (object.user_id.company_id.partner_id.email_formatted or object.user_id.email_formatted) }}</field>
+            <field name="email_to">{{object.user_id.email_formatted}}</field>
+            <field name="subject">تذكير لإضافة العقد الموقع مع العميل</field>
+            <field name="model_id" ref="litigation.model_contractconsulting_contractconsulting"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="lang">{{ object.partner_id.lang or object.user_id.lang or user.lang }}</field>
+            <field name="body_html" type="xml">
+            <div>
+                    <p>
+            سعادة: <t t-out="object.user_id.name or ''"/> وفقكم الله
+                    </p>
+                    <p>       
+            السلام عليكم ورحمة الله وبركاته
+                    </p>
+                    <p>
+            نود تذكيركم بإضافة العقد الموقع مع العميل في عقد <t t-out="object.name or ''"/> 
+                    </p>
+                    <p class="text-center">
+                <a href="{{object.url}}" style="padding: 8px 16px 8px 16px; border-radius: 3px; background-color:#875A7B; text-align:center; text-decoration:none; color: #FFFFFF;">للإطلاع</a>
+                    </p>
+
+            </div>
+            </field>
+        </record>
+
+    </data>
+</odoo>

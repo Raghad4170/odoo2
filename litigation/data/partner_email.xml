@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright to Mutn -->
+<odoo>
+    <data>
+        <record id="send_litigation_partner" model="mail.template">
+            <field name="name">تحديث القضية</field>        
+            <field name="model_id" ref="litigation.model_litigation_litigation"/>
+            <field name="subject">تحديث لقضيتكم المقامة ضد {{object.opponent.name}}</field>
+            <field name="email_from">{{ (object.company_id.partner_id.email_formatted)}}</field>
+            <field name="email_to">{{ (object.partner_id_emails)}}</field>
+            <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                    <p>       
+            شريكنا العزيز: <t t-out="object.partner_id.name or ''"/> وفقه الله
+                    </p>
+                    <p>       
+            السلام عليكم ورحمة الله وبركاته
+                    </p>
+                    <p>    
+            وبعد؛ نحيطكم علما بأنه تم إضافة تحديث لقضيتكم المقامة ضد <t t-out="object.opponent.name or ''"/> بشأن <t t-out="object.lawsuit or ''"/>
+                    </p>
+                    <div style="text-align: center; margin: 16px 0px 16px 0px;">
+                        <a style="background-color:#4f9084;padding: 8px 16px 8px 16px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-att-href="'%s' % object.portal_url">للإطلاع</a><br/>
+                    </div>
+            </div>
+            </field>
+            <field name="report_template" ref="action_report_litigation"/>
+            <field name="report_name">{{ (object.litigation_number or '').replace('/','_') }}</field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        
+        <record id="send_consulting_partner" model="mail.template">
+            <field name="name">تحديث الاستشارة</field>        
+            <field name="model_id" ref="litigation.model_consulting_consulting"/>
+            <field name="subject">تم الإجابة على استشارتكم في البوابة الإلكترونية</field>
+            <field name="email_from">{{ (object.company_id.partner_id.email_formatted)}}</field>
+            <field name="email_to">{{ (object.partner_id_emails)}}</field>
+            <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                    <p>       
+            شريكنا العزيز: <t t-out="object.partner_id.name or ''"/> وفقه الله
+                    </p>
+                    <p>       
+            السلام عليكم ورحمة الله وبركاته
+                    </p>
+                    <p>    
+            وبعد؛ نحيطكم علما بأنه تم الإجابة على استشارتكم في البوابة الإلكترونية. ومفادها:
+                    </p>
+                    <p>    
+            طلب الاستشارة بخصوص: <div t-out="object.summary or ''"/>
+                    </p>
+                    <p>    
+            والتوصية المقدمة: <div t-out="object.consult or ''"/>
+                    </p>
+                    <div style="text-align: center; margin: 16px 0px 16px 0px;">
+                        <a style="background-color:#4f9084;padding: 8px 16px 8px 16px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-att-href="'%s' % object.portal_url">للإطلاع</a><br/>
+                    </div>
+            </div>
+            </field>
+            <field name="report_template" ref="action_report_consulting"/>
+            <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <record id="send_contractconsulting_partner" model="mail.template">
+            <field name="name">تحديث الاستشارة</field>        
+            <field name="model_id" ref="litigation.model_contractconsulting_contractconsulting"/>
+            <field name="subject">تم الإجابة على استشارتكم في البوابة الإلكترونية</field>
+            <field name="email_from">{{ (object.company_id.partner_id.email_formatted)}}</field>
+            <field name="email_to">{{ (object.partner_id_emails)}}</field>
+            <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">                
+                    <p>       
+            شريكنا العزيز: <t t-out="object.partner_id.name or ''"/> وفقه الله
+                    </p>
+                    <p>       
+            السلام عليكم ورحمة الله وبركاته
+                    </p>
+                    <p>    
+            نحيطكم علما بأنه تم الإجابة على استشارتكم بخصوص <div t-out="object.name or ''"/> في البوابة الإلكترونية والعقد المقترح لكم: 
+                    <span style="text-align: center; margin: 16px 0px 16px 0px;">
+                        <a style="background-color:#4f9084;padding: 8px 16px 8px 16px;text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-att-href="'%s' % object.portal_url">للإطلاع</a><br/>
+                    </span>
+                    </p>                
+                    <div class="row" style="text-align: center;">
+                        <div t-if="object.draft_contract" class="col-auto col-3 mw-100 mb-2" style="text-align: center; margin: 16px 0px 16px 0px;">
+                            <a style="background-color:#4f9084;padding:8px 16px 8px 16px;text-decoration:none;color:#fff;border-radius:5px;font-size:13px;" t-att-href="'%s' % object.draft_contract">مسودة العقد الأولية</a><br/>
+                        </div>
+
+                        <div t-if="object.recommended_contract" class="col-auto col-3 mw-100 mb-2" style="text-align: center; margin: 16px 0px 16px 0px;">
+                            <a style="background-color:#4f9084;padding:8px 16px 8px 16px;text-decoration:none;color:#fff;border-radius:5px;font-size:13px;" t-att-href="'%s' % object.recommended_contract">العقد الموصى به</a><br/>
+                        </div>
+
+                        <div t-if="object.sign_contract" class="col-auto col-3 mw-100 mb-2" style="text-align: center; margin: 16px 0px 16px 0px;">
+                            <a style="background-color:#4f9084;padding:8px 16px 8px 16px;text-decoration:none;color:#fff;border-radius:5px;font-size:13px;" t-att-href="'%s' % object.sign_contract">العقد الموقع مع العميل</a><br/>
+                        </div>
+                    </div>
+            </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,79 @@
+<odoo>
+    
+<template id="company_document_layout">
+        <div t-attf-class="header o_company_#{doc.company_id.id}_layout" t-att-style="report_header_style">
+            <div class="o_boxed_header">
+            <div class="row">
+                <div class="col-auto" align="right">
+                    <a t-att-href="'%s' % doc.company_id.website">
+                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" alt="Logo"/>
+                    </a>
+                </div>
+
+                <div class="col-auto" align="left">
+                    <img t-if="doc.qr_invoice" t-att-src="image_data_uri(doc.qr_invoice)" alt="qr_invoice"/>
+                </div>                
+            </div>
+            </div>
+        </div>
+
+        <div t-attf-class="article o_report_layout_boxed o_company_#{doc.company_id.id}_layout" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-raw="0"/>
+        </div>
+    
+        <div style="font-family: system-ui, system-ui, Cairo;" t-attf-class="footer o_clean_footer o_company_#{doc.company_id.id}_layout">
+            <div class="row">
+                <div width="50%" class="col-auto" align="right">
+                    <table>
+                        <tr>
+                            <td>
+                                <div style="text-align: justify;">
+                                    <div width="100%" t-field="doc.company_id.name"/>
+                                    <div width="100%" t-field="doc.company_id.c_form"/>
+                                    <div width="100%" t-if="doc.company_id.company_registry">السجل التجاري: <span t-field="doc.company_id.company_registry"/></div>
+                                    <div t-if="doc.company_id.capital">رأس المال: <span t-field="doc.company_id.capital"/></div>
+                                    <div t-field="doc.company_id.email"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div width="30%" class="col-auto" align="center" name="center_footer">
+                    <div t-if="report_type == 'pdf'">
+                       صفحة: <span class="page"/> / <span class="topage"/>
+                    </div>
+                </div>
+                <div width="30%" class="col-auto" align="left" style="text-align: justify;text-align-last: justify;">
+                    <table>
+                        <tr>
+                            <td>
+                                <div t-field="doc.company_id.short_ad"/>
+                                <div t-if="doc.company_id.building_no or doc.company_id.street"><span t-field="doc.company_id.building_no"/> <span t-field="doc.company_id.street"/></div>
+                                <div t-if="doc.company_id.additional_no or doc.company_id.street2 or doc.company_id.city"><span t-field="doc.company_id.additional_no"/> <span t-field="doc.company_id.street2"/> <span t-field="doc.company_id.city"/></div>
+                                <div t-field="doc.company_id.country_id.name"/>
+                                <div t-field="doc.company_id.website"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+</template>
+
+    
+<template id="report_company_document">
+    <t t-call="litigation.company_document_layout">
+        <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div align='center' t-if="doc.Text"><div style="text-align: justify;text-justify: inter-word;width:80%;" t-field="doc.Text"/></div>
+        </div>
+    </t>
+</template>
+
+<template id="company_document">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="litigation.report_company_document" t-lang="doc.user_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

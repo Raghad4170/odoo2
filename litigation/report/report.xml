@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_litigation" model="ir.actions.report">
+            <field name="name">ملخص القضية</field>
+            <field name="model">litigation.litigation</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">litigation.report_litigation</field>
+            <field name="report_file">litigation.report_litigation</field>
+            <field name="print_report_name">(object.litigation_number)</field>
+            <field name="binding_model_id" ref="model_litigation_litigation"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <record id="action_report_consulting" model="ir.actions.report">
+            <field name="name">ملخص الإستشارة</field>
+            <field name="model">consulting.consulting</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">litigation.report_consulting</field>
+            <field name="report_file">litigation.report_consulting</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_consulting_consulting"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_company_document" model="ir.actions.report">
+            <field name="name">مستند رسمي</field>
+            <field name="model">company.document</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">litigation.company_document</field>
+            <field name="report_file">litigation.company_document</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_company_document"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        
+    </data>
+</odoo>

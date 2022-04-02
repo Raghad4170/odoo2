@@ -1,0 +1,76 @@
+# -*- coding: utf-8 -*-
+# Copyright to Mutn
+{
+    'name': "Law",
+
+    'summary': """Helps in Law Firm""",
+
+    'description': """""",
+    'sequence': 1,
+    'author': "Mutn",
+    'website': "www.mutn.tech",
+    'category': 'Uncategorized',
+    'version': '0.1',
+    'license': 'LGPL-3',
+    # any module necessary for this one to work correctly
+    'depends': ['base', 'project', 'portal', 'utm', 'calendar', 'hr','website','hr_holidays','hr_timesheet','timesheet_grid','parentid'],
+
+    # always loaded
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'views/views.xml',
+        'views/attorney_views.xml',
+        'views/portal.xml',
+        'views/hr_views.xml',
+        'views/document.xml',
+        'data/cron.xml',
+        'data/website_menu.xml',
+        'data/email.xml',
+        'data/partner_email.xml',
+        'report/report.xml',
+        'report/summary.xml',
+        'report/company_document.xml',
+        'data/commercial_types.xml',
+        'data/execute_types.xml',
+        'data/general_types.xml',
+        'data/labor_types.xml',
+        'data/penal_types.xml',
+        'data/personal_status_types.xml',
+        'data/managerial_types.xml',
+        'data/litigation_dashboard.xml',
+        'views/litigation_dashboard.xml',
+        'views/litigation_report_views.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+    'assets': {
+        'web.assets_backend': [
+            'litigation/static/src/js/personal_status_types.js',
+            'litigation/static/src/js/penal_types.js',
+            'litigation/static/src/js/general_types.js',
+            'litigation/static/src/js/execute_types.js',
+            'litigation/static/src/js/labor_types.js',
+            'litigation/static/src/js/commercial_types.js',
+            'litigation/static/src/js/managerial_types/compensation_types.js',
+            'litigation/static/src/js/managerial_types/contracting_types.js',
+            'litigation/static/src/js/managerial_types/discipline_types.js',
+            'litigation/static/src/js/managerial_types/expropriation_types.js',
+            'litigation/static/src/js/managerial_types/fine_types.js',
+            'litigation/static/src/js/managerial_types/health_types.js',
+            'litigation/static/src/js/managerial_types/invention_types.js',
+            'litigation/static/src/js/managerial_types/judicial_types.js',
+            'litigation/static/src/js/managerial_types/retirement_types.js',
+            'litigation/static/src/kanban_renderer.js',
+            'litigation/static/src/kanban_column.js',
+        ],
+        'web.assets_frontend': [
+            'litigation/static/src/scss/rating.scss',
+            'litigation/static/src/rating_js/litigation.js',
+            'litigation/static/src/rating_js/consulting.js',
+            'litigation/static/src/rating_js/contractconsulting.js',
+            'litigation/static/src/js/url_replacement.js',
+        ],
+    }
+} 

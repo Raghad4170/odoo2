@@ -1,0 +1,1583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+<!--       timesheet -->      
+
+        <menuitem id="hr_timesheet.timesheet_menu_root" name="سجلات الأنشطة" sequence="55" web_icon="litigation,static/description/timesheet.png" groups="parentid.employee"/>
+
+<!--       project -->      
+<!--           
+        <record id="_get_partner_user" model="ir.actions.server">
+            <field name="name">المحاميين</field>
+            <field name="model_id" ref="model_litigation_litigation"/>
+            <field name="binding_model_id" ref="model_litigation_litigation"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records._get_partner_user()</field>
+        </record>
+
+        <record id="report_get_partner_user" model="ir.actions.server">
+            <field name="name">المحاميين</field>
+            <field name="model_id" ref="model_litigation_report"/>
+            <field name="binding_model_id" ref="model_litigation_report"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records._get_partner_user()</field>
+        </record>
+
+        <record id="consulting_get_partner_user" model="ir.actions.server">
+            <field name="name">المحاميين</field>
+            <field name="model_id" ref="model_consulting_consulting"/>
+            <field name="binding_model_id" ref="model_consulting_consulting"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records._get_partner_user()</field>
+        </record>
+
+        <record id="contractconsulting_get_partner_user" model="ir.actions.server">
+            <field name="name">المحاميين</field>
+            <field name="model_id" ref="model_contractconsulting_contractconsulting"/>
+            <field name="binding_model_id" ref="model_contractconsulting_contractconsulting"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records._get_partner_user()</field>
+        </record>
+
+       -->
+<!--         <record id="_allowed_internal_user_ids" model="ir.actions.server">
+            <field name="name">المهام</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="binding_model_id" ref="project.model_project_project"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records._allowed_internal_user_ids()</field>
+        </record>
+
+
+        <record id="_allowed_users_task" model="ir.actions.server">
+            <field name="name">المهام</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="binding_model_id" ref="project.model_project_task"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records._allowed_users_task()</field>
+        </record>
+
+        <record id="_helper_ids" model="ir.actions.server">
+            <field name="name">المهام</field>
+            <field name="model_id" ref="project.model_project_project"/>
+            <field name="binding_model_id" ref="project.model_project_project"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records._helper_ids()</field>
+        </record>
+ -->
+      
+        <menuitem name="القضايا والاستشارات" id="project.menu_main_pm" web_icon="litigation,static/description/icon.png" sequence="-50" groups="parentid.employee"/>
+      
+        <record id="open_view_project_all_new" model="ir.actions.act_window">
+            <field name="name">المشاريع</field>
+            <field name="res_model">project.project</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="target">main</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد لديك مشاريع
+                </p>
+            </field>
+        </record>
+      
+        <menuitem action="open_view_project_all_new" id="project.menu_projects" name="المشاريع" parent="project.menu_main_pm" sequence="1"/>
+      
+        <record id="view_project_inherit" model="ir.ui.view">
+            <field name="name">project.project.tree</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="replace">
+                <field name="project_type"/>
+                <field name="user_id" string="المسؤول" widget="many2one_avatar_user"/>
+            </xpath>
+            </field>
+        </record>
+      
+        <record id="edit_project_inherit_litigation" model="ir.ui.view">
+            <field name="name">project.project.form</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+            <xpath expr="//group" position="replace">
+                    <group>
+                        <group>
+                            <field name="partner_id" widget="res_partner_many2one"/>
+                            <field name="project_type"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                        <group>
+                            <field name="active" invisible="1"/>
+                            <field name="user_id" string="المسؤول" widget="many2one_avatar_user" attrs="{'readonly':[('active','=',False)]}" domain="[('share', '=', False)]"/>
+                            <field name="allowed_internal_user_ids" widget="many2many_tags"/>
+                            <label for="date_start" string="Dates"/>
+                            <div name="dates" class="o_row">
+                                <field name="date_start" widget="daterange" options='{"related_end_date": "date"}'/>
+                                <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow"/>
+                                <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow" attrs="{'invisible': [('date_start', '=', False), ('date', '=', False)]}"/>
+                                <field name="date" widget="daterange" options='{"related_start_date": "date_start"}'/>
+                            </div>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+            </xpath>
+            <xpath expr="//notebook" position="replace">
+                    <notebook>
+                        <page name="litigation_page" string="القضايا" attrs="{'invisible': [('project_type', '!=', 'قضية')]}">
+                            <field name="litigation_ids">
+                                <tree> 
+                                    <field name="name"/>
+                                    <field name="case_type"/>
+                                    <field name="lawsuit"/>
+                                    <field name="client_state"/>
+                                    <field name="opponent"/>
+                                    <field name="next_court_date"/>
+                                    <field name="litigation_state"/>
+                                    <field name="state"/>
+                                    <field name="entry_progress" widget="progressbar"/>
+                                </tree>  
+                            </field>
+                        </page>
+                        <page name="consulting_page" string="الاستشارات" attrs="{'invisible': [('project_type', '!=', 'استشارة')]}">
+                            <field name="consulting_ids">
+                                <tree> 
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="consulting_type"/>
+                                    <field name="state"/>
+                                    <field name="entry_progress" widget="progressbar"/>
+                                </tree>  
+                            </field>
+                        </page>
+                        <page name="contractconsulting_page" string="العقود" attrs="{'invisible': [('project_type', '!=', 'عقود')]}">
+                            <field name="contractconsulting_ids">
+                                <tree> 
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="consulting_type"/>
+                                    <field name="state"/>
+                                    <field name="entry_progress" widget="progressbar"/>
+                                </tree>  
+                            </field>
+                        </page>
+                        <page name="task_page" string="المهام" attrs="{'invisible': [('project_type', '!=', 'اخرى')]}">
+                            <field name="task_ids">
+                                <tree> 
+                                    <field name="name"/>
+                                    <field name="date_assign"/>
+                                    <field name="user_ids" widget="many2many_tags"/>
+                                    <field name="effective_hours" widget="timesheet_uom"/>
+                                    <field name="progress" widget="progressbar"/>
+                                    <field name="state_id"/>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                </tree>  
+                            </field>
+                        </page>
+                        <page name="description" string="الوصف">
+                            <field name="description"/>
+                        </page>
+                        <page name="settings" string="الإعدادات" groups="base.group_no_one">
+                            <group>
+                                <group>
+                                    <field name="analytic_account_id" domain="['|', ('company_id', '=', company_id), ('company_id', '=', False)]" context="{'default_partner_id': partner_id}" groups="analytic.group_analytic_accounting"/>
+                                    <field name="privacy_visibility" widget="radio"/>
+                                </group>
+                                <group>
+                                    <div name="alias_def" colspan="2" attrs="{'invisible': [('alias_domain', '=', False)]}">
+                                        <field name="alias_enabled" invisible="1"/>
+                                        <span class="font-weight-bold oe_read_only" attrs="{'invisible':  [('alias_name', '=', False)]}">اصنع مهمة بإرسال بريد إلكتروني </span>
+                                        <span class="font-weight-bold oe_edit_only">اصنع مهمة بإرسال بريد إلكتروني </span>
+                                            <field name="alias_value" class="oe_read_only d-inline" readonly="1" widget="email" attrs="{'invisible':  [('alias_name', '=', False)]}" />
+                                            <span class="oe_edit_only">
+                                                <field name="alias_name" class="oe_inline"/>@
+                                                <field name="alias_domain" class="oe_inline" readonly="1"/>
+                                            </span>
+                                    </div>
+                                    <field name="alias_contact" class="oe_inline" string="استقبل بريد إلكتروني من "
+                                           attrs="{'invisible': ['|', ('alias_name', '=', ''), ('alias_name', '=', False)]}"/>
+                                </group>
+                                <group name="extra_settings">
+                                </group>
+                            </group>
+                            <div class="row mt16 o_settings_container">
+                                <div id="rating_settings" class="col-lg-6 o_setting_box" groups="project.group_project_rating">
+                                    <div class="o_setting_left_pane">
+                                        <field name="rating_active"/>
+                                    </div>
+                                    <div class="o_setting_right_pane">
+                                        <label for="rating_active" />
+                                        <div class="text-muted">
+                                            Get customer feedback
+                                        </div>
+                                        <div class="mt16" attrs="{'invisible':[('rating_active','==',False)]}">
+                                            <field name="rating_status" widget="radio" />
+                                            <div  attrs="{'required': [('rating_status','=','periodic')], 'invisible': [('rating_status','!=','periodic')]}">
+                                                <label for="rating_status_period"/>
+                                                <field name="rating_status_period"/>
+                                            </div>
+                                            <div class="content-group">
+                                                    <div class="mt8">
+                                                        <button name="%(project.open_task_type_form_domain)d" context="{'project_id':id}" icon="fa-arrow-right" type="action" string="قم بتعيين قالب بريد إلكتروني للتقييم على مراحل" class="btn-link"/>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 o_setting_box"  id="subtask_settings" groups="project.group_subtask_project">
+                                    <div class="o_setting_left_pane">
+                                        <field name="allow_subtasks" />
+                                    </div>
+                                    <div class="o_setting_right_pane">
+                                        <label for="allow_subtasks" />
+                                        <div class="text-muted">
+                                            يقسم مهماتك لتنظم عملك بوضع مجموعة أهداف فرعية
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 o_setting_box"  id="recurring_tasks_setting" groups="project.group_project_recurring_tasks">
+                                    <div class="o_setting_left_pane">
+                                        <field name="allow_recurring_tasks" />
+                                    </div>
+                                    <div class="o_setting_right_pane">
+                                        <label for="allow_recurring_tasks" />
+                                        <div class="text-muted">
+                                            انشاء تلقائي للمهام للأنشطة المعتادة
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 o_setting_box" id="task_dependencies_setting" groups="project.group_project_task_dependencies">
+                                    <div class="o_setting_left_pane">
+                                        <field name="allow_task_dependencies"/>
+                                    </div>
+                                    <div class="o_setting_right_pane">
+                                        <label for="allow_task_dependencies"/>
+                                        <div class="text-muted">
+                                            حدد الترتيب الذي سيتم تنفيذ المهام به
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+            </xpath>
+            </field>
+        </record>
+      
+<!--       task -->
+                  
+        <record id="view_task_search_form_inherit" model="ir.ui.view">
+            <field name="name">project.task.search.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//filter[@name='stage']" position="replace">
+                <filter string="المرحلة" name="stage" context="{'group_by': 'state_id'}"/>
+            </xpath>
+            </field>
+        </record>
+    
+        <record id="view_task_tree2_inherit" model="ir.ui.view">
+            <field name="name">project.task.tree</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_tree2"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='activity_ids']" position="before">
+                <field name="state_id"/>
+            </xpath>
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="following_to"/>
+            </xpath>
+            </field>
+        </record>
+      
+        <record id="view_task_date_deadline_inherit" model="ir.ui.view">
+            <field name="name">project.task.tree</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_deadline']" position="replace">
+                <field name="change_deadline" invisible="1"/>
+                <field name="date_deadline" attrs="{'invisible': [('is_closed', '=', True)], 'readonly': [('change_deadline', '!=', 'True')]}"/>
+            </xpath>
+            </field>
+        </record>
+      
+        <record id="project_task_gantt_view" model="ir.ui.view">
+           <field name="name">project.task.view.gantt</field>
+           <field name="model">project.task</field>
+           <field name="arch" type="xml">
+               <gantt date_start="planned_date_begin" date_stop="planned_date_end" default_group_by="user_ids" default_scale="week" color="user_ids" scales="day,week,month,year" precision="{'day': 'hour:full', 'week': 'day:full', 'month': 'day:full', 'year': 'day:full'}" thumbnails="{'user_ids': 'image_128'}">
+                   <field name="user_ids"/>
+                   <templates>
+                       <div t-name="gantt-popover" class="container-fluid">
+                           <div class="row no-gutters">
+                               <div class="col">
+                                   <ul class="pl-1 mb-0">
+                                       <li>
+                                           <strong>من:</strong>
+                                           <t t-esc="planned_date_begin.format('YYYY-MM-DD hh:mm:ss A')"/>
+                                       </li>
+                                       <li>
+                                           <strong>إلى:</strong>
+                                           <t t-esc="planned_date_end.format('YYYY-MM-DD hh:mm:ss A')"/>
+                                       </li>
+                                   </ul>
+                               </div>
+                           </div>
+                       </div>
+                   </templates>
+               </gantt>
+           </field>
+        </record> 
+      
+        <record id="project.action_view_all_task" model="ir.actions.act_window">
+            <field name="name">المهام</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">gantt,kanban,tree,form,calendar,pivot,graph,activity</field>
+            <field name="context">{'search_default_my_tasks': 1, 'search_default_personal_stage': 1, 'all_task': 0}</field>
+            <field name="search_view_id" ref="project.view_task_search_form_extended"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد مهمة لك، لنصنع واحدة!
+                </p>
+            </field>
+        </record>
+
+      
+      
+        <record id="view_gantt_tasks" model="ir.actions.act_window">
+            <field name="name">متابعة مهام</field>
+            <field name="res_model">project.task</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">gantt</field>
+            <field name="view_id" ref="project_task_gantt_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد مهمة غير منتهية ومرتبطة بقضية
+                </p>
+            </field>
+        </record>
+      
+        <menuitem id="litigation_tasks_root_gantt" name="متابعة مهام" parent="litigation_root" action="view_gantt_tasks" sequence="3"/>
+
+ <record id="project_task_inherit" model="ir.ui.view">
+        <field name="name">project.task.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="task_type"/>
+                <field name="litigation_id" attrs="{'invisible': [('task_type', 'not in', 'قضية')]}"/>
+                <field name="consulting_id" attrs="{'invisible': [('task_type', 'not in', 'استشارة')]}"/>
+                <field name="contractconsulting_id" attrs="{'invisible': [('task_type', 'not in', 'استشارة عقد')]}"/>
+                <field name="report_id" attrs="{'invisible': [('task_type', 'not in', 'تقرير جلسة')]}"/>
+                <field name="state_start_date" invisible='1'/>
+                <field name="state_end_date" invisible='1'/>
+            </xpath>
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="state_id" widget="statusbar" options="{'clickable': '1'}"/>
+            </xpath>
+        </field>
+    </record>
+      
+ <record id="view_task_kanban_inheriting_litigation" model="ir.ui.view">
+        <field name="name">project.task.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="replace">
+                <kanban default_group_by="state_id" class="o_kanban_small_column o_kanban_project_tasks" on_create="quick_create"
+                    quick_create_view="project.quick_create_task_form" examples="project" js_class="project_task_kanban" sample="1">
+                    <field name="color"/>
+                    <field name="priority"/>
+                    <field name="state_id"/>
+                    <field name="user_ids"/>
+                    <field name="partner_id"/>
+                    <field name="sequence"/>
+                    <field name="is_closed"/>
+                    <field name="partner_is_company"/>
+                    <field name="displayed_image_id"/>
+                    <field name="active"/>
+                    <field name="legend_blocked"/>
+                    <field name="legend_normal"/>
+                    <field name="legend_done"/>
+                    <field name="activity_ids"/>
+                    <field name="activity_state"/>
+                    <field name="rating_last_value"/>
+                    <field name="rating_ids"/>
+                    <field name="allow_subtasks"/>
+                    <field name="child_text"/>
+                    <field name="is_private"/>
+                    <field name="create_date"/>
+                    <field name="state_start_date"/>
+                    <field name="state_end_date"/>
+                    <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger", "normal": "muted"}'/>
+                    <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <s t-if="!record.active.raw_value"><field name="name" widget="name_with_subtask_count"/></s>
+                                            <t t-else=""><field name="name" widget="name_with_subtask_count"/></t>
+                                        </strong>
+                                        <t t-if="!record.is_private.raw_value">
+                                            <span invisible="context.get('default_project_id', False)"><br/><field name="project_id" required="1"/></span>
+                                        </t>
+                                        <t t-else="">
+                                            <br/>
+                                            <span class="fa fa-lock text-muted"/><span class="text-muted"> خاص</span>
+                                        </t>
+                                        <br />
+                                        <t t-if="record.partner_id.value">
+                                            <span t-if="!record.partner_is_company.raw_value">
+                                                <field name="commercial_partner_id"/>
+                                            </span>
+                                            <span t-else="">
+                                                <field name="partner_id"/>
+                                            </span>
+                                        </t>
+                                        <t t-else="record.email_from.raw_value"><span><field name="email_from"/></span></t>
+                                        <div attrs="{'invisible': [('create_date', '=', False)]}">
+                                         <t>أنشئ في: </t>
+                                         <field name="create_date"/>
+                                        </div>
+                                        <div attrs="{'invisible': [('state_start_date', '=', False)]}">
+                                         <t>بدأت في: </t>
+                                         <field name="state_start_date" attrs="{'invisible': [('state_id', '=', 'جديدة')]}"/>
+                                        </div>
+                                        <div attrs="{'invisible': [('state_end_date', '=', False)]}">
+                                         <t>أنتهت في: </t>
+                                         <field name="state_end_date" attrs="{'invisible': [('state_id', '=', 'جديدة')]}"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_dropdown_kanban dropdown" t-if="!selection_mode" groups="base.group_user">
+                                        <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a t-if="widget.editable" role="menuitem" type="set_cover" class="dropdown-item" data-field="displayed_image_id">تعيين صورة غلاف</a>
+                                            <a name="%(portal.portal_share_action)d" role="menuitem" type="action" class="dropdown-item">مشاركة</a>
+                                            <a t-if="widget.editable" role="menuitem" type="edit" class="dropdown-item">تحرير</a>
+                                            <div role="separator" class="dropdown-divider"></div>
+                                            <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                    <div t-if="record.date_deadline.raw_value" name="date_deadline" attrs="{'invisible': [('is_closed', '=', True)]}">
+                                        <field name="date_deadline" widget="remaining_days"/>
+                                    </div>
+                                    <div t-if="record.displayed_image_id.value">
+                                        <field name="displayed_image_id" widget="attachment_image"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom" t-if="!selection_mode">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="priority" widget="priority"/>
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                        <b t-if="record.rating_ids.raw_value.length">
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-smile-o text-success" t-if="record.rating_last_value.value == 5" title="Latest Rating: Satisfied" role="img" aria-label="Happy face"/>
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-meh-o text-warning" t-if="record.rating_last_value.value == 3" title="Latest Rating: Okay" role="img" aria-label="Neutral face"/>
+                                            <span style="font-weight:bold;" class="fa fa-fw mt4 fa-frown-o text-danger" t-if="record.rating_last_value.value == 1" title="Latest Rating: Dissatisfied" role="img" aria-label="Sad face"/>
+                                        </b>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right" t-if="!selection_mode">
+                                        <field name="kanban_state" widget="state_selection" groups="base.group_user" invisible="context.get('fsm_mode', False)"/>
+                                        <t t-if="record.user_ids.raw_value"><field name="user_ids" widget="many2many_avatar_user"/></t>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"></div>
+                        </div>
+                    </t>
+                    </templates>
+                </kanban>
+            </xpath>
+        </field>
+    </record>
+
+<!--       Litigation -->
+
+        <record id="edit_litigation_form" model="ir.ui.view">
+            <field name="name">litigation.litigation.form</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+                <form string="القضايا">
+                    <header>
+                        <button string="طلب اعتماد" name="action_confirm" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'draft')]}"/>
+                        <button string="موافقة" name="action_approve" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', '=', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="سحب" name="action_pull" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', 'not in', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="رفض" name="action_refuse" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', 'in', ('Refuse','Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="تعليق" name="action_suspended" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', '=', ('suspended')), ('current_user', '!=', 'True')]}"/>
+                        <button string="إغلاق" name="action_close" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', 'not in', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="فتح القضية" name="action_draft" type="object" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', 'not in', ('close')),('current_user', '!=', 'True')]}"/>
+                        <button string="تعيين كمسودة" name="action_draft" type="object" attrs="{'invisible': [('state', 'in', ('close','draft'))]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="confirm,draft"/>
+                    </header>
+                <sheet string="القضايا">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="attachment_tree_view" class="oe_stat_button" icon="fa-book"
+                            type="object" attrs="{'invisible':  [('attachment_number', '=', 0)]}">
+                            <field name="attachment_number" widget="statinfo" string="المستندات"/>
+                        </button>
+                        <button name="preview_portal"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-globe icon">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">بوابة العميل</span>
+                            </div>
+                        </button>
+                    </div>
+                    <field name="entry_progress" widget="percentpie" class="oe_avatar"/>
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="current_user" invisible="1"/>
+                         <field name="system_user" invisible="1"/>
+                         <field name="project_id" attrs="{'readonly': [('state', 'not in', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}" domain="[('project_type','=', 'قضية')]"/>
+                         <field name="partner_id"/>
+                         <field name="user_id"/>
+                         <field name="helper"/>
+                         <field name="helper_ids" widget="many2many_tags" attrs="{'invisible': [('helper', '=', False)]}"/>
+                        </group>
+                        <group>
+                         <field name="success_possibility" widget="priority" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="service_standard" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="litigation_state" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="next_court_date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="city" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="lawsuit"/>
+                        </group>
+                      </group>
+                    <notebook>
+                        <page name="litigation_summary" string="ملخص القضية">
+                            <group>
+                                 <field name="summary" style="text-align: justify;text-justify: inter-word;" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                            </group>
+
+                            <group>
+                                <field name="requests_ids" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}">
+                                    <tree editable="bottom"> 
+                                        <field name="name"/>
+                                    </tree>  
+                                </field>
+                                <field name="arguments_ids" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}">
+                                    <tree editable="bottom"> 
+                                        <field name="name"/>
+                                        <field name="url" widget="url"/>
+                                    </tree>  
+                                </field>
+                            </group>
+                        </page>
+                        <page name="litigation_notes" string="مذكرات الدعوى">
+                            <group>
+                                <field name="notes_ids" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}">
+                                    <tree editable="bottom"> 
+                                        <field name="name"/>
+                                        <field name="date"/>
+                                        <field name="by"/>
+                                        <field name="file" widget="binary"/>
+                                    </tree>  
+                                </field>
+                            </group>
+                        </page>
+                        <page name="litigation_judgment" string="الحكم">
+                         <field name="judgment" style="text-align: justify;text-justify: inter-word;" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="file" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                        </page>
+                        <page name="litigation_info" string="معلومات القضية">
+                            <group>
+                                <group>
+                                 <field name="id" string="المرجع الداخلي"/>
+                                 <field name="case_type" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="personal_status_type" widget="personal_status_type_selection" attrs="{'invisible': [('case_type', '!=', 'أحوال شخصية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="penal_type" widget="penal_type_selection" attrs="{'invisible': [('case_type', '!=', 'جزائية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="execute_type" widget="execute_type_selection" attrs="{'invisible': [('case_type', '!=', 'تنفيذ')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="general_type" widget="general_type_selection" attrs="{'invisible': [('case_type', '!=', 'عامة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="labor_type" widget="labor_type_selection" attrs="{'invisible': [('case_type', '!=', 'عمالية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="commercial_type" widget="commercial_type_selection" attrs="{'invisible': [('case_type', '!=', 'تجارية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial" attrs="{'invisible': [('case_type', '!=', 'إدارية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_1" attrs="{'invisible': [('managerial', '!=', 'قرار')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="expropriation" widget="expropriation_type_selection" attrs="{'invisible': [('managerial_1', '!=', 'نزع ملكية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="licenses" attrs="{'invisible': [('managerial_1', '!=', 'تراخيص')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="licenses_1" attrs="{'invisible': [('licenses', '=', False)], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="invention" widget="invention_type_selection" attrs="{'invisible': [('managerial_1', '!=', 'ملكية فكرية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="trade" attrs="{'invisible': [('managerial_1', '!=', 'تجارة وصناعة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="health" widget="health_type_selection" attrs="{'invisible': [('managerial_1', '!=', 'صحية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="election" attrs="{'invisible': [('managerial_1', '!=', 'انتخابات')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="foregners" attrs="{'invisible': [('managerial_1', '!=', 'أجانب')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="estate" attrs="{'invisible': [('managerial_1', '!=', 'عقار')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="finance" attrs="{'invisible': [('managerial_1', '!=', 'مالية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="civil_service" attrs="{'invisible': [('managerial_1', '!=', 'خدمة مدنية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="military_service" attrs="{'invisible': [('managerial_1', '!=', 'خدمة عسكرية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="educational" attrs="{'invisible': [('managerial_1', '!=', 'تعليمية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="special_jobs" attrs="{'invisible': [('managerial_1', '!=', 'وظائف خاصة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="civil_status" attrs="{'invisible': [('managerial_1', '!=', 'أحوال مدنية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="urban" attrs="{'invisible': [('managerial_1', '!=', 'تخطيط عمراني')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="temp_measure" attrs="{'invisible': [('managerial_1', '!=', 'تدابير مؤقتة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="general_services" attrs="{'invisible': [('managerial_1', '!=', 'خدمات عامة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="criminal" attrs="{'invisible': [('managerial_1', '!=', 'الضبطية الجنائية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="telecom" attrs="{'invisible': [('managerial_1', '!=', 'اتصالات')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_2" widget="compensation_type_selection" attrs="{'invisible': [('managerial', '!=', 'تعويض')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_3" attrs="{'invisible': [('managerial', '!=', 'عقد')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="contracting" widget="contracting_type_selection" attrs="{'invisible': [('managerial_3', 'not in', ('تأمين','امتياز','أشغال عامة','تدريب','إجارة','استشارات','إعاشة','إشراف','استثمار','بيع','نقل','توريد','صيانة ونظافة وتشغيل'))], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="loan" attrs="{'invisible': [('managerial_3', '!=', 'قرض')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="work" attrs="{'invisible': [('managerial_3', '!=', 'عمل')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_4" attrs="{'invisible': [('managerial', '!=', 'منازعة إدارية أخرى')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_5" attrs="{'invisible': [('managerial', '!=', 'حقوق وظيفية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="civil_general" attrs="{'invisible': [('managerial_5', '!=', 'مدني - موظف عام')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="health_worker" attrs="{'invisible': [('managerial_5', '!=', 'مدني - موظف صحي')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="university_worker" attrs="{'invisible': [('managerial_5', '!=', 'مدني - عضو هيئة تدريس جامعي')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="teacher" attrs="{'invisible': [('managerial_5', '!=', 'مدني - معلم')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="military_officer" attrs="{'invisible': [('managerial_5', '!=', 'عسكري - ضابط')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="military_person" attrs="{'invisible': [('managerial_5', '!=', 'عسكري - فرد')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_6" widget="discipline_type_selection" attrs="{'invisible': [('managerial', '!=', 'تأديب')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_7" widget="retirement_type_selection" attrs="{'invisible': [('managerial', '!=', 'تقاعد')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_8" widget="judicial_type_selection" attrs="{'invisible': [('managerial', '!=', 'طلبات قضائية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="managerial_9" attrs="{'invisible': [('managerial', '!=', 'غرامات')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_1" attrs="{'invisible': [('managerial_9', '!=', 'استثمار')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_2" attrs="{'invisible': [('managerial_9', '!=', 'المحافظة على الذوق العام')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_3" attrs="{'invisible': [('managerial_9', '!=', 'أمن وسلامة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_6" widget="fine_type_selection" attrs="{'invisible': [('managerial_9', '!=', 'بلدية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_7" attrs="{'invisible': [('managerial_9', '!=', 'تجارة وصناعة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_9" attrs="{'invisible': [('managerial_9', '!=', 'ثقافة وإعلام')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_10" attrs="{'invisible': [('managerial_9', '!=', 'حج')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_11" attrs="{'invisible': [('managerial_9', '!=', 'حماية البيئة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_12" attrs="{'invisible': [('managerial_9', '!=', 'خدمات عامة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_13" attrs="{'invisible': [('managerial_9', '!=', 'زراعة ومياه')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_14" attrs="{'invisible': [('managerial_9', '!=', 'سياحة وآثار')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_15" attrs="{'invisible': [('managerial_9', '!=', 'صحية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_16" attrs="{'invisible': [('managerial_9', '!=', 'مالية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_17" attrs="{'invisible': [('managerial_9', '!=', 'مهن حرة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_18" attrs="{'invisible': [('managerial_9', '!=', 'نقل')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="fine_19" attrs="{'invisible': [('managerial_9', '!=', 'الاتصالات وتقنية المعلومات')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="state_rental" attrs="{'invisible': [('managerial_3', '!=', 'استئجار الدولة للعقار')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="personal_status" attrs="{'invisible': [('case_type', '!=', 'أحوال شخصية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="execute" attrs="{'invisible': [('case_type', '!=', 'تنفيذ')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="penal" attrs="{'invisible': [('case_type', '!=', 'جزائية')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="general" attrs="{'invisible': [('case_type', '!=', 'عامة')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="other" attrs="{'invisible': [('case_type', '!=', 'اخرى')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="litigation_number" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="appeal_number" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'invisible': [('litigation_state', '!=', 'قيد النظر لدى محكمة الاستئناف')]}"/>
+                                 <field name="court" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="circuit" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="appeal_circuit" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'invisible': [('litigation_state', '!=', 'قيد النظر لدى محكمة الاستئناف')]}"/>
+                                 <field name="establishment_date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="caliming_date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="appeal_date"  attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'invisible': [('litigation_state', '!=', 'قيد النظر لدى محكمة الاستئناف')]}"/>
+                                 <field name="case_amount" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                </group>
+                                <group>
+                                 <field name="client_state" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="attorney_id" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="client_representative" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="client_representative_state" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="client_according" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="opponent" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}" options="{'no_create': True, 'no_create_edit': True}"/>
+                                 <field name="opponent_representative" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="opponent_representative_state" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="opponent_according" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="litigation_progress" string="سير القضية">
+                                 <field name="report_ids" attrs="{'readonly': [('state', '=', 'close'),('system_user', '=', 'False')]}"/>
+                                 <field name="task_ids" attrs="{'readonly': [('state', '=', 'close'),('system_user', '=', 'False')]}">
+                                   <tree> 
+                                     <field name="name"/>
+                                     <field name="date_assign"/>
+                                     <field name="user_ids" widget="many2many_tags"/>
+                                     <field name="effective_hours" widget="timesheet_uom"/>
+                                     <field name="progress" widget="progressbar"/>
+                                     <field name="state_id"/>
+                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                   </tree>  
+                                 </field>
+                        </page>
+                        <page name="customer_response" string="تقييم العميل">
+                            <group>
+                                <field name="customer_rating" widget="priority" readonly='1'/>
+                                <field name="customer_response" readonly='1'/>
+                            </group>
+                        </page>
+                    </notebook>
+               </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+
+        <record id="view_litigation_search_form" model="ir.ui.view">
+            <field name="name">litigation.litigation.search.form</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+               <search string="القضايا">
+                    <field name="name" string="القضايا"/>
+                    <field name="partner_id" string="العميل"/>
+                    <field name="user_id" string="المحامي"/>
+                    <filter string="بإنتظار الموافقة" name="confirm" domain="[('state', '=', 'confirm')]"/>
+                    <filter string="معلقة" name="suspended" domain="[('state', '=', 'suspended')]"/>
+                    <filter string="مرفوضة" name="Refuse" domain="[('state', '=', 'Refuse')]"/>
+                    <filter string="مسودة" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="لدى العميل" name="Approve" domain="[('state', '=', 'Approve')]"/>
+                    <filter string="قيد التنفيذ" name="progress" domain="[('state', 'not in', ('suspended','close'))]"/>
+                    <group expand="0" string="جمع حسب">
+                        <filter string="الإجراءات الداخلية" name="state" context="{'group_by': 'state'}"/>
+                        <filter string="المحامي" name="user_id" context="{'group_by': 'user_id'}"/>
+                        <filter string="العميل" name="partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+     
+        <record id="view_litigation_tree" model="ir.ui.view">
+            <field name="name">litigation.litigation.tree</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+                <tree string="القضايا" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="case_type"/>
+                    <field name="lawsuit"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="partner_id"/>
+                    <field name="client_state"/>
+                    <field name="opponent"/>
+                    <field name="next_court_date"/>
+                    <field name="litigation_state"/>
+                    <field name="state"/>
+                    <field name="entry_progress" widget="progressbar"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="litigation_kanban_view" model="ir.ui.view">
+            <field name="name">litigation.litigation.kanban</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+              <kanban default_group_by="state" class="o_kanban_mobile" sample="1" disable_drag_drop_record="true">
+                <field name="user_id"/>
+                <field name="state"/>
+                <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                <div attrs="{'invisible': [('litigation_state', '=', False)]}">
+                                    <t>حالة القضية: </t>
+                                    <field name="litigation_state"/>
+                                </div>
+                                <div attrs="{'invisible': [('next_court_date', '=', False)]}">
+                                    <t>موعد الجلسة القادمة: </t>
+                                    <field name="next_court_date"/>
+                                </div>
+                                <div attrs="{'invisible': [('partner_id', '=', False)]}">
+                                    <t>العميل: </t>
+                                    <field name="partner_id"/>
+                                </div>
+                                <div attrs="{'invisible': [('client_state', '=', False)]}">
+                                    <t>صفة الموكل: </t>
+                                    <field name="client_state"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <t>المحامي: </t>
+                                        <field name="user_id"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+              </kanban>
+            </field>
+        </record>
+      
+        <record id="view_litigation_calendar" model="ir.ui.view">
+            <field name="name">litigation.litigation.calendar</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+                <calendar date_start="next_court_date" string="الجلسات القادمة" mode="month" color="user_id" event_limit="5" event_open_popup="true" quick_add="false">
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="partner_id" attrs="{'invisible': [('partner_id', '=', False)]}"/>
+                    <field name="next_court_date" attrs="{'invisible': [('next_court_date', '=', False)]}"/>
+                    <field name="client_state" attrs="{'invisible': [('client_state', '=', False)]}"/>
+                    <field name="court" attrs="{'invisible': [('court', '=', False)]}"/>
+                    <field name="case_type" attrs="{'invisible': [('case_type', '=', False)]}"/>
+                    <field name="opponent" attrs="{'invisible': [('opponent', '=', False)]}"/>
+                </calendar>
+            </field>
+        </record>
+
+
+        <record id="view_litigation" model="ir.actions.act_window">
+            <field name="name">القضايا</field>
+            <field name="res_model">litigation.litigation</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,calendar,form</field>
+            <field name="context">{'search_default_progress': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا توجد قضية لنصنع واحدة
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="litigation_root" name="القضايا" parent="project.menu_main_pm" action="view_litigation" sequence="3"/>
+      
+        <menuitem id="litigation_root_1" name="القضايا" parent="litigation_root" action="view_litigation" sequence="1"/>
+      
+      
+      
+        <record id="view_litigation_tree1" model="ir.ui.view">
+            <field name="name">litigation.litigation.tree</field>
+            <field name="model">litigation.litigation</field>
+            <field name="arch" type="xml">
+                <tree string="القضايا" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="partner_id"/>
+                    <field name="client_state"/>
+                    <field name="case_type"/>
+                    <field name="court"/>
+                    <field name="next_court_date"/>
+                    <field name="litigation_state"/>
+                    <field name="state"/>
+                    <field name="task_ids" widget="many2many_tags" options="{'color_field': 'state_colors'}"/>
+                    <field name="entry_progress" widget="progressbar"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="view_litigation_1" model="ir.actions.act_window">
+            <field name="name">متابعة القضايا</field>
+            <field name="res_model">litigation.litigation</field>
+            <field name="domain">[('state', '!=', 'close')]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_litigation_tree1"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا توجد قضية لنصنع واحدة
+                </p>
+            </field>
+        </record>
+      
+        <menuitem id="litigation_root_2" name="متابعة القضايا" parent="litigation_root" action="view_litigation_1" groups="group_law_lawyer_assistant,group_law_lawyer" sequence="2"/>
+      
+        <record id="view_litigation_task_tree" model="ir.ui.view">
+            <field name="name">project.task.tree</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+                <tree string="مهام القضايا" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_ids" widget="many2many_tags"/>
+                    <field name="litigation_id"/>
+                    <field name="litigation_partner"/>
+                    <field name="state_id"/>
+                    <field name="date_deadline"/>
+                    <field name="date_deadline" widget="remaining_days"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
+                    <field name="timesheet_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="view_litigation_tasks" model="ir.actions.act_window">
+            <field name="name">متابعة مهام القضايا</field>
+            <field name="res_model">project.task</field>
+            <field name="domain">[('litigation_id', '!=', False),('state_id', '!=', 'منتهية')]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_litigation_task_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد مهمة غير منتهية ومرتبطة بقضية
+                </p>
+            </field>
+        </record>
+      
+        <menuitem id="litigation_tasks_root_3" name="متابعة مهام القضايا" parent="litigation_root" action="view_litigation_tasks" groups="group_law_lawyer_assistant,group_law_lawyer" sequence="3"/>
+
+
+<!--       Litigation reports -->
+
+        <record id="edit_report_form" model="ir.ui.view">
+            <field name="name">litigation.report.form</field>
+            <field name="model">litigation.report</field>
+            <field name="arch" type="xml">
+                <form string="تقارير الجلسات">
+                    <header>
+                        <button string="طلب اعتماد" name="action_confirm" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'draft')]}"/>
+                        <button string="موافقة" name="action_approve" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', '=', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="سحب" name="action_pull" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', 'not in', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="رفض" name="action_refuse" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', 'in', ('Refuse','Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="تعليق" name="action_suspended" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', '=', ('suspended')), ('current_user', '!=', 'True')]}"/>
+                        <button string="إغلاق" name="action_close" type="object" class="oe_highlight" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', 'not in', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="فتح التقرير" name="action_draft" type="object" groups="litigation.group_law_lawyer" attrs="{'invisible': ['|',('state', 'not in', ('close')),('current_user', '!=', 'True')]}"/>
+                        <button string="تعيين كمسودة" name="action_draft" type="object" attrs="{'invisible': [('state', 'in', ('close','draft'))]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="confirm,draft"/>
+                    </header>
+                <sheet string="تقارير الجلسات">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="attachment_tree_view" class="oe_stat_button" icon="fa-book"
+                            type="object" attrs="{'invisible':  [('attachment_number', '=', 0)]}">
+                            <field name="attachment_number" widget="statinfo" string="المستندات"/>
+                        </button>
+                        <button name="preview_portal"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-globe icon">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">بوابة العميل</span>
+                            </div>
+                        </button>
+                    </div>
+                     <field name="entry_progress" widget="percentpie" class="oe_avatar"/>
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="current_user" invisible="1"/>
+                         <field name="system_user" invisible="1"/>
+                         <field name="litigation_id" required="1" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="user_id"/>
+                         <field name="helper_ids" widget="many2many_tags" readonly="1"/>
+                         <field name="court_date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="court_type" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="online_type" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'invisible': [('court_type', '!=', 'عن بعد')]}"/>
+                        </group>
+                        <group>
+                         <field name="present_judges" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="writer" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="next_court_date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="link" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                      </group>
+                     <group>
+                        <field name="task_ids" attrs="{'readonly': [('state', '=', 'close'),('system_user', '=', 'False')]}">
+                            <tree> 
+                                <field name="name"/>
+                                <field name="date_assign"/>
+                                <field name="user_ids" widget="many2many_tags"/>
+                                <field name="effective_hours" widget="timesheet_uom"/>
+                                <field name="progress" widget="progressbar"/>
+                                <field name="state_id"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </tree>  
+                        </field>
+                         <field name="summary" style="text-align: justify;text-justify: inter-word;" required="1" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                     </group>
+                </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+
+         <record id="view_report_tree" model="ir.ui.view">
+            <field name="name">litigation.report.tree</field>
+            <field name="model">litigation.report</field>
+            <field name="arch" type="xml">
+                <tree string="تقارير الجلسات" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="litigation_id"/>
+                    <field name="court_date"/>
+                    <field name="next_court_date"/>
+                    <field name="state"/>
+                    <field name="entry_progress" widget="progressbar"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_report_search_form" model="ir.ui.view">
+            <field name="name">litigation.report.search.form</field>
+            <field name="model">litigation.report</field>
+            <field name="arch" type="xml">
+               <search string="تقارير الجلسات">
+                    <field name="name" string="تقارير الجلسات"/>
+                    <field name="partner_id" string="العميل"/>
+                    <field name="user_id" string="المحامي"/>
+                    <filter string="بإنتظار الموافقة" name="confirm" domain="[('state', '=', 'confirm')]"/>
+                    <filter string="معلقة" name="suspended" domain="[('state', '=', 'suspended')]"/>
+                    <filter string="مرفوضة" name="Refuse" domain="[('state', '=', 'Refuse')]"/>
+                    <filter string="مسودة" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="لدى العميل" name="Approve" domain="[('state', '=', 'Approve')]"/>
+                    <filter string="قيد التنفيذ" name="progress" domain="[('state', 'not in', ('suspended','close'))]"/>
+                    <group expand="0" string="جمع حسب">
+                        <filter string="الإجراءات الداخلية" name="state" context="{'group_by': 'state'}"/>
+                        <filter string="القضية" name="litigation_id" context="{'group_by': 'litigation_id'}"/>
+                        <filter string="المحامي" name="user_id" context="{'group_by': 'user_id'}"/>
+                        <filter string="العميل" name="partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+      
+        <record id="report_kanban_view" model="ir.ui.view">
+            <field name="name">litigation.report.kanban.lead</field>
+            <field name="model">litigation.report</field>
+            <field name="arch" type="xml">
+              <kanban default_group_by="state" class="o_kanban_mobile" sample="1">
+                <field name="user_id"/>
+                <field name="state"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                <div>
+                                    <field name="litigation_id"/>
+                                </div>
+                                <div>
+                                    <field name="court_date"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="partner_id"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="user_id"/>
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+              </kanban>
+            </field>
+        </record>
+
+        <record id="view_report" model="ir.actions.act_window">
+            <field name="name">تقارير الجلسات</field>
+            <field name="res_model">litigation.report</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_progress': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا يوجد تقرير جلسة لنصنع واحدة
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="report_root" name="تقارير الجلسات" parent="project.menu_main_pm" action="view_report" groups="group_law_lawyer,group_law_lawyer_manager" sequence="4"/>
+
+
+<!--       consulting -->
+
+        <record id="edit_consulting_form" model="ir.ui.view">
+            <field name="name">consulting.consulting.form</field>
+            <field name="model">consulting.consulting</field>
+            <field name="arch" type="xml">
+                <form string="الاستشارات">
+                    <header>
+                        <button string="طلب اعتماد" name="action_confirm" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'draft')]}"/>
+                        <button string="موافقة" name="action_approve" type="object" class="oe_highlight" groups="litigation.group_law_consultant" attrs="{'invisible': ['|',('state', '=', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="سحب" name="action_pull" type="object" class="oe_highlight" groups="litigation.group_law_consultant" attrs="{'invisible': ['|',('state', 'not in', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="رفض" name="action_refuse" type="object" class="oe_highlight" groups="litigation.group_law_consultant" attrs="{'invisible': ['|',('state', 'in', ('Refuse','Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="تعليق" name="action_suspended" type="object" class="oe_highlight" groups="litigation.group_law_consultant" attrs="{'invisible': ['|',('state', '=', ('suspended')), ('current_user', '!=', 'True')]}"/>
+                        <button string="إغلاق" name="action_close" type="object" class="oe_highlight" groups="litigation.group_law_consultant" attrs="{'invisible': ['|',('state', 'not in', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="فتح الاستشارة" name="action_draft" type="object" groups="litigation.group_law_consultant" attrs="{'invisible': ['|',('state', 'not in', ('close')),('current_user', '!=', 'True')]}"/>
+                        <button string="تعيين كمسودة" name="action_draft" type="object" attrs="{'invisible': [('state', 'in', ('close','draft'))]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="confirm,draft"/>
+                    </header>
+                <sheet string="الاستشارات">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="attachment_tree_view" class="oe_stat_button" icon="fa-book"
+                            type="object" attrs="{'invisible':  [('attachment_number', '=', 0)]}">
+                            <field name="attachment_number" widget="statinfo" string="المستندات"/>
+                        </button>
+                        <button name="preview_portal"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-globe icon">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">بوابة العميل</span>
+                            </div>
+                        </button>
+                    </div>
+                     <field name="entry_progress" widget="percentpie" class="oe_avatar"/>
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="current_user" invisible="1"/>
+                         <field name="system_user" invisible="1"/>
+                         <field name="project_id" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}" domain="[('project_type','=', 'استشارة')]"/>
+                         <field name="project_prt" invisible="1"/>
+                         <field name="partner_id" domain="['|', ('parent_id','=', project_prt),('id','=', project_prt)]"/>
+                         <field name="user_id"/>
+                        </group>
+                        <group>
+                         <field name="date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}"/>
+                         <field name="served_date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="service_standard" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="helper"/>
+                         <field name="helper_ids" widget="many2many_tags" attrs="{'invisible': [('helper', '=', False)]}"/>
+                        </group>
+                      </group>
+                    <notebook>
+                        <page name="consulting_info" string="معلومات الاستشارة">
+                            <group>
+                                 <field name="consulting_type" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}"/>
+                                 <field name="other" attrs="{'invisible': [('consulting_type', '!=', 'استشارة قانونية أخرى')], 'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="summary" style="text-align: justify;text-justify: inter-word;" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}"/>
+                                 <field name="consult" style="text-align: justify;text-justify: inter-word;" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                            </group>
+                        </page>
+                        <page name="consulting_progress" string="سير الاستشارة">
+                                 <field name="task_ids" attrs="{'readonly': [('state', '=', 'close'),('system_user', '=', 'False')]}">
+                                   <tree> 
+                                     <field name="name"/>
+                                     <field name="date_assign"/>
+                                     <field name="user_ids" widget="many2many_tags"/>
+                                     <field name="effective_hours" widget="timesheet_uom"/>
+                                     <field name="progress" widget="progressbar"/>
+                                     <field name="state_id"/>
+                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                   </tree>  
+                                 </field>
+                        </page>
+                        <page name="customer_response" string="تقييم العميل">
+                            <group>
+                                <field name="customer_rating" widget="priority" readonly='1'/>
+                                <field name="customer_response" readonly='1'/>
+                            </group>
+                        </page>
+                    </notebook>
+               </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+
+
+        <record id="consulting_kanban_view" model="ir.ui.view">
+            <field name="name">consulting.consulting.kanban</field>
+            <field name="model">consulting.consulting</field>
+            <field name="arch" type="xml">
+              <kanban default_group_by="state" class="o_kanban_mobile" sample="1" disable_drag_drop_record="true">
+                <field name="user_id"/>
+                <field name="state"/>
+                <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                <div attrs="{'invisible': [('partner_id', '=', False)]}">
+                                    <t>العميل: </t>
+                                    <field name="partner_id"/>
+                                </div>
+                                <div attrs="{'invisible': [('consulting_type', '=', False)]}">
+                                    <t>نوع الاستشارة: </t>
+                                    <field name="consulting_type"/>
+                                </div>
+                                <div attrs="{'invisible': [('date', '=', False)]}">
+                                    <t>تاريخ الاستشارة: </t>
+                                    <field name="date"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <t>المحامي: </t>
+                                        <field name="user_id"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+              </kanban>
+            </field>
+        </record>
+
+        <record id="view_consulting_tree" model="ir.ui.view">
+            <field name="name">consulting.consulting.tree</field>
+            <field name="model">consulting.consulting</field>
+            <field name="arch" type="xml">
+                <tree string="consulting" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="consulting_type"/>
+                    <field name="state"/>
+                    <field name="task_ids" widget="many2many_tags" options="{'color_field': 'state_colors'}"/>
+                    <field name="entry_progress" widget="progressbar"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_consulting_search_form" model="ir.ui.view">
+            <field name="name">consulting.consulting.search.form</field>
+            <field name="model">consulting.consulting</field>
+            <field name="arch" type="xml">
+               <search string="الاستشارات">
+                    <field name="name" string="الاستشارات"/>
+                    <field name="partner_id" string="العميل"/>
+                    <field name="user_id" string="المستشار"/>
+                    <filter string="بإنتظار الموافقة" name="confirm" domain="[('state', '=', 'confirm')]"/>
+                    <filter string="معلقة" name="suspended" domain="[('state', '=', 'suspended')]"/>
+                    <filter string="مرفوضة" name="Refuse" domain="[('state', '=', 'Refuse')]"/>
+                    <filter string="مسودة" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="لدى العميل" name="Approve" domain="[('state', '=', 'Approve')]"/>
+                    <filter string="قيد التنفيذ" name="progress" domain="[('state', 'not in', ('suspended','close'))]"/>
+                    <group expand="0" string="جمع حسب">
+                        <filter string="الإجراءات الداخلية" name="state" context="{'group_by': 'state'}"/>
+                        <filter string="المستشار" name="user_id" context="{'group_by': 'user_id'}"/>
+                        <filter string="العميل" name="partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_consulting" model="ir.actions.act_window">
+            <field name="name">الاستشارات</field>
+            <field name="res_model">consulting.consulting</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_progress': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا توجد استشارة لنصنع واحدة
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="consulting_root" name="الاستشارات" parent="project.menu_main_pm" action="view_consulting" sequence="5"/>
+
+        <menuitem id="consulting_root_1" name="الاستشارات" parent="consulting_root" action="view_consulting" sequence="1"/>
+      
+      
+        <record id="view_consulting_task_tree" model="ir.ui.view">
+            <field name="name">project.task.tree</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+                <tree string="مهام الاستشارات" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_ids" widget="many2many_tags"/>
+                    <field name="consulting_id"/>
+                    <field name="consulting_partner"/>
+                    <field name="state_id"/>
+                    <field name="date_deadline"/>
+                    <field name="date_deadline" widget="remaining_days"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
+                    <field name="timesheet_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="view_consulting_tasks" model="ir.actions.act_window">
+            <field name="name">متابعة مهام الاستشارات</field>
+            <field name="res_model">project.task</field>
+            <field name="domain">[('consulting_id', '!=', False),('state_id', '!=', 'منتهية')]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_consulting_task_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد مهمة غير منتهية ومرتبطة باستشارة
+                </p>
+            </field>
+        </record>
+      
+        <menuitem id="consulting_tasks_root_3" name="متابعة مهام الاستشارات" parent="consulting_root" action="view_consulting_tasks" groups="group_law_consultant_assistant,group_law_consultant" sequence="2"/>
+
+
+<!--       contract consulting -->
+
+        <record id="edit_contractconsulting_form" model="ir.ui.view">
+            <field name="name">contractconsulting.contractconsulting.form</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="arch" type="xml">
+                <form string="استشارات العقود">
+                    <header>
+                       <button string="طلب اعتماد" name="action_confirm" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', 'draft')]}"/>
+                        <button string="موافقة" name="action_approve" type="object" class="oe_highlight" groups="litigation.group_law_contractconsulting" attrs="{'invisible': ['|',('state', '=', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="سحب" name="action_pull" type="object" class="oe_highlight" groups="litigation.group_law_contractconsulting" attrs="{'invisible': ['|',('state', 'not in', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="رفض" name="action_refuse" type="object" class="oe_highlight" groups="litigation.group_law_contractconsulting" attrs="{'invisible': ['|',('state', 'in', ('Refuse','Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="تعليق" name="action_suspended" type="object" class="oe_highlight" groups="litigation.group_law_contractconsulting" attrs="{'invisible': ['|',('state', '=', ('suspended')), ('current_user', '!=', 'True')]}"/>
+                        <button string="إغلاق" name="action_close" type="object" class="oe_highlight" groups="litigation.group_law_contractconsulting" attrs="{'invisible': ['|',('state', 'not in', ('Approve')),('current_user', '!=', 'True')]}"/>
+                        <button string="فتح الاستشارة" name="action_draft" type="object" groups="litigation.group_law_contractconsulting" attrs="{'invisible': ['|',('state', 'not in', ('close')),('current_user', '!=', 'True')]}"/>
+                        <button string="تعيين كمسودة" name="action_draft" type="object" attrs="{'invisible': [('state', 'in', ('close','draft'))]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="confirm,draft"/>
+                    </header>
+                <sheet string="استشارات العقود">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="attachment_tree_view" class="oe_stat_button" icon="fa-book"
+                            type="object" attrs="{'invisible':  [('attachment_number', '=', 0)]}">
+                            <field name="attachment_number" widget="statinfo" string="المستندات"/>
+                        </button>
+                        <button name="preview_portal"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-globe icon">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">بوابة العميل</span>
+                            </div>
+                        </button>
+                    </div>
+                     <field name="entry_progress" widget="percentpie" class="oe_avatar"/>
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="current_user" invisible="1"/>
+                         <field name="system_user" invisible="1"/>
+                         <field name="project_id" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}" domain="[('project_type','=', 'عقود')]"/>
+                         <field name="project_prt" invisible="1"/>
+                         <field name="partner_id" domain="['|', ('parent_id','=', project_prt),('id','=', project_prt)]"/>
+                         <field name="user_id"/>
+                         <field name="first_time"/>
+                        </group>
+                        <group>
+                         <field name="date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="served_date" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="service_standard" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                         <field name="helper"/>
+                         <field name="helper_ids" widget="many2many_tags" attrs="{'invisible': [('helper', '=', False)]}"/>
+                        </group>
+                      </group>
+                    <notebook>
+                        <page name="contractconsulting_info" string="معلومات الاستشارة">
+                            <group>
+                                 <field name="consulting_type" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}"/>
+                                 <field name="summary" style="text-align: justify;text-justify: inter-word;" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'required': [('state', '=', 'draft')]}"/>
+                                 <field name="draft_contract" widget="url" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')], 'invisible': [('first_time', '=', True)]}"/>
+                                 <field name="recommended_contract" widget="url" attrs="{'readonly': [('state', '!=', 'draft'),('system_user', '=', 'False')]}"/>
+                                 <field name="sign_contract" widget="url" attrs="{'readonly': [('state', '=', 'close'),('system_user', '=', 'False')]}"/>
+                            </group>
+                        </page>
+                        <page name="contractconsulting_progress" string="سير الاستشارة">
+                                 <field name="task_ids" attrs="{'readonly': [('state', '=', 'close'),('system_user', '=', 'False')]}">
+                                   <tree> 
+                                     <field name="name"/>
+                                     <field name="date_assign"/>
+                                     <field name="user_ids" widget="many2many_tags"/>
+                                     <field name="effective_hours" widget="timesheet_uom"/>
+                                     <field name="progress" widget="progressbar"/>
+                                     <field name="state_id"/>
+                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                   </tree>  
+                                 </field>
+                        </page>
+                        <page name="customer_response" string="تقييم العميل">
+                            <group>
+                                <field name="customer_rating" widget="priority" readonly='1'/>
+                                <field name="customer_response" readonly='1'/>
+                            </group>
+                        </page>
+                    </notebook>
+               </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+
+
+        <record id="contractconsulting_kanban_view" model="ir.ui.view">
+            <field name="name">contractconsulting.contractconsulting.kanban.lead</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="arch" type="xml">
+              <kanban default_group_by="state" class="o_kanban_mobile" sample="1" disable_drag_drop_record="true">
+                <field name="user_id"/>
+                <field name="state"/>
+                <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                <div attrs="{'invisible': [('partner_id', '=', False)]}">
+                                    <t>العميل: </t>
+                                    <field name="partner_id"/>
+                                </div>
+                                <div attrs="{'invisible': [('consulting_type', '=', False)]}">
+                                    <t>نوع العقد: </t>
+                                    <field name="consulting_type"/>
+                                </div>
+                                <div attrs="{'invisible': [('date', '=', False)]}">
+                                    <t>تاريخ الاستشارة: </t>
+                                    <field name="date"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <t>المحامي: </t>
+                                        <field name="user_id"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="activity_ids" widget="kanban_activity"/>
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+              </kanban>
+            </field>
+        </record>
+
+        <record id="view_contractconsulting_tree" model="ir.ui.view">
+            <field name="name">contractconsulting.contractconsulting.tree</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="arch" type="xml">
+                <tree string="contractconsulting" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="consulting_type"/>
+                    <field name="state"/>
+                    <field name="task_ids" widget="many2many_tags" options="{'color_field': 'state_colors'}"/>
+                    <field name="entry_progress" widget="progressbar"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_contractconsulting_search_form" model="ir.ui.view">
+            <field name="name">contractconsulting.contractconsulting.search.form</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="arch" type="xml">
+               <search string="استشارات العقود">
+                    <field name="name" string="استشارات العقود"/>
+                    <field name="partner_id" string="العميل"/>
+                    <field name="user_id" string="المستشار"/>
+                    <filter string="بإنتظار الموافقة" name="confirm" domain="[('state', '=', 'confirm')]"/>
+                    <filter string="معلقة" name="suspended" domain="[('state', '=', 'suspended')]"/>
+                    <filter string="مرفوضة" name="Refuse" domain="[('state', '=', 'Refuse')]"/>
+                    <filter string="مسودة" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="لدى العميل" name="Approve" domain="[('state', '=', 'Approve')]"/>
+                    <filter string="قيد التنفيذ" name="progress" domain="[('state', 'not in', ('suspended','close'))]"/>
+                    <group expand="0" string="جمع حسب">
+                        <filter string="الإجراءات الداخلية" name="state" context="{'group_by': 'state'}"/>
+                        <filter string="المستشار" name="user_id" context="{'group_by': 'user_id'}"/>
+                        <filter string="العميل" name="partner_id" context="{'group_by': 'partner_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_contractconsulting" model="ir.actions.act_window">
+            <field name="name">استشارات العقود</field>
+            <field name="res_model">contractconsulting.contractconsulting</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_progress': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    !لا توجد استشارة لنصنع واحدة
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="contractconsulting_root" name="استشارات العقود" parent="project.menu_main_pm" action="view_contractconsulting" sequence="6"/>
+      
+        <menuitem id="contractconsulting_root_1" name="استشارات العقود" parent="contractconsulting_root" action="view_contractconsulting" sequence="1"/>
+      
+      
+        <record id="view_contractconsulting_task_tree" model="ir.ui.view">
+            <field name="name">project.task.tree</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+                <tree string="مهام استشارات العقود" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_ids" widget="many2many_tags"/>
+                    <field name="contractconsulting_id"/>
+                    <field name="contractconsulting_partner"/>
+                    <field name="state_id"/>
+                    <field name="date_deadline"/>
+                    <field name="date_deadline" widget="remaining_days"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" optional="show"/>
+                    <field name="timesheet_ids" widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+      
+        <record id="view_contractconsulting_tasks" model="ir.actions.act_window">
+            <field name="name">متابعة مهام استشارات العقود</field>
+            <field name="res_model">project.task</field>
+            <field name="domain">[('contractconsulting_id', '!=', False),('state_id', '!=', 'منتهية')]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_contractconsulting_task_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد مهمة غير منتهية ومرتبطة باستشارة عقد
+                </p>
+            </field>
+        </record>
+      
+        <menuitem id="contractconsulting_tasks_root_3" name="متابعة مهام استشارات العقود" parent="contractconsulting_root" action="view_contractconsulting_tasks" groups="group_law_contractconsulting_assistant,group_law_contractconsulting" sequence="2"/>
+
+  </data>
+</odoo>
+
+
+

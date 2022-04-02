@@ -1,0 +1,49 @@
+<odoo>
+    <record id="litigation_board_kanban_view" model="ir.ui.view">
+        <field name="name">litigation.board.kanban</field>
+        <field name="model">litigation.board</field>
+        <field name="arch" type="xml">
+        <kanban create="true" delete="true" class="oe_background_grey o_kanban_dashboard o_account_kanban" banner_route="/account/account_dashboard_onboarding" js_class="account_dashboard_kanban">
+            <field name="id"/>
+            <field name="color"/>
+            <field name="name"/>
+            <templates>
+                <t t-name="kanban-box">                    
+                    <div class="o_kanban_card_header_title">
+                        <div class="o_primary" style="width: 100%;">
+                            <div  style="width: 50%;float: left;font-size: 150%;" align="left">
+                                <a type="object" name="open_action"><field name="no_count"/></a>
+                            </div>
+                            <div style="width: 50%;text-align:right;margin-left: 50%å;font-size: 150%;">
+                                <a type="object" name="open_action"><field name="name"/></a>
+                            </div>
+                        </div>
+                        <div class="o_primary">
+                            <a type="object" name="open_nearest_date_record"><field name="nearest_date_name"/><field name="nearest_date"/></a>
+                        </div>
+                        <div class="o_primary">
+                            <a type="object" name="open_nearest_date_record_one"><field name="nearest_date_one_name"/><field name="nearest_date_one"/></a>
+                        </div>
+                        <div class="o_primary">
+                            <a type="object" name="open_nearest_date_record_two"><field name="nearest_date_two_name"/><field name="nearest_date_two"/></a>
+                        </div>
+                        <field name="kanban_dashboard_graph" widget="dashboard_graph" t-att-graph_type="'bar'"/>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+        </field>
+    </record>
+
+
+    <record id="litigation_dashboard_kanban" model="ir.actions.act_window">
+        <field name="name">لوحة المعلومات</field>
+        <field name="res_model">litigation.board</field>
+        <field name="view_mode">kanban</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_id" eval="litigation_board_kanban_view"/>
+    </record>
+    
+    <menuitem id="litigation_dashboard_kanban_menu" name="لوحة المعلومات" action="litigation_dashboard_kanban" parent="project.menu_main_pm" sequence="-10"/>
+           
+</odoo>

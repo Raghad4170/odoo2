@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="module_category_law">
+        <field name="name">القانونيين</field>
+        <field name="description">القانونيين</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record model="res.groups" id="group_law_lawyer_assistant">
+        <field name="name">مساعد محامي</field>
+        <field name="category_id" ref="module_category_law"/>
+    </record>
+    <record model="res.groups" id="group_law_lawyer">
+        <field name="name">محامي</field>
+        <field name="category_id" ref="module_category_law"/>
+        <field name="implied_ids" eval="[(4, ref('group_law_lawyer_assistant'))]"/>
+    </record>
+    <record model="res.groups" id="group_law_lawyer_manager">
+        <field name="name">مدير المحاميين</field>
+        <field name="category_id" ref="module_category_law"/>
+        <field name="implied_ids" eval="[(4, ref('group_law_lawyer'))]"/>
+    </record>
+
+    <record model="res.groups" id="group_law_consultant_assistant">
+        <field name="name">مساعد مستشار</field>
+        <field name="category_id" ref="module_category_law"/>
+    </record>
+    <record model="res.groups" id="group_law_consultant">
+        <field name="name">مستشار</field>
+        <field name="category_id" ref="module_category_law"/>
+        <field name="implied_ids" eval="[(4, ref('group_law_consultant_assistant'))]"/>
+    </record>
+    <record model="res.groups" id="group_law_consultant_manager">
+        <field name="name">مدير المستشارين</field>
+        <field name="category_id" ref="module_category_law"/>
+        <field name="implied_ids" eval="[(4, ref('group_law_consultant'))]"/>
+    </record>
+    
+    <record model="res.groups" id="group_law_contractconsulting_assistant">
+        <field name="name">مساعد مسؤول العقود</field>
+        <field name="category_id" ref="module_category_law"/>
+    </record>
+    <record model="res.groups" id="group_law_contractconsulting">
+        <field name="name">مسؤول العقود</field>
+        <field name="category_id" ref="module_category_law"/>
+        <field name="implied_ids" eval="[(4, ref('group_law_contractconsulting_assistant'))]"/>
+    </record>
+    <record model="res.groups" id="group_law_contractconsulting_manager">
+        <field name="name">مدير مسؤولين العقود</field>
+        <field name="category_id" ref="module_category_law"/>
+        <field name="implied_ids" eval="[(4, ref('group_law_contractconsulting'))]"/>
+    </record>
+    
+<data noupdate="1">
+    
+    
+    
+<!-- Lawyer Project/Task -->
+    
+    <record model="ir.rule" id="project_lawyer_manager_rule">
+        <field name="name">Project: lawyer manager: see litigation</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="domain_force">[('project_type', '=', 'قضية')]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_lawyer_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="project_consultant_manager_rule">
+        <field name="name">Project: consultant manager: see consultant</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="domain_force">[('project_type', '=', 'استشارة')]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_consultant_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="project_contractconsulting_manager_rule">
+        <field name="name">Project: contractconsulting manager: see contractconsulting</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="domain_force">[('project_type', '=', 'عقود')]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_contractconsulting_manager'))]"/>
+    </record>
+    
+    
+    <record model="ir.rule" id="project_task_lawyer_manager_rule">
+        <field name="name">Project/Task: lawyer manager: see all</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="domain_force">['|',('litigation_id', '!=', False),('report_id', '!=', False)]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_lawyer_manager'))]"/>
+    </record>
+    
+    <record model="ir.rule" id="project_task_consultant_manager_rule">
+        <field name="name">Project/Task: consultant manager: see all</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="domain_force">[('consulting_id', '!=', False)]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_consultant_manager'))]"/>
+    </record>
+    
+    <record model="ir.rule" id="project_task_contractconsulting_manager_rule">
+        <field name="name">Project/Task: lawyer manager: see all</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="domain_force">[('contractconsulting_id', '!=', False)]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_contractconsulting_manager'))]"/>
+    </record>
+        
+    <record model="ir.rule" id="project_lawyer_Own_rule">
+        <field name="name">Project: Own</field>
+        <field name="model_id" ref="model_project_project"/>
+        <field name="domain_force">['|',('allowed_internal_user_ids','=',user.id),('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+        
+    <record model="ir.rule" id="task_all_rule">
+        <field name="name">Project/Task: Own</field>
+        <field name="model_id" ref="model_project_task"/>
+        <field name="domain_force">[('allowed_users_task', 'in', user.ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+<!-- litigation -->
+    <record model="ir.rule" id="litigation_comp_rule">
+        <field name="name">litigation: multi-company</field>
+        <field name="model_id" ref="model_litigation_litigation"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="litigation_litigation_manager_rule">
+        <field name="name">litigation: litigation manager: see all</field>
+        <field name="model_id" ref="model_litigation_litigation"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_lawyer_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="litigation_members_rule">
+        <field name="name">litigation: Own litigation</field>
+        <field name="model_id" ref="model_litigation_litigation"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+    
+    <record model="ir.rule" id="litigation_helper_rule">
+        <field name="name">litigation: assistant litigation</field>
+        <field name="model_id" ref="model_litigation_litigation"/>
+        <field name="domain_force">[('project_id.helper_ids','in',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+
+     <!-- litigation Portal -->
+    <record id="litigation_litigation_portal" model="ir.rule">
+        <field name="name">litigation: portal users</field>
+        <field name="model_id" ref="litigation.model_litigation_litigation"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    <record id="litigation_litigation_portal_company" model="ir.rule">
+        <field name="name">litigation: portal company users</field>
+        <field name="model_id" ref="litigation.model_litigation_litigation"/>
+        <field name="domain_force">[('parent_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    <record id="litigation_litigation_portal_full_permission" model="ir.rule">
+        <field name="name">litigation: portal company users</field>
+        <field name="model_id" ref="litigation.model_litigation_litigation"/>
+        <field name="domain_force">[('full_permission', 'in', user.ids)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    
+<!-- litigation report -->
+    <record model="ir.rule" id="report_comp_rule">
+        <field name="name">litigation report: multi-company</field>
+        <field name="model_id" ref="model_litigation_report"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    <record model="ir.rule" id="litigation_report_manager_rule">
+        <field name="name">litigation report: litigation report manager: see all</field>
+        <field name="model_id" ref="model_litigation_report"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_lawyer_manager'))]"/>
+    </record>
+    <record model="ir.rule" id="report_members_rule">
+        <field name="name">litigation report: Own litigation</field>
+        <field name="model_id" ref="model_litigation_report"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+    <record model="ir.rule" id="report_helper_rule">
+        <field name="name">litigation report: assistant litigation report</field>
+        <field name="model_id" ref="model_litigation_report"/>
+        <field name="domain_force">[('project_id.helper_ids','in',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+
+
+     <!-- litigation report Portal -->
+    <record id="litigation_report_portal" model="ir.rule">
+        <field name="name">litigation report: portal users</field>
+        <field name="model_id" ref="litigation.model_litigation_report"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    <record id="litigation_report_portal_company" model="ir.rule">
+        <field name="name">litigation report: portal company users</field>
+        <field name="model_id" ref="litigation.model_litigation_report"/>
+        <field name="domain_force">[('parent_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    <record id="litigation_report_portal_full_permission" model="ir.rule">
+        <field name="name">litigation report: portal company users</field>
+        <field name="model_id" ref="litigation.model_litigation_report"/>
+        <field name="domain_force">[('full_permission', 'in', user.ids)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    
+<!-- Attorney report -->
+    <record model="ir.rule" id="attorney_comp_rule">
+        <field name="name">attorney: multi-company</field>
+        <field name="model_id" ref="model_attorney_attorney"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+    
+    <record model="ir.rule" id="attorney_manager_rule">
+        <field name="name">attorney: manager: see all</field>
+        <field name="model_id" ref="model_attorney_attorney"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_lawyer_manager'))]"/>
+    </record>
+    
+    <record model="ir.rule" id="attorney_members_rule">
+        <field name="name">attorney: Own attorney</field>
+        <field name="model_id" ref="model_attorney_attorney"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>    
+    
+<!-- consulting -->
+    <record model="ir.rule" id="consulting_comp_rule">
+        <field name="name">consulting: multi-company</field>
+        <field name="model_id" ref="model_consulting_consulting"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="consulting_consulting_manager_rule">
+        <field name="name">consulting: consulting manager: see all</field>
+        <field name="model_id" ref="model_consulting_consulting"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_consultant_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="consulting_members_rule">
+        <field name="name">consulting: Own consulting</field>
+        <field name="model_id" ref="model_consulting_consulting"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+    <record model="ir.rule" id="consulting_helper_rule">
+        <field name="name">consulting: assistant consulting</field>
+        <field name="model_id" ref="model_consulting_consulting"/>
+        <field name="domain_force">[('project_id.helper_ids','in',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+     <!-- consulting Portal -->
+    <record id="consulting_consulting_portal" model="ir.rule">
+        <field name="name">consulting: portal users</field>
+        <field name="model_id" ref="litigation.model_consulting_consulting"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    <record id="consulting_consulting_portal_company" model="ir.rule">
+        <field name="name">consulting: portal company users</field>
+        <field name="model_id" ref="litigation.model_consulting_consulting"/>
+        <field name="domain_force">[('parent_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    <record id="consulting_consulting_portal_full_permission" model="ir.rule">
+        <field name="name">consulting: portal company users</field>
+        <field name="model_id" ref="litigation.model_consulting_consulting"/>
+        <field name="domain_force">[('full_permission', 'in', user.ids)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    
+
+<!-- contract consulting -->
+    <record model="ir.rule" id="contractconsulting_comp_rule">
+        <field name="name">contractconsulting: multi-company</field>
+        <field name="model_id" ref="model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="contractconsulting_manager_rule">
+        <field name="name">contractconsulting: contractconsulting manager: see all</field>
+        <field name="model_id" ref="model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('litigation.group_law_contractconsulting_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="contractconsulting_members_rule">
+        <field name="name">contractconsulting: Own contractconsulting</field>
+        <field name="model_id" ref="model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+    <record model="ir.rule" id="contractconsulting_helper_rule">
+        <field name="name">contractconsulting: assistant contractconsulting</field>
+        <field name="model_id" ref="model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[('project_id.helper_ids','in',user.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+
+     <!-- contract consulting Portal -->
+    <record id="contractconsulting_portal" model="ir.rule">
+        <field name="name">contractconsulting: portal users</field>
+        <field name="model_id" ref="litigation.model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    <record id="contractconsulting_portal_company" model="ir.rule">
+        <field name="name">contractconsulting: portal company users</field>
+        <field name="model_id" ref="litigation.model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[('parent_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    <record id="contractconsulting_portal_full_permission" model="ir.rule">
+        <field name="name">contractconsulting: portal company users</field>
+        <field name="model_id" ref="litigation.model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[('full_permission', 'in', user.ids)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+    
+    
+<!-- company document -->
+
+    <record model="ir.rule" id="company_document_rule">
+        <field name="name">company document: Own company document</field>
+        <field name="model_id" ref="litigation.model_company_document"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+    </record>
+
+<!-- board -->
+
+     <record model="ir.rule" id="litigation_board_rule">
+        <field name="name">Board Rule: see all</field>
+        <field name="model_id" ref="model_litigation_board"/>
+        <field name="domain_force">[('group_ids', 'in', user.groups_id.ids)]</field>
+    </record>
+
+    
+</data>
+</odoo>
+

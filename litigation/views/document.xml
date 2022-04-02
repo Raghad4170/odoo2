@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+        <record id="company_document_form" model="ir.ui.view">
+            <field name="name">المستندات الرسمية</field>
+            <field name="model">company.document</field>
+            <field name="arch" type="xml">
+                <form string="المستندات الرسمية">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                        </group>   
+                        <group>
+                            <field name="company_id"/>
+                        </group>   
+                    </group>
+                    <group>
+                        <field name="Text" style="text-align: justify;text-justify: inter-word;"/>
+                    </group>
+                </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+      
+        <record id="view_company_document_tree" model="ir.ui.view">
+            <field name="name">company.document.tree</field>
+            <field name="model">company.document</field>
+            <field name="arch" type="xml">
+                <tree string="المستند" multi_edit="1" sample="1">
+                    <field name="name"/>
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_company_document" model="ir.actions.act_window">
+            <field name="name">المستندات الرسمية</field>
+            <field name="res_model">company.document</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا يوجد مستند لنصنع واحد
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="company_document_root" name="المستندات الرسمية" parent="project.menu_main_pm" action="view_company_document" sequence="7"/>
+      
+
+  </data>
+</odoo>
+
+
+

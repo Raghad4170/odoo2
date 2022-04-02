@@ -1,0 +1,43 @@
+<odoo>
+  <data>   
+    <record id="litigation_sign_signature_inherit" model="ir.ui.view">
+        <field name="name">res.users.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='signature']" position="after">
+                <field name="sign_signature" widget="signature"/>
+            </xpath>
+        </field>
+    </record>      
+
+    <record id="litigation_lawyer_manager_inherit" model="ir.ui.view">
+        <field name="name">res.users.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="hr.res_users_view_form_profile"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <group>
+                    <field name="lawyer_manager"/>
+                    <field name="lawyer_assistants" widget="many2many_tags"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+      
+ <record id="hr_employee_lawyer" model="ir.ui.view">
+        <field name="name">hr.employee.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="week_report"/>
+                <field name="lawyer_manager"/>
+                <field name="lawyer_assistants" widget="many2many_tags"/>
+          </xpath>
+        </field>
+    </record>
+
+      
+  </data>
+</odoo>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+<!-- PENAL -->
+
+        <record model="penal.type" id="penal_1">
+          <field name="name">منع من السفر</field>
+          <field name="type">1</field>
+        </record>
+        <record model="penal.type" id="penal_2">
+          <field name="name">إثبات تنازل</field>
+          <field name="type">1</field>
+        </record>
+        <record model="penal.type" id="penal_3">
+          <field name="name">تسليم مضبوطات</field>
+          <field name="type">1</field>
+        </record>
+        <record model="penal.type" id="penal_4">
+          <field name="name">الحراسة القضائية</field>
+          <field name="type">1</field>
+        </record>
+        <record model="penal.type" id="penal_5">
+          <field name="name">الحجز التحفظي</field>
+          <field name="type">1</field>
+        </record>
+        <record model="penal.type" id="penal_6">
+          <field name="name">استيثاق لإثبات الحالة أو شهادة يخشى فواتها</field>
+          <field name="type">1</field>
+        </record>
+        <record model="penal.type" id="penal_7">
+          <field name="name">وقف الأعمال الجديدة</field>
+          <field name="type">1</field>
+        </record>
+
+        <record model="penal.type" id="penal_8">
+          <field name="name">إتلاف ممتلكات</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_9">
+          <field name="name">سحر أو كهانة أو شعوذة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_10">
+          <field name="name">تشهير أو تشويه سمعة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_11">
+          <field name="name">إطلاق نار</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_12">
+          <field name="name">ابتزاز</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_13">
+          <field name="name">تزوير</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_14">
+          <field name="name">انتحال شخصية الغير</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_15">
+          <field name="name">انتهاك حرمة مكان</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_16">
+          <field name="name">تحريض</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_17">
+          <field name="name">تخبيب</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_18">
+          <field name="name">التستر على جريمة أو مجرم</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_19">
+          <field name="name">تنظيم بيع سندات الهدي والأضاحي على الحجاج</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_20">
+          <field name="name">خطف</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_21">
+          <field name="name">خيانة الأمانة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_22">
+          <field name="name">شكوى أو دعوى كيدية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_23">
+          <field name="name">سب أو شتم</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_24">
+          <field name="name">سرقة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_25">
+          <field name="name">شهادة زور</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_26">
+          <field name="name">عقوق الوالدين</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_27">
+          <field name="name">قتل</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_28">
+          <field name="name">مضاربة أو اعتداء جسدي</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_29">
+          <field name="name">نصب أو احتيال</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_30">
+          <field name="name">التستر على جريمة أو مجرم (مكرر)</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_31">
+          <field name="name">الحماية من الإيذاء</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_32">
+          <field name="name">الجرائم المعلوماتية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_33">
+          <field name="name">التحرش</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_34">
+          <field name="name">جرائم العرض</field>
+          <field name="type">2</field>
+        </record>
+        <record model="penal.type" id="penal_35">
+          <field name="name">تهديد</field>
+          <field name="type">2</field>
+        </record>
+
+        <record model="penal.type" id="penal_36">
+          <field name="name">قذف</field>
+          <field name="type">3</field>
+        </record>
+
+        <record model="penal.type" id="penal_37">
+          <field name="name">ما دون النفس</field>
+          <field name="type">4</field>
+        </record>
+        <record model="penal.type" id="penal_38">
+          <field name="name">نفس</field>
+          <field name="type">4</field>
+        </record>
+
+        <record model="penal.type" id="penal_39">
+          <field name="name">أتعاب المحاماة أو الوكلاء</field>
+          <field name="type">5</field>
+        </record>
+        <record model="penal.type" id="penal_40">
+          <field name="name">أرش</field>
+          <field name="type">5</field>
+        </record>
+        <record model="penal.type" id="penal_41">
+          <field name="name">تعويض</field>
+          <field name="type">5</field>
+        </record>
+        <record model="penal.type" id="penal_42">
+          <field name="name">دية</field>
+          <field name="type">5</field>
+        </record>
+        <record model="penal.type" id="penal_43">
+          <field name="name">رد عين</field>
+          <field name="type">5</field>
+        </record>
+        <record model="penal.type" id="penal_44">
+          <field name="name">أضرار التقاضي</field>
+          <field name="type">5</field>
+        </record>
+    </data>
+</odoo>

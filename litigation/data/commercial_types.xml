@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+<!-- COMMERCIAL -->
+        <record model="commercial.type" id="commercial_1">
+          <field name="name">التحكيم</field>
+          <field name="type">1</field>
+        </record>
+
+        <record model="commercial.type" id="commercial_2">
+          <field name="name">إعادة تنظيم</field>
+          <field name="type">2</field>
+        </record>
+        <record model="commercial.type" id="commercial_3">
+          <field name="name">إعادة تنظيم صغار المدينين</field>
+          <field name="type">2</field>
+        </record>
+        <record model="commercial.type" id="commercial_4">
+          <field name="name">تسوية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="commercial.type" id="commercial_5">
+          <field name="name">تسوية صغار المدينين</field>
+          <field name="type">2</field>
+        </record>
+        <record model="commercial.type" id="commercial_6">
+          <field name="name">تصفية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="commercial.type" id="commercial_7">
+          <field name="name">تصفية إدارية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="commercial.type" id="commercial_8">
+          <field name="name">تصفية صغار المدينين</field>
+          <field name="type">2</field>
+        </record>
+
+        <record model="commercial.type" id="commercial_9">
+          <field name="name">حماية حقوق المؤلف</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_10">
+          <field name="name">براءات الاختراع</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_11">
+          <field name="name">الاستثمار الأجنبي</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_12">
+          <field name="name">البيانات التجارية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_13">
+          <field name="name">التجارة الإلكترونية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_14">
+          <field name="name">التجارة البحرية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_15">
+          <field name="name">الامتياز التجاري</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_16">
+          <field name="name">الدفاتر التجارية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_17">
+          <field name="name">الرهن التجاري</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_18">
+          <field name="name">السجل التجاري</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_19">
+          <field name="name">مكافحة الغش التجاري</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_20">
+          <field name="name">الأوراق التجارية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_21">
+          <field name="name">المنافسة غير المشروعة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_22">
+          <field name="name">الوكالات التجارية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_23">
+          <field name="name">الأسماء التجارية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_24">
+          <field name="name">العلامات التجارية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="commercial.type" id="commercial_25">
+          <field name="name">العلامات التجارية</field>
+          <field name="type">3</field>
+        </record>
+
+        <record model="commercial.type" id="commercial_26">
+          <field name="name">شركات المضاربة</field>
+          <field name="type">4</field>
+        </record>
+        <record model="commercial.type" id="commercial_27">
+          <field name="name">شركات المضاربة</field>
+          <field name="type">4</field>
+        </record>
+
+        <record model="commercial.type" id="commercial_28">
+          <field name="name">أتعاب محاماة أو وكلاء</field>
+          <field name="type">5</field>
+        </record>
+        <record model="commercial.type" id="commercial_29">
+          <field name="name">ضرر عن أعمال تجارية</field>
+          <field name="type">5</field>
+        </record>
+        <record model="commercial.type" id="commercial_30">
+          <field name="name">المعينين في القضايا التجارية</field>
+          <field name="type">5</field>
+        </record>
+        <record model="commercial.type" id="commercial_31">
+          <field name="name">أوامر الأداء</field>
+          <field name="type">5</field>
+        </record>
+        <record model="commercial.type" id="commercial_32">
+          <field name="name">حجز تحفظي</field>
+          <field name="type">5</field>
+        </record>
+        <record model="commercial.type" id="commercial_33">
+          <field name="name">حراسة قضائية</field>
+          <field name="type">5</field>
+        </record>
+        <record model="commercial.type" id="commercial_34">
+          <field name="name">منع من السفر</field>
+          <field name="type">5</field>
+        </record>
+        <record model="commercial.type" id="commercial_35">
+          <field name="name">وقف الأعمال الجديدة</field>
+          <field name="type">5</field>
+        </record>
+        <record model="commercial.type" id="commercial_36">
+          <field name="name">استيثاق لإثبات الحالة أو شهادة يخشى فواتها</field>
+          <field name="type">5</field>
+        </record>
+
+
+        <record model="commercial.type" id="commercial_37">
+          <field name="name">إجارة</field>
+          <field name="type">6</field>
+        </record>
+        <record model="commercial.type" id="commercial_38">
+          <field name="name">الحوالة التجارية</field>
+          <field name="type">6</field>
+        </record>
+        <record model="commercial.type" id="commercial_39">
+          <field name="name">الدعاية والإعلان والتسويق</field>
+          <field name="type">6</field>
+        </record>
+        <record model="commercial.type" id="commercial_40">
+          <field name="name">الكفالة التجارية</field>
+          <field name="type">6</field>
+        </record>
+        <record model="commercial.type" id="commercial_41">
+          <field name="name">المقاولات</field>
+          <field name="type">6</field>
+        </record>
+        <record model="commercial.type" id="commercial_42">
+          <field name="name">المكاتب والمحلات التجارية</field>
+          <field name="type">6</field>
+        </record>
+        <record model="commercial.type" id="commercial_43">
+          <field name="name">النقل</field>
+          <field name="type">6</field>
+        </record>
+        <record model="commercial.type" id="commercial_44">
+          <field name="name">بيع وتوريد</field>
+          <field name="type">6</field>
+        </record>
+        <record model="commercial.type" id="commercial_45">
+          <field name="name">سمسرة</field>
+          <field name="type">6</field>
+        </record>
+    </data>
+</odoo>

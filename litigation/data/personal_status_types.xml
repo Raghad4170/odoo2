@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+<!-- PERSONAL STATUS -->
+        <record model="personal.status.type" id="personal_1">
+          <field name="name">دعوى إثبات رضاع أو مصاهرة</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_2">
+          <field name="name">دعوى إقامة حارس قضائي</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_3">
+          <field name="name">دعوى تعويض</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_4">
+          <field name="name">دعوى مطالبة بأتعاب محامين أو وكلاء</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_5">
+          <field name="name">دعوى مطالبة بمستندات</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_6">
+          <field name="name">دعوى معارضة على صك إنهائي</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_7">
+          <field name="name">دعوى منع من السفر</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_8">
+          <field name="name">دعوى هبة أو رجوع عنها</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_9">
+          <field name="name">الانهاءات</field>
+          <field name="type">1</field>
+        </record>
+        <record model="personal.status.type" id="personal_10">
+          <field name="name">دعوى إبطال وقف أو وصية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="personal.status.type" id="personal_11">
+          <field name="name">دعوى اثبات وقف أو وصية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="personal.status.type" id="personal_12">
+          <field name="name">دعوى استحقاق في وقف أو وصية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="personal.status.type" id="personal_13">
+          <field name="name">دعوى عزل ناظر وقف أو وصية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="personal.status.type" id="personal_14">
+          <field name="name">دعوى محاسبة ناظر وقف أو وصية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="personal.status.type" id="personal_15">
+          <field name="name">دعوى إنهاء وقف أو وصية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="personal.status.type" id="personal_16">
+          <field name="name">أجرة رضاع أو حضانة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="personal.status.type" id="personal_17">
+          <field name="name">دعوى تسليم صغير لحاضنه</field>
+          <field name="type">3</field>
+        </record>
+        <record model="personal.status.type" id="personal_18">
+          <field name="name">دعوى حضانة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="personal.status.type" id="personal_19">
+          <field name="name">دعوى رؤية صغير</field>
+          <field name="type">3</field>
+        </record>
+        <record model="personal.status.type" id="personal_20">
+          <field name="name">زيادة نفقة أو إنقاصها أو إلغائها</field>
+          <field name="type">3</field>
+        </record>
+        <record model="personal.status.type" id="personal_21">
+          <field name="name">دعوى زيارة أولاد أو غيرهم</field>
+          <field name="type">3</field>
+        </record>
+        <record model="personal.status.type" id="personal_22">
+          <field name="name">دعوى نفقة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="personal.status.type" id="personal_23">
+          <field name="name">دعوى إثبات رجعة</field>
+          <field name="type">4</field>
+        </record>
+        <record model="personal.status.type" id="personal_24">
+          <field name="name">دعوى إثبات طلاق</field>
+          <field name="type">4</field>
+        </record>
+        <record model="personal.status.type" id="personal_25">
+          <field name="name">دعوى إثبات نكاح</field>
+          <field name="type">4</field>
+        </record>
+        <record model="personal.status.type" id="personal_26">
+          <field name="name">دعوى خلع</field>
+          <field name="type">4</field>
+        </record>
+        <record model="personal.status.type" id="personal_27">
+          <field name="name">دعوى صداق</field>
+          <field name="type">4</field>
+        </record>
+        <record model="personal.status.type" id="personal_28">
+          <field name="name">دعوى عفش الزوجية</field>
+          <field name="type">4</field>
+        </record>
+        <record model="personal.status.type" id="personal_29">
+          <field name="name">فسخ نكاح</field>
+          <field name="type">4</field>
+        </record>
+        <record model="personal.status.type" id="personal_30">
+          <field name="name">دعوى إثبات نسب أو نفيه</field>
+          <field name="type">5</field>
+        </record>
+        <record model="personal.status.type" id="personal_31">
+          <field name="name">دعوى إذن سفر</field>
+          <field name="type">5</field>
+        </record>
+        <record model="personal.status.type" id="personal_32">
+          <field name="name">دعوى عزل ولي</field>
+          <field name="type">5</field>
+        </record>
+        <record model="personal.status.type" id="personal_33">
+          <field name="name">دعوى عضل</field>
+          <field name="type">5</field>
+        </record>
+        <record model="personal.status.type" id="personal_34">
+          <field name="name">دعوى محاسبة ولي</field>
+          <field name="type">5</field>
+        </record>
+        <record model="personal.status.type" id="personal_35">
+          <field name="name">دعوى قسمة تركة أكثر من 50 مليون ريال</field>
+          <field name="type">6</field>
+        </record>
+        <record model="personal.status.type" id="personal_36">
+          <field name="name">دعوى قسمة تركة عقارية</field>
+          <field name="type">6</field>
+        </record>
+        <record model="personal.status.type" id="personal_37">
+          <field name="name">دعوى قسمة تركة مالية</field>
+          <field name="type">6</field>
+        </record>
+        <record model="personal.status.type" id="personal_38">
+          <field name="name">دعوى محاسبة وكيل أو وارث</field>
+          <field name="type">6</field>
+        </record>
+        <record model="personal.status.type" id="personal_39">
+          <field name="name">دعوى مطالبة بأجرة سكن</field>
+          <field name="type">6</field>
+        </record>
+    </data>
+</odoo>

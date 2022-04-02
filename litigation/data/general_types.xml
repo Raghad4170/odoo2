@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+<!-- GENERAL -->
+
+        <record model="general.type" id="general_1">
+          <field name="name">رد اعتبار (إثبات الاستقامة بعد السابقة الجنائية)</field>
+          <field name="type">1</field>
+        </record>
+        <record model="general.type" id="general_2">
+          <field name="name">إثبات عدم تملك مسكن/بيت</field>
+          <field name="type">1</field>
+        </record>
+        <record model="general.type" id="general_3">
+          <field name="name">إستيثاق لإثبات الحال أو شهادة يخشى فواتها في غير خصومة</field>
+          <field name="type">1</field>
+        </record>
+        <record model="general.type" id="general_4">
+          <field name="name">تنازل عن أرش إصابة أو دية (غير العمد وشبه العمد)</field>
+          <field name="type">1</field>
+        </record>
+        <record model="general.type" id="general_5">
+          <field name="name">إنهاء عام</field>
+          <field name="type">1</field>
+        </record>
+
+        <record model="general.type" id="general_6">
+          <field name="name">حراسة قضائية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="general.type" id="general_7">
+          <field name="name">منع من السفر</field>
+          <field name="type">2</field>
+        </record>
+        <record model="general.type" id="general_8">
+          <field name="name">وقف الأعمال الجديدة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="general.type" id="general_9">
+          <field name="name">أجرة الأجير اليومية أو الأسبوعية</field>
+          <field name="type">2</field>
+        </record>
+        <record model="general.type" id="general_10">
+          <field name="name">استرداد حيازة العقار</field>
+          <field name="type">2</field>
+        </record>
+        <record model="general.type" id="general_11">
+          <field name="name">إستيثاق لإثبات الحالة أو شهادة يخشى فواتها</field>
+          <field name="type">2</field>
+        </record>
+        <record model="general.type" id="general_12">
+          <field name="name">منع التعرض للحيازة</field>
+          <field name="type">2</field>
+        </record>
+        <record model="general.type" id="general_13">
+          <field name="name">حجز تحفظي</field>
+          <field name="type">2</field>
+        </record>
+
+        <record model="general.type" id="general_14">
+          <field name="name">إخلاء عقار</field>
+          <field name="type">3</field>
+        </record>
+        <record model="general.type" id="general_15">
+          <field name="name">استطراق</field>
+          <field name="type">3</field>
+        </record>
+        <record model="general.type" id="general_16">
+          <field name="name">تداخل العقارات</field>
+          <field name="type">3</field>
+        </record>
+        <record model="general.type" id="general_17">
+          <field name="name">حق الشفعة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="general.type" id="general_18">
+          <field name="name">ملكية عقار</field>
+          <field name="type">3</field>
+        </record>
+        <record model="general.type" id="general_19">
+          <field name="name">رفع اليد ضد جهة حكومية</field>
+          <field name="type">3</field>
+        </record>
+
+        <record model="general.type" id="general_20">
+          <field name="name">قسمة عقارات مشتركة</field>
+          <field name="type">3</field>
+        </record>
+        <record model="general.type" id="general_21">
+          <field name="name">مساهمة عقارية</field>
+          <field name="type">3</field>
+        </record>
+        <record model="general.type" id="general_22">
+          <field name="name">مساييل أو حمى</field>
+          <field name="type">3</field>
+        </record>
+        <record model="general.type" id="general_23">
+          <field name="name">مقاولات إنشاء المباني</field>
+          <field name="type">3</field>
+        </record>
+
+        <record model="general.type" id="general_24">
+          <field name="name">إثبات رهن أو بيع المرهون</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_25">
+          <field name="name">رد مسروق</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_26">
+          <field name="name">عارية</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_27">
+          <field name="name">قرض أو سلف</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_28">
+          <field name="name">هبة في غير عقار</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_29">
+          <field name="name">أتعاب محامين أو وكلاء</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_30">
+          <field name="name">أجرة أعمال</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_31">
+          <field name="name">أجرة عقار</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_32">
+          <field name="name">أجرة عين (منقول)</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_33">
+          <field name="name">التعويض عن أضرار التقاضي</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_34">
+          <field name="name">ثمن مبيع</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_35">
+          <field name="name">دعوى حوالة</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_36">
+          <field name="name">شراكة في أملاك غير عقارية</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_37">
+          <field name="name">ضمان كفالة</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_38">
+          <field name="name">محاسبة</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_39">
+          <field name="name">مطالبة الضامن للمضمون عنه (كفيل لمكفوله)</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_40">
+          <field name="name">مطالبة بدية أو إرش في غير حادث مروري</field>
+          <field name="type">4</field>
+        </record>
+        <record model="general.type" id="general_41">
+          <field name="name">وديعة</field>
+          <field name="type">4</field>
+        </record>
+
+        <record model="general.type" id="general_42">
+          <field name="name">حق خاص ناشئ عن حادث مروري</field>
+          <field name="type">5</field>
+        </record>
+
+        <record model="general.type" id="general_43">
+          <field name="name">إثبات عقد</field>
+          <field name="type">6</field>
+        </record>
+        <record model="general.type" id="general_44">
+          <field name="name">رفع ضرر أو التعويض عنه</field>
+          <field name="type">6</field>
+        </record>
+        <record model="general.type" id="general_45">
+          <field name="name">رد العين</field>
+          <field name="type">6</field>
+        </record>
+        <record model="general.type" id="general_46">
+          <field name="name">عقد استصناع</field>
+          <field name="type">6</field>
+        </record>
+        <record model="general.type" id="general_47">
+          <field name="name">فسخ عقد أو بطلانه</field>
+          <field name="type">6</field>
+        </record>
+        <record model="general.type" id="general_48">
+          <field name="name">قسمة منافع (مهايأة)</field>
+          <field name="type">6</field>
+        </record>
+        <record model="general.type" id="general_49">
+          <field name="name">مطالبة بمستندات</field>
+          <field name="type">6</field>
+        </record>
+        <record model="general.type" id="general_50">
+          <field name="name">التحكيم</field>
+          <field name="type">6</field>
+        </record>
+    </data>
+</odoo>

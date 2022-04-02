@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+        <record id="edit_attorney" model="ir.ui.view">
+            <field name="name">attorney.attorney.form</field>
+            <field name="model">attorney.attorney</field>
+            <field name="arch" type="xml">
+                <form string="الوكالة">
+                    <header>
+                        <field name="expiration" widget="statusbar" statusbar_visible="جديدة,سارية"/>
+                    </header>
+                    <sheet string="الوكالة">
+                         <div class="oe_title">
+                           <h1>
+                            <field name="name"/>
+                           </h1>
+                         </div>
+                         <group>
+                            <group>
+                                <field name="user_id"/>
+                                <field name="lawyer_state"/>
+                                <field name="partner_id"/>
+                                <field name="client_state"/>
+                                <field name="attorney_date"/>
+                                <field name="ending_date"/>
+                            </group>
+                            <group>
+                                <field name="number"/>
+                                <field name="source"/>
+                                <field name="attorney_status"/>
+                                <field name="origin" attrs="{'invisible': [('attorney_status', '!=', 'غير مباشرة')]}"/>
+                                <field name="attorney_origin_date" attrs="{'invisible': [('attorney_status', '!=', 'غير مباشرة')]}"/>
+                                <field name="number_origin" attrs="{'invisible': [('attorney_status', '!=', 'غير مباشرة')]}"/>
+                                <field name="file"/>
+                            </group>
+                          </group>
+                   </sheet>
+                 </form>
+            </field>
+        </record>
+
+        <record id="attorney_kanban_view" model="ir.ui.view">
+            <field name="name">attorney.attorney.kanban.lead</field>
+            <field name="model">attorney.attorney</field>
+            <field name="arch" type="xml">
+              <kanban default_group_by="expiration" class="o_kanban_mobile" sample="1">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </div>
+                                <div>
+                                    <field name="partner_id"/>
+                                </div>
+                                <div>
+                                    <field name="client_state"/>
+                                </div>
+                                <div>
+                                 <t>تاريخ الوكالة: </t>
+                                 <field name="attorney_date"/>
+                                </div>
+                                <div>
+                                 <t>تاريخ الإنتهاء: </t>
+                                 <field name="ending_date"/>
+                                </div>
+
+                                <div attrs="{'invisible': [('late_attorney_id', '=', False)]}">
+                                 <t>الوكالة السابقة: </t>
+                                 <field name="late_attorney_id"/>
+                                </div>
+
+                                <div attrs="{'invisible': [('new_attorney_id', '=', False)]}">
+                                 <t>الوكالة الجديدة: </t>
+                                 <field name="new_attorney_id"/>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="user_id"/>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear"/>
+                        </div>
+                    </t>
+                </templates>
+              </kanban>
+            </field>
+        </record>
+
+        <record id="view_attorney_tree" model="ir.ui.view">
+            <field name="name">attorney.attorney.tree</field>
+            <field name="model">attorney.attorney</field>
+            <field name="arch" type="xml">
+                <tree string="الوكالات" multi_edit="1" sample="1">
+                    <field name="name"/>                    
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="lawyer_state"/>
+                    <field name="partner_id"/>
+                    <field name="client_state"/>
+                    <field name="attorney_date"/>
+                    <field name="ending_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_attorney" model="ir.actions.act_window">
+            <field name="name">الوكالات</field>
+            <field name="res_model">attorney.attorney</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    لا توجد وكالة لنصنع واحدة!
+                </p>
+            </field>
+        </record>
+
+    <menuitem id="attorney_root" name="الوكالات" parent="project.menu_main_pm" action="view_attorney" groups="group_law_lawyer_assistant,group_law_lawyer" sequence="4"/>
+      
+  </data>
+</odoo>
