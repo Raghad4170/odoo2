@@ -1,0 +1,101 @@
+<odoo>
+  <data>
+    <!-- Top menu item -->
+
+    <menuitem name="التذاكر التقنية" id="error404_root" web_icon="error404,static/description/icon.png"/>
+
+      
+        <record id="error404_search_form" model="ir.ui.view">
+            <field name="name">error404.error404.search.form</field>
+            <field name="model">error404.error404</field>
+            <field name="arch" type="xml">
+               <search string="التذاكر">
+                    <filter string="محلولة" name="solved" domain="[('state', '=', 'solved')]"/>
+                    <filter string="ملغية" name="canceled" domain="[('state', '=', 'canceled')]"/>
+                    <filter string="قيد التنفيذ" name="open" domain="[('state', 'not in', ('solved','canceled'))]"/>
+                </search>
+            </field>
+        </record>      
+      
+    <!-- error404 -->
+      
+        <record id="error404_form" model="ir.ui.view">
+            <field name="name">التذاكر التقنية</field>
+            <field name="model">error404.error404</field>
+            <field name="arch" type="xml">
+                <form string="التذاكر التقنية">
+                <header>
+                    <button string="إسنادها إلي" name="action_assign" type="object" groups="error404.error404_user" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ('sent','review'))]}"/>
+                    <button string="تم حلها" name="action_solve" type="object" groups="error404.error404_user" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ('review'))]}"/>
+                    <button string="إلغاء" name="action_cancel" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ('sent','review'))]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="التذاكر التقنية">
+                     <div class="oe_title">
+                       <h1>
+                          <field name="name" attrs="{'readonly': [('state', '!=', 'sent')]}"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                            <field name="create_uid" string="طلب من قبل" readonly="1"/>
+                        </group>   
+                        <group>
+                            <field name="user_id" attrs="{'readonly': [('state', '!=', 'sent')]}"/>
+                        </group>
+                      </group>
+                      <group>
+                        <group>
+                            <field name="description" attrs="{'readonly': [('state', '!=', 'sent')]}"/>
+                        </group>
+                        <group>
+                            <field name="file" attrs="{'readonly': [('state', '!=', 'sent')]}"/>
+                        </group>
+                      </group>
+                      <group>
+                         <field name="is_error404" invisible="1"/>
+                         <field name="note" attrs="{'readonly': [('is_error404', '=', False)]}"/>
+                      </group>
+                </sheet>
+                 </form>
+            </field>
+        </record>
+      
+    <record model="ir.ui.view" id="error404_list">
+      <field name="name">التذاكر التقنية</field>
+        <field name="model">error404.error404</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="create_uid" string="طلب من قبل"/>
+          <field name="user_id"/>
+          <field name="file" widget="binary"/>
+          <field name="description"/>
+          <field name="note"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="error404_action">
+      <field name="name">التذاكر التقنية</field>
+      <field name="res_model">error404.error404</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{'search_default_open': 1}</field>
+      <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+              لا توجد لديك تذكرة!
+          </p>
+      </field>
+
+    </record>
+
+
+    <!-- actions -->
+
+    <menuitem name="التذاكر التقنية" id="error404_menu" parent="error404_root" action="error404_action" sequence="1"/>
+
+
+  </data>
+</odoo>

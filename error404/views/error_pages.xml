@@ -1,0 +1,115 @@
+<odoo>    
+    
+    <template id="http_routing.404" name="لم نتمكن من العثور على الصفحة">
+        <t t-call="web.frontend_layout">
+            <div id="wrap">
+                <t t-raw="0"/>
+                <div class="oe_structure oe_empty">
+                    <div class='error_container'>
+                        <div style="font-family: system-ui, system-ui, ElMessiri;" class='error_content'>
+                            <p>لم نتمكن من العثور على الصفحة التي تبحث عنها</p>
+                            <p>تأكد من صحة الرابط أو يمكنك الرجوع إلى</p>
+                            <p>
+                              <error_button><a href="/">الصفحة الرئيسية</a></error_button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>  
+    
+    
+    <template id="http_routing.403" name="لا يمكن التصريح به">
+        <t t-call="web.frontend_layout">
+            <div id="wrap">
+                <div class='error_container'>
+                    <div class='error_content'>
+                            <p>الصفحة التي تبحث عنها لا يمكن التصريح بها</p>
+                            <p>
+                                <pre t-esc="error_message"/>
+                            </p>
+                            <p>
+                            <div class='row container accordion mb32 mt32' style="text-align:center; width:100%;display:flex;">
+                                <div class='col-auto' style='width:50%'>
+                                    <error_button><a href="/">الصفحة الرئيسية</a></error_button>
+                                </div>
+                                <div class='col-auto' style='width:50%'>
+                                    <error_button type="button" id="submit_msg_error" name="submit_msg_error" class="submit_msg_error">التبليغ عن المشكلة</error_button>
+                                </div>
+                            </div>
+                            <div>
+                                <span t-esc="exception.message" name="status_message" class="status_message"  style="display:none;"  id="status_message"/>
+                                <span t-esc="qweb_exception.name" name="status_name" class="status_name"  style="display:none;"  id="status_name"/>
+                            </div>
+                            <t t-if="editable or request.session.debug">
+                                <t t-call="http_routing.http_error_debug"/>
+                            </t>
+                            </p>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <template id="http_routing.400" name="عذرا لدينا خطأ">
+        <t t-call="web.frontend_layout">
+            <div id="wrap">
+                <t t-raw="0"/>
+                <div class="oe_structure oe_empty">
+                    <div class='error_container'>
+                        <div style="font-family: system-ui, system-ui, ElMessiri;" class='error_content'>
+                            <p>نعتذر منك يوجد لدينا خطأ داخلي</p>
+                            <p>يمكنك</p>
+                            <p>
+                            <div class='row container accordion mb32 mt32' style="text-align:center; width:100%;display:flex;">
+                                <div class='col-auto' style='width:50%'>
+                                    <error_button><a href="/">الصفحة الرئيسية</a></error_button>
+                                </div>
+                                <div class='col-auto' style='width:50%'>
+                                    <error_button type="button" id="submit_msg_error" name="submit_msg_error" class="submit_msg_error">التبليغ عن المشكلة</error_button>
+                                </div>
+                            </div>
+                            <div>
+                                <span t-esc="exception.message" name="status_message" class="status_message"  style="display:none;"  id="status_message"/>
+                                <span t-esc="qweb_exception.name" name="status_name" class="status_name"  style="display:none;"  id="status_name"/>
+                            </div>
+                            <t t-if="editable or request.session.debug">
+                                <t t-call="http_routing.http_error_debug"/>
+                            </t>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="website.qweb_500" inherit_id="http_routing.500" name="خطأ داخلي">
+        <xpath expr="//html[1]" position="replace">
+            <t t-call="web.frontend_layout">
+                <div class='error_container'>
+                    <div style="font-family: system-ui, system-ui, ElMessiri;" class='error_content'>
+                        <p>نعتذر منك يوجد لدينا خطأ داخلي</p>
+                        <p>يمكنك</p>
+                        <div class='row container accordion mb32 mt32' style="text-align:center; width:100%;display:flex;">
+                            <div class='col-auto' style='width:50%'>
+                                <error_button><a href="/">الصفحة الرئيسية</a></error_button>
+                            </div>
+                            <div class='col-auto' style='width:50%'>
+                                <error_button type="button" id="submit_msg_error" name="submit_msg_error" class="submit_msg_error">التبليغ عن المشكلة</error_button>
+                            </div>
+                        </div>
+                        <div>
+                            <span t-esc="exception.message" name="status_message" class="status_message"  style="display:none;"  id="status_message"/>
+                            <span t-esc="qweb_exception.name" name="status_name" class="status_name"  style="display:none;"  id="status_name"/>
+                        </div>
+                        <t t-if="editable or debug">
+                            <t t-call="http_routing.http_error_debug"/>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

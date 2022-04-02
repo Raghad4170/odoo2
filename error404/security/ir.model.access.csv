@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_error404_error404,error404.error404,model_error404_error404,base.group_user,1,1,1,0
+access_error404_error404_user,error404.error404,model_error404_error404,error404.error404_user,1,1,1,1
