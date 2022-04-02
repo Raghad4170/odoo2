@@ -1,0 +1,184 @@
+<odoo>
+  <data>
+      
+        <menuitem name="الإجازات" id="hr_holidays.menu_hr_holidays_root" sequence="95" web_icon="employeesinfo,static/description/holidays.png" groups="parentid.employee"/>
+
+        <menuitem name="استطلاعات" id="survey.menu_surveys" sequence="70" groups="survey.group_survey_user" web_icon="employeesinfo,static/description/survey.png"/>
+
+        <menuitem id="hr.menu_hr_root" name="الموظفين" groups="hr.group_hr_manager,hr.group_hr_user" web_icon="employeesinfo,static/description/icon.png" sequence="75"/>
+
+      
+    <record id="hr_leave_allocation_view_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.view.inherit</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='duration_display']" position="before">
+                <field name="leaves_got_taken"/>
+            </xpath>
+        </field>
+    </record>
+                  
+    <record id="hr_leave_view_form_manager_inherit" model="ir.ui.view">
+        <field name="name">hr.leave.view.inherit</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="report"/>
+            </xpath>
+        </field>
+    </record>
+     
+      
+ <record id="resume_line_view_form_inherit" model="ir.ui.view">
+        <field name="name">hr.resume.line.inherit</field>
+        <field name="model">hr.resume.line</field>
+        <field name="inherit_id" ref="hr_skills.resume_line_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_type']" position="after">
+                <field name="certificate" attrs="{'invisible': [('display_type', '=', 'classic')]}"/>
+            </xpath>
+        </field>
+    </record>
+      
+ <record id="hr_employee_form_inherit" model="ir.ui.view">
+        <field name="name">hr.employee.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="priority" eval="-110"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='public']" position="before">
+                <page name="payroll" string="المصروفات والإيرادات">
+                        <group>
+                            <field name="is_company_partner"/>
+                            <field name="payslips_users" widget="many2many_tags"/>
+                            <field name="all_slips"/>
+                            <field name="emp_exp">
+                                <tree editable="bottom">
+                                    <field name="name"/> 
+                                    <field name="price"/> 
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <field name="emp_rev">
+                                <tree editable="bottom">
+                                    <field name="name"/> 
+                                    <field name="price"/> 
+                                </tree>
+                            </field>
+                            <field name="move_id"/>
+                        </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='country_id']" position="before">
+                <field name="first_name"/>
+                <field name="second_name"/>
+                <field name="third_name"/>
+                <field name="last_name"/>
+            </xpath>
+            <xpath expr="//field[@name='emergency_contact']" position="after">
+                <field name="Kinship"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" type="object" name="display_employee_project" attrs="{'invisible': [('project_count', '=', 0)]}" icon="fa-tasks">
+                    <field name="project_count" widget="statinfo" string="المشاريع"/>
+                </button>
+                <button class="oe_stat_button" type="object" name="display_employee_tasks" attrs="{'invisible': [('tasks_count', '=', 0)]}" icon="fa-tasks">
+                    <field name="tasks_count" widget="statinfo" string="المهام"/>
+                </button>
+            </xpath>
+            <xpath expr="//group[@name='has_work_permit']" position="after">
+                <group string="العنوان الوطني" name="address">
+                    <field name="building_no"/>
+                    <field name="street"/>
+                    <field name="neighborhood"/>
+                    <field name="city"/>
+                    <field name="box_no"/>
+                    <field name="ad_no"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+      
+    <record id="hr_employee_users_inherit" model="ir.ui.view">
+        <field name="name">res.users.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="hr.res_users_view_form_profile"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_country_id']" position="before">
+                <field name="first_name"/>
+                <field name="second_name"/>
+                <field name="third_name"/>
+                <field name="last_name"/>
+            </xpath>
+            <xpath expr="//field[@name='emergency_contact']" position="after">
+                <field name="Kinship"/>
+            </xpath>
+            <xpath expr="//group[@name='has_work_permit']" position="after">
+                <group string="العنوان الوطني" name="address">
+                    <field name="building_no"/>
+                    <field name="street"/>
+                    <field name="neighborhood"/>
+                    <field name="city"/>
+                    <field name="box_no"/>
+                    <field name="ad_no"/>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']" position="inside">          
+                <group>    
+                    <field name='employees_affiliate'>
+                        <tree>
+                            <field name="name"/>
+                            <field name="Kinship"/>               
+                            <field name="date_of_barth"/>               
+                            <field name="national_id"/>               
+                        </tree>
+                    </field>
+                </group>      
+            </xpath>        
+        </field>
+    </record>
+      
+      
+      <record id="view_hr_employee_affiliates_form" model="ir.ui.view">
+        <field name="name">affiliates.form</field>
+        <field name="model">affiliates</field>
+        <field name="arch" type="xml">
+            <form string="اضافة تابع">
+                <sheet>
+                    <group>
+                        <field name="name" string='الاسم'/>
+                        <field name="Kinship" string='صلة القرابة'/>               
+                        <field name="date_of_barth" string='تاريخ الميلاد'/>               
+                        <field name="national_id" string='رقم الهوية الوطنية'/> 
+                    </group> 
+                </sheet>
+            </form>
+        </field>
+    </record>
+      
+        <record id="view_hr_personal_information" model="ir.ui.view">        
+          <field name="name">hr.employee.inherit</field>         
+          <field name="model">hr.employee</field>
+          <field name="inherit_id" ref="hr.view_employee_form"/>         
+          <field name="arch" type="xml">              
+              <xpath expr="//page[@name='personal_information']" position="inside">          
+                  <group>    
+                      <field name='employees_affiliate'>
+                          <tree>
+                              <field name="name"/>
+                              <field name="Kinship"/>               
+                              <field name="date_of_barth"/>               
+                              <field name="national_id"/>               
+                          </tree>
+                      </field>
+                  </group>      
+              </xpath>        
+          </field> 
+      </record> 
+      
+  </data>
+</odoo>
+

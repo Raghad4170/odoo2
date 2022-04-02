@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_affiliates,affiliates,model_affiliates,base.group_user,1,1,1,1
+access_emp_exp,emp.exp,model_emp_exp,,1,1,1,1
+access_emp_rev,emp.rev,model_emp_rev,,1,1,1,1
+access_account_invoice_report_partner,account.invoice.report.partner,model_account_invoice_report_partner,base.group_user,1,1,1,1

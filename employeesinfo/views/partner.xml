@@ -1,0 +1,156 @@
+<odoo>
+    <data>       
+    <record id="view_move_form_inherit" model="ir.ui.view">
+        <field name="name">crm.team.view.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="invoice_user_id"/>
+                <field name="team_id"/>
+                <field name="is_company_partner" invisible='1'/>
+                <field name="partner_entry_type" attrs="{'invisible': [('is_company_partner', '!=', True), ('move_type', 'not in', ('entry','in_invoice'))]}"/>
+                <field name="invoice_commission_type" attrs="{'invisible': [('move_type', 'not in', ('out_invoice'))],'required': [('move_type','in',('out_invoice'))]}"/>
+                <field name="commissionـrate" attrs="{'invisible': [('invoice_commission_type', '!=', 'with')],'required': [('invoice_commission_type','=','with')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+        
+    <record id="crm_team_view_form_inherit" model="ir.ui.view">
+        <field name="name">crm.team.view.inherit</field>
+        <field name="model">crm.team</field>
+        <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="is_company_partner"/>
+                <field name="partnerـrate" attrs="{'invisible': [('is_company_partner', '!=', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+        
+        <record id="view_account_invoice_report_partner_dashboard" model="ir.ui.view">
+            <field name="name">account.invoice.report.dashboard</field>
+            <field name="model">account.invoice.report.partner</field>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <dashboard sample="1">
+                    <view type="graph" ref="employeesinfo.view_account_invoice_report_partner_graph"/>
+                    <group>
+                        <group>
+                            <aggregate name="partner_commission_claimed" string="عمولة الشريك على اساس نقدي" field="partner_commission_claimed"/>
+                            <aggregate name="partner_commission_not_claimed" string="عمولة الشريك على اساس استحقاق" field="partner_commission_not_claimed"/>
+                            <aggregate name="company_commission_total_claimed" string="عمولة الشركة على اساس نقدي" field="company_commission_total_claimed"/>
+                            <aggregate name="company_commission_total_not_claimed" string="عمولة الشركة على اساس استحقاق" field="company_commission_total_not_claimed"/>
+                            <aggregate name="price_subtotal_exp" string="مصروفات الشريك" field="price_subtotal_exp"/>
+                            <aggregate name="price_subtotal_company_exp" string="مصروفات الشركة" field="price_subtotal_company_exp"/>
+                            <aggregate name="partner_commission" string="إيرادات الشريك" field="partner_commission"/>
+                            <aggregate name="company_commission_total" string="إيرادات الشركة" field="company_commission_total"/>
+                        </group>
+<!--                         <group col="1">
+                            <widget name="pie_chart" title="الفواتير" attrs="{'groupby': 'payment_state'}"/>
+                        </group> -->
+                    </group>
+                    <view type="pivot" ref="employeesinfo.view_account_invoice_report_partner_pivot"/>
+                </dashboard>
+            </field>
+        </record>
+        
+    <record id="view_account_invoice_report_partner_pivot" model="ir.ui.view">
+         <field name="name">account.invoice.report.partner.pivot</field>
+         <field name="model">account.invoice.report.partner</field>
+         <field name="arch" type="xml">
+             <pivot string="تقارير الشركاء" sample="1">
+                 <field name="team_id" type="col"/>
+                 <field name="invoice_user_id" type="col"/>
+                 <field name="date" type="row"/>
+                 <field name="partner_commission" type="measure"/>
+                 <field name="company_commission_total" type="measure"/>
+                 <field name="price_subtotal_exp" type="measure"/>
+                 <field name="price_subtotal_company_exp" type="measure"/>
+             </pivot>
+         </field>
+    </record>
+
+    <record id="view_account_invoice_report_partner_graph" model="ir.ui.view">
+         <field name="name">account.invoice.report.partner.graph</field>
+         <field name="model">account.invoice.report.partner</field>
+         <field name="arch" type="xml">
+             <graph string="تقارير الشركاء" type="line" sample="1">
+                 <field name="team_id"/>
+                 <field name="invoice_user_id"/>
+                 <field name="date" type="row"/>
+                 <field name="partner_commission" type="measure"/>
+                 <field name="company_commission_total" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+
+    <record id="view_account_invoice_report_partner_search" model="ir.ui.view">
+        <field name="name">account.invoice.report.partner.search</field>
+        <field name="model">account.invoice.report.partner</field>
+        <field name="arch" type="xml">
+            <search string="تقارير الشركاء">
+                <separator/>
+                <field name="date"/>
+                <separator/>
+                <filter string="للفوترة" name="toinvoice" domain="[('state','=','draft')]" help = "Draft Invoices"/>
+                <filter string="مفوترة" name="current" domain="[('state','not in', ('draft','cancel'))]"/>
+                <separator/>
+                <filter string="العملاء" name="customer" domain="['|', ('move_type','=','out_invoice')]"/>
+                <separator/>
+                <filter string="الفواتير" name="invoice" domain="['|', ('move_type','=','out_invoice'),('move_type','=','in_invoice')]"/>
+                <separator/>
+                <filter name="filter_date" date="date"/>
+                <filter name="invoice_date_due" date="invoice_date_due"/>
+                <field name="partner_id" operator="child_of"/>
+                <field name="team_id"/>
+                <field name="invoice_user_id"/>
+                <group expand="1" string="جمع كحسب">
+                    <filter string="فريق العلاقات" name='user' context="{'group_by':'team_id'}"/>
+                    <filter string="الشركاء" name='user' context="{'group_by':'invoice_user_id'}"/>
+                    <filter string="العميل" name="partner_id" context="{'group_by':'partner_id','residual_visible':True}"/>
+                    <filter string="الحالة" name="status" context="{'group_by':'state'}"/>
+                    <filter string="الشركة" name="company" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                    <separator orientation="vertical" />
+                    <filter string="التاريخ" name="date" context="{'group_by':'date'}"/>
+                    <filter string="تاريخ الاستحقاق" name="duemonth" context="{'group_by':'invoice_date_due:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+        
+     <record id="account_invoice_report_partner_view_tree" model="ir.ui.view">
+         <field name="name">account.invoice.report.view.tree</field>
+         <field name="model">account.invoice.report.partner</field>
+         <field name="arch" type="xml">
+             <tree string="Invoices Analysis">
+                <field name="move_id" string="رقم الفاتورة"/>
+                <field name="partner_id"/>
+                <field name="date"/>
+                <field name="invoice_date_due"/>
+                <field name="team_id"/>
+                <field name="invoice_user_id" widget="many2one_avatar_user"/>
+                <field name="product_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="partner_commission"/>
+                <field name="company_commission_total"/>
+             </tree>
+         </field>
+     </record>
+
+    <record id="action_account_invoice_report_partner_all_supp" model="ir.actions.act_window">
+        <field name="name">تقارير الشركاء</field>
+        <field name="res_model">account.invoice.report.partner</field>
+        <field name="view_mode">dashboard,graph,pivot</field>
+        <field name="context">{'group_by':['date:month', 'team_id']}</field>
+        <field name="search_view_id" ref="view_account_invoice_report_partner_search"/>
+    </record>
+        
+        
+    <menuitem id="invoice_partners_menu_report" name="تقارير الشركاء" action="action_account_invoice_report_partner_all_supp" parent="hr.menu_hr_root" sequence="99"/>
+
+    </data>
+</odoo>
+
