@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_create_litigations,create.litigations,model_create_litigations,helpdesk.group_helpdesk_user,1,1,1,0
+access_moving_attachment,moving.attachment,model_moving_attachment,helpdesk.group_helpdesk_user,1,1,1,0
+access_create_consultings,create.consultings,model_create_consultings,helpdesk.group_helpdesk_user,1,1,1,0
+access_create_contractconsultings,create.contractconsultings,model_create_contractconsultings,helpdesk.group_helpdesk_user,1,1,1,0
+helpdesk_user_consulting_consulting,consulting.consulting,litigation.model_consulting_consulting,helpdesk.group_helpdesk_user,1,1,1,0
+helpdesk_user_contractconsultings_contractconsultings,contractconsulting.contractconsulting,litigation.model_contractconsulting_contractconsulting,helpdesk.group_helpdesk_user,1,1,1,0
+helpdesk_user_litigation_litigation,litigation.litigation,litigation.model_litigation_litigation,helpdesk.group_helpdesk_user,1,1,1,0
+helpdesk_user_litigation_requests,litigation.requests,litigation.model_litigation_requests,helpdesk.group_helpdesk_user,1,0,0,0
+helpdesk_user_litigation_arguments,litigation.arguments,litigation.model_litigation_arguments,helpdesk.group_helpdesk_user,1,0,0,0
+helpdesk_user_litigation_notes,litigation.notes,litigation.model_litigation_notes,helpdesk.group_helpdesk_user,1,0,0,0
+helpdesk_user_litigation_report,litigation.report,litigation.model_litigation_report,helpdesk.group_helpdesk_user,1,0,0,0
+access_ticket_type_types,ticket.type.types,model_ticket_type_types,,1,1,1,0
+access_ticket_type_types_helpdesk_manager,ticket.type.types,model_ticket_type_types,helpdesk.group_helpdesk_manager,1,1,1,1

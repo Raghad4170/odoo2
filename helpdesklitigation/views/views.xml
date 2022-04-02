@@ -1,0 +1,73 @@
+<odoo>
+  <data>
+      
+    <menuitem id="helpdesk.menu_helpdesk_root" name="خدمة العملاء" sequence="25" web_icon="helpdesklitigation,static/description/icon.png" groups="helpdesk.group_helpdesk_user"/>
+
+      
+<!--       helpdesk -->
+ <record id="helpdesk_ticket_view_form_inherited" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ticket_type_id']" position="after">
+                <field name="types_ids"/>
+                <field name="service_standard"/>
+                <field name="service_date"/>
+                <field name="service_days_left"/>
+            </xpath>
+            <xpath expr="//field[@name='description']" position="after">
+                <group>
+                    <field name="response"/>
+                </group>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_get_litigation_tree_view" class="oe_stat_button" icon="fa-legal"
+                    type="object" attrs="{'invisible':  [('litigation_number', '=', 0)]}">
+                    <field name="litigation_number" widget="statinfo" string="القضايا"/>
+                </button>
+                <button name="action_get_consulting_tree_view" class="oe_stat_button" icon="fa-suitcase"
+                    type="object" attrs="{'invisible':  [('consulting_number', '=', 0)]}">
+                    <field name="consulting_number" widget="statinfo" string="الاستشارات"/>
+                </button>
+                <button name="action_get_contractconsulting_tree_view" class="oe_stat_button" icon="fa-file-text"
+                    type="object" attrs="{'invisible':  [('contractconsulting_number', '=', 0)]}">
+                    <field name="contractconsulting_number" widget="statinfo" string="العقود"/>
+                </button>
+            </xpath>
+
+        </field>
+    </record>    
+    
+ <record id="helpdesk_tickets_view_tree_inherited" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="ticket_type_id"/>
+                <field name="service_standard"/>
+                <field name="service_days_left"/>
+            </xpath>
+        </field>
+    </record>  
+      
+ <record id="helpdesk_ticket_type_inherited" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.type.inherit</field>
+        <field name="model">helpdesk.ticket.type</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_type_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="types_ids" widget="many2many_tags"/>
+                <field name="normal_time_taken"/>
+                <field name="normal_tickets"/>
+                <field name="urgent_time_taken"/>
+                <field name="urgent_tickets"/>
+                <field name="very_urgent_time_taken"/>
+                <field name="very_urgent_tickets"/>
+            </xpath>
+        </field>
+    </record> 
+
+  </data>
+</odoo>

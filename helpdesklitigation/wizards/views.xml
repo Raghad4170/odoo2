@@ -1,0 +1,220 @@
+<odoo>
+  <data>
+      
+        <record id="ticket_litigation_form" model="ir.ui.view">
+            <field name="name">litigation.litigation.form</field>
+            <field name="model">litigation.litigation</field>
+            <field name="inherit_id" ref="litigation.edit_litigation_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="before">
+                <field name="ticket_id" groups="helpdesk.group_helpdesk_user"/>
+            </xpath>
+            </field>
+        </record>
+
+        <record id="ticket_consulting_form" model="ir.ui.view">
+            <field name="name">consulting.consulting.form</field>
+            <field name="model">consulting.consulting</field>
+            <field name="inherit_id" ref="litigation.edit_consulting_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="before">
+                <field name="ticket_id" groups="helpdesk.group_helpdesk_user"/>
+            </xpath>
+            </field>
+        </record>
+
+        <record id="ticket_contractconsulting_form" model="ir.ui.view">
+            <field name="name">contractconsulting.contractconsulting.form</field>
+            <field name="model">contractconsulting.contractconsulting</field>
+            <field name="inherit_id" ref="litigation.edit_contractconsulting_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="before">
+                <field name="ticket_id" groups="helpdesk.group_helpdesk_user"/>
+            </xpath>
+            </field>
+        </record>
+
+      
+<!--       litigation -->
+        <record id="create_litigations_view_form" model="ir.ui.view">
+            <field name="name">create.litigations.form</field>
+            <field name="model">create.litigations</field>
+            <field name="arch" type="xml">
+                <form string="إنشاء قضية">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="ticket_id" required="1" readonly="context.get('default_ticket_id')"/>
+                         <field name="project_id" required="1" domain="['|','|',('partner_id','=', partner_id),('partner_id','=', parent_id),('partner_id','in', child_ids)]"/>
+                         <field name="partner_id" invisible="1"/>
+                         <field name="parent_id" invisible="1"/>
+                         <field name="child_ids" invisible="1"/>
+                         <field name="litigation_state"/>
+                         <field name="client_state"/>
+                         <field name="next_court_date"/>
+                         <field name="case_type"/>
+                         <field name="city"/>
+                         <field name="litigation_number"/>
+                        </group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="court"/>
+                            <field name="circuit"/>
+                            <field name="establishment_date"/>
+                            <field name="caliming_date"/>
+                            <field name="case_amount"/>
+                        </group>
+                     </group>
+                        <group>
+                         <field name="summary"/>
+                        </group>
+                    <footer>
+                        <button name="create_litigation" string="إنشاء" type="object" class="btn-primary"/>
+                        <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                    </footer>
+                 </form>
+            </field>
+        </record>
+      
+<!--       consulting -->
+        <record id="create_consultings_view_form" model="ir.ui.view">
+            <field name="name">create.consultings.form</field>
+            <field name="model">create.consultings</field>
+            <field name="arch" type="xml">
+                <form string="إنشاء استشارة">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="ticket_id" required="1" readonly="context.get('default_ticket_id')"/>
+                         <field name="project_id" required="1" domain="['|','|',('partner_id','=', partner_id),('partner_id','=', parent_id),('partner_id','in', child_ids)]"/>
+                         <field name="partner_id" invisible="1"/>
+                         <field name="parent_id" invisible="1"/>
+                         <field name="child_ids" invisible="1"/>
+                        </group>
+                        <group>
+                         <field name="user_id"/>
+                         <field name="date"/>
+                         <field name="consulting_type"/>
+                         <field name="other" attrs="{'invisible': [('consulting_type', 'not in', ('استشارة قانونية أخرى'))]}"/>
+                        </group>
+                     </group>
+                        <group>
+                         <field name="summary"/>
+                        </group>
+                        <group>
+                         <field name="consult"/>
+                        </group>
+                    <footer>
+                        <button name="create_consulting" string="إنشاء" type="object" class="btn-primary"/>
+                        <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                    </footer>
+                 </form>
+            </field>
+        </record>
+            
+<!--       consulting -->
+        <record id="create_contractconsultings_view_form" model="ir.ui.view">
+            <field name="name">create.contractconsultings.form</field>
+            <field name="model">create.contractconsultings</field>
+            <field name="arch" type="xml">
+                <form string="إنشاء استشارة عقد">
+                     <div class="oe_title">
+                       <h1>
+                        <field name="name" required="1"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                         <field name="ticket_id" required="1" readonly="context.get('default_ticket_id')"/>
+                         <field name="project_id" required="1" domain="['|','|',('partner_id','=', partner_id),('partner_id','=', parent_id),('partner_id','in', child_ids)]"/>
+                         <field name="partner_id" invisible="1"/>
+                         <field name="parent_id" invisible="1"/>
+                         <field name="child_ids" invisible="1"/>
+                        </group>
+                        <group>
+                         <field name="user_id"/>
+                         <field name="date"/>
+                         <field name="consulting_type"/>
+                        </group>
+                     </group>
+                        <group>
+                         <field name="summary"/>
+                        </group>
+                        <group>
+                         <field name="draft_contract"/>
+                         <field name="recommended_contract"/>
+                         <field name="sign_contract"/>
+                        </group>
+                    <footer>
+                        <button name="create_contractconsulting" string="إنشاء" type="object" class="btn-primary"/>
+                        <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                    </footer>
+                 </form>
+            </field>
+        </record>
+            
+<!--       attachment -->
+        <record id="moving_attachments_view_form" model="ir.ui.view">
+            <field name="name">moving.attachment.form</field>
+            <field name="model">moving.attachment</field>
+            <field name="arch" type="xml">
+                <form string="نقل الملفات">
+                     <group>
+                      <field name="trans_type" required="1"/>
+                     </group>
+                     <group>
+                        <group>
+                         <field name="ticket_id" required="1" readonly="context.get('default_ticket_id')"/>
+                        </group>
+                        <group>
+                            <field name="litigation_id" attrs="{'invisible': [('trans_type', 'not in', ('قضية'))]}"/>
+                            <field name="consulting_id" attrs="{'invisible': [('trans_type', 'not in', ('استشارة'))]}"/>
+                            <field name="contractconsulting_id" attrs="{'invisible': [('trans_type', 'not in', ('استشارة عقد'))]}"/>
+                        </group>
+                     </group>
+                    <footer>
+                        <button name="moving_attachment" string="نقل" type="object" class="btn-primary"/>
+                        <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                    </footer>
+                 </form>
+            </field>
+        </record>
+      
+      
+<!--       helpdesk -->
+ <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.inherit</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='assign_ticket_to_self']" position="before">
+                <button string="إنشاء قضية" name="create_litigation_action" class="oe_highlight" type="object"/>
+                <button string="إنشاء استشارة" name="create_consulting_action" class="oe_highlight" type="object"/>
+                <button string="إنشاء استشارة عقد" name="create_contractconsulting_action" class="oe_highlight" type="object"/>
+                <button string="نقل الملفات" name="attachment_action" type="object"/>
+            </xpath>
+        </field>
+    </record> 
+      
+      
+     <record id="helpdesk_stage_view_form_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.stage.inherit</field>
+        <field name="model">helpdesk.stage</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_stage_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fold']" position="after">
+                <field name="un_seen"/>
+            </xpath>
+        </field>
+     </record> 
+      
+  </data>
+</odoo>

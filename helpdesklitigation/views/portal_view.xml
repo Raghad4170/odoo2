@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+      
+    <template id="website_helpdesk_form.ticket_submited" name="تم استلام طلبكم">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+              <section class="s_cover o_colored_level pb256 pt256 s_parallax_no_overflow_hidden o_full_screen_height" data-scroll-background-ratio="0" data-snippet="s_cover" data-name="Cover" style="position: relative; min-height: 1079px !important;" data-oe-shape-data="{&quot;shape&quot;:&quot;web_editor/Wavy/10&quot;,&quot;flip&quot;:[]}">
+                <div class="o_we_shape o_web_editor_Wavy_10"></div>
+                <div class="s_allow_columns container">
+                    <t t-if="request.session.get('form_builder_model_model', '') == 'helpdesk.ticket'">
+                        <t t-set="ticket" t-value="request.website._website_form_last_record().sudo()"/>
+                    </t>
+                    <t t-if="ticket">
+                      <h1 style="text-align: center;">
+                        <font style="font-size: 62px;">
+                          <b>رقم تذكرتك هي <a t-if="request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">#<span t-field="ticket.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="ticket.id"/></t>.</b>
+                        </font>
+                      </h1>
+                    </t>
+                    <t t-if="request.session.get('form_builder_model_model', '') == 'helpdesk.ticket'">
+                        <t t-if="request.session.get('public_user')">
+                          <p class="lead" style="text-align: center;">
+                            <font style="font-size: 20px;">
+                                <p style="text-align: center;">
+                                اسم المستخدم (البريد الإلكتروني المدخل في الطلب)
+                                </p>
+                                <p style="text-align: center;">
+                                كلمة المرور (رقم الجوال المدخل في الطلب)
+                                </p>
+                            </font>
+                          </p>
+                        </t>
+                    </t>
+                </div>
+              </section>
+            </div>  
+         </t>                   
+    </template>
+
+    <template name="ticket_submit_form_inherit"  id="ticket_submit_form_inherit_id" inherit_id="website_helpdesk_form.ticket_submit_form">
+     <xpath expr="//div[1]" position="replace">
+        <div class="container">
+            <h2 class="text-muted">
+             فتح تذكرة جديدة
+            </h2>
+            <span class="hidden" data-for="helpdesk_ticket_form" t-att-data-values="{'team_id': team and team.id or False,'partner_name': default_partner_values.get('name', ''), 'partner_email': default_partner_values.get('email', ''), 'partner_phone': default_partner_values.get('phone', '')}"/>
+
+            <div id="helpdesk_section">
+                <section id="forms" class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                    <div class="container">
+                        <form id="helpdesk_ticket_form" action="/website/form/" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="helpdesk.ticket" data-success-mode="redirect" data-success-page="/your-ticket-has-been-submitted" data-editable-form="false" hide-change-model="true">
+                            <div class="s_website_form_rows row s_col_no_bgcolor">
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk1">
+                                            <span class="s_website_form_label_content">الاسم</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk1" type="text" class="form-control s_website_form_input" name="partner_name" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="email" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk2">
+                                            <span class="s_website_form_label_content">البريد الإلكتروني</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk2" type='email' class='form-control s_website_form_input' name="partner_email" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="phone" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="partner_phone">
+                                            <span class="s_website_form_label_content">رقم الجوال</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="phone" type='text' class='form-control s_website_form_input' name="partner_phone" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="int" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="ticket_type_id">
+                                            <span class="s_website_form_label_content">نوع الخدمة</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="row col-sm col-xs-12">
+                                            <t t-foreach="ticket_types_list" t-as="d">
+                                            <div class="col-auto">
+                                                <input required="1" type="radio" id="ticket_types" name="ticket_type_id" class="ticket_types" t-att-value="d.id"/>
+                                                <label for="ticket_type"><t t-esc="d.name"/></label>
+                                            </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="ticket_type_data">
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="int" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="service_standard">
+                                            <span class="s_website_form_label_content">معيار الخدمة</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+
+                                        <div class="row col-sm col-xs-12">
+                                            <div class="col-auto">
+                                                <input required="1" type="radio" id="standared_service" name="service_standard" class="service_standard" value="عادي"/>
+                                                <label for="standard">عادي</label>
+                                                <label class="normal_service_rate" name="normal_service_rate" id="normal_service_rate" for="standard"></label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input required="1" type="radio" id="standared_service" name="service_standard" class="service_standard" value="مستعجل"/>
+                                                <label for="standard">مستعجل</label> 
+                                                <label class="urgent_service_rate" name="urgent_service_rate" id="urgent_service_rate" for="standard"></label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input required="1" type="radio" id="standared_service" name="service_standard" class="service_standard" value="طارئ"/>
+                                                <label for="standard">طارئ</label>
+                                                <label class="very_urgent_service_rate" name="very_urgent_service_rate" id="very_urgent_service_rate" for="standard"></label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk3">
+                                            <span class="s_website_form_label_content">الموضوع </span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk3" type="text" class="form-control s_website_form_input" name="name" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field" data-type="text" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk4">
+                                            <span class="s_website_form_label_content">التفاصيل</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <textarea id="helpdesk4" class="form-control s_website_form_input" name="description" required="1"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_custom" data-type="binary" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk5">
+                                            <span class="s_website_form_label_content">المرفقات</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk5" type="file" name="attachments" class="form-control s_website_form_input" multiple="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_dnone">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk6">
+                                            <span class="s_website_form_label_content">الفريق</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="helpdesk6" type="hidden" class="form-control s_website_form_input" name="team_id"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                    <div style="width: 200px;" class="s_website_form_label"/>
+                                    <a href="#" role="button" class="btn btn-primary btn-lg s_website_form_send">إرسال</a>
+                                    <span id="s_website_form_result"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+     </xpath>
+    </template>
+
+    <template name="Website Helpdesk Form Team inherit" id="inherit" inherit_id="website_helpdesk_form.website_helpdesk_form_team">
+       <xpath expr="//t[@t-call='#{template_xmlid}']" position="replace">
+                <t t-call="helpdesklitigation.ticket_submit_form_inherit_id"/>
+       </xpath>  
+    </template>
+    
+</odoo>
+

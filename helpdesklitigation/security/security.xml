@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>    
+<data noupdate="1">        
+<!-- litigation -->
+
+    <record model="ir.rule" id="litigation_helpdesk_manager">
+        <field name="name">litigation: helpdesk manager: see all</field>
+        <field name="model_id" ref="litigation.model_litigation_litigation"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('helpdesk.group_helpdesk_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="litigation_helpdesk_user">
+        <field name="name">litigation: Own Ticket</field>
+        <field name="model_id" ref="litigation.model_litigation_litigation"/>
+        <field name="domain_force">[('ticket_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('helpdesk.group_helpdesk_user'))]"/>
+    </record>
+    
+<!-- litigation report -->
+    <record model="ir.rule" id="litigation_report_helpdesk_manager">
+        <field name="name">litigation report: helpdesk manager: see all</field>
+        <field name="model_id" ref="litigation.model_litigation_report"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('helpdesk.group_helpdesk_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="litigation_report_helpdesk_user">
+        <field name="name">litigation report: Own Ticket</field>
+        <field name="model_id" ref="litigation.model_litigation_report"/>
+        <field name="domain_force">[('ticket_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('helpdesk.group_helpdesk_user'))]"/>
+    </record>
+
+<!-- consulting -->
+
+    <record model="ir.rule" id="consulting_helpdesk_manager">
+        <field name="name">consulting: helpdesk manager: see all</field>
+        <field name="model_id" ref="litigation.model_consulting_consulting"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('helpdesk.group_helpdesk_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="consulting_helpdesk_user">
+        <field name="name">consulting: Own Ticket</field>
+        <field name="model_id" ref="litigation.model_consulting_consulting"/>
+        <field name="domain_force">[('ticket_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('helpdesk.group_helpdesk_user'))]"/>
+    </record>
+
+<!-- contract consulting -->
+    <record model="ir.rule" id="contractconsulting_helpdesk_manager">
+        <field name="name">contractconsulting: helpdesk manager: see all</field>
+        <field name="model_id" ref="litigation.model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('helpdesk.group_helpdesk_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="contractconsulting_helpdesk_user">
+        <field name="name">contractconsulting: Own Ticket</field>
+        <field name="model_id" ref="litigation.model_contractconsulting_contractconsulting"/>
+        <field name="domain_force">[('ticket_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4,ref('helpdesk.group_helpdesk_user'))]"/>
+    </record>
+</data>
+</odoo>

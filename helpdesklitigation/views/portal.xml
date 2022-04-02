@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    <template id="litigation_layout_law" inherit_id="helpdesk.portal_helpdesk_ticket" name="Portal Layout">
+        <xpath expr="//thead/tr/th[hasclass('w-100')]" position="after">
+            <th t-if="groupby == 'none'" class="text-center">الوقت المتبقي لتقديم الخدمة</th>
+        </xpath>
+        <xpath expr="//td[2]" position="after">
+            <td t-if="groupby == 'none'" class="text-center"><span t-field="ticket.service_days"/></td>
+            <td style="display:none;">helpdesk_litigation</td>
+        </xpath>
+    </template>        
+    </data>
+</odoo>

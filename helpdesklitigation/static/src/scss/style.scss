@@ -1,0 +1,32 @@
+.tab_ul{
+    ul.tabs{
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+    }
+    ul.tabs li{
+        background: none;
+        color: #222;
+        display: inline-block;
+        padding: 10px 15px;
+        cursor: pointer;
+    }
+    ul.tabs li.current{
+        border: 1px solid #CED4DA;
+        border-bottom: none;
+        color: #222;
+    }
+    .tab-content{
+        display: none;
+        border: 1px solid #CED4DA;
+        padding: 15px;
+    }
+    .tab-content.current{
+        display: inherit;
+    }
+    #sig-canvas {
+        border: 2px dotted #CCCCCC;
+        border-radius: 15px;
+        cursor: crosshair;
+      }
+}
