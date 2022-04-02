@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_standard_selection_manager,standard.selection,model_standard_selection,standard.group_standard_manager,1,1,1,1
+access_standard_selection,standard.selection,model_standard_selection,,1,1,1,0
+access_standard_replace_manager,standard.replace,model_standard_replace,standard.group_standard_manager,1,1,1,1
+access_standard_replace,standard.replace,model_standard_replace,,1,1,1,0
+access_standard_types_manager,standard.types,model_standard_types,standard.group_standard_manager,1,1,1,1
+access_standard_types,standard.types,model_standard_types,,1,1,1,0
+access_standard_standard_manager,standard.standard,model_standard_standard,standard.group_standard_user,1,1,1,1
+access_standard_standard,standard.standard,model_standard_standard,,1,1,1,0
+access_contract_standard,contract.standard,model_contract_standard,standard.group_standard_user,1,1,1,1
+access_contract_payment,contract.payment,model_contract_payment,standard.group_standard_user,1,1,1,1

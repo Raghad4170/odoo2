@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>    
+    
+    <template id="portal_layout_standard" name="Portal layout: standard menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'standard' or standard" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not standard else ''}">
+                <a t-if="standard" t-attf-href="/my/standards?{{ keep_query() }}">النماذج الموحدة</a>
+                <t t-else="">النماذج الموحدة</t>
+            </li>
+            <li t-if="standard" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="standard.name"/>
+            </li>
+        </xpath>
+    </template>
+    
+
+    <template id="standard_portal_list" name="النماذج الموحدة">
+        <t t-set="standard" t-value="page_name == 'standard'"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">النماذج الموحدة</t>
+            </t>
+            <t t-if="not standards">
+                <div class="alert alert-warning mt8" role="alert">
+                 لا يوجد طلب للنموذج الموحد
+                </div>
+            </t>
+            <t t-if="standards" t-call="portal.portal_table">
+             <thead>
+                <tr>
+                    <th>#</th>
+                    <th>النموذج</th>
+                 </tr>
+             </thead>
+                <tbody>
+                    <tr t-foreach="standards" t-as="standard">
+                        <td>
+                         <a t-attf-href="/my/standard/#{standard.id}">
+                             <span t-field="standard.id"/>
+                         </a>
+                        </td>
+                        <td>
+                         <a t-attf-href="/my/standard/#{standard.id}">
+                           <span t-field="standard.name"/>
+                         </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    
+  <template id="standard_portal" name="النموذج الموحد">
+        <t t-set="o_portal_fullwidth_alert" groups="standard.group_standard_user">
+            <t t-call="portal.portal_back_in_edit_mode">
+                <t t-set="backend_url" t-value="'/web#model=standard.standard&amp;id=%s&amp;view_type=form' % (standard.id)"/>
+            </t>
+        </t>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li t-if="standard.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المسؤول</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="standard.user_id.image_1024" t-att-src="image_data_uri(standard.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not standard.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="standard.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li t-if="sign_user" class="list-group-item flex-grow-1">
+                                <div class="row flex-nowrap">
+                                    <div class="col pl-1" style="min-width: 150px">
+                                        <a role="button" class="btn btn-primary btn-block mb8" data-toggle="modal" data-target="#modalaccept" href="#">
+                                            <i class="fa fa-check mr-1"/>التوقيع
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <div role="dialog" class="modal fade" id="modalaccept">
+                    <div class="modal-dialog" >
+                        <form id="accept" method="POST" t-att-data-standard-id="standard.id" t-att-data-token="standard.access_token" class="js_accept_json modal-content js_website_submit_form">
+                            <input id="sale_order"  name="sale_order" class="sale_order" type="hidden" value="sale_order"/>
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <header class="modal-header">
+                                <h4 class="modal-title">التوقيع</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                            </header>
+                            <main class="modal-body" id="sign-dialog">
+                                <t t-call="portal.signature_form">
+                                    <t t-set="call_url" t-value="'/my/standards/%s/sign' % (standard.id)"/>
+                                    <t t-set="default_name" t-value="request.env.user.partner_id.name"/>
+                                    <t t-set="font_color" t-value="'black'"/>
+                                    <t t-set="send_label">القبول والتوقيع</t>
+                                </t>
+                            </main>
+                        </form>
+                    </div>
+                </div>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                        <div class="card_header">
+                                <span t-if="standard.state == 'معتمد'" class="float-right">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                        <a class="btn btn-sm btn-secondary btn-block o_download_btn" t-att-href="standard.get_portal_url_pdf_download(report_type='pdf', download=True)" title="Download">
+                                            <i class="fa fa-download"/> تحميل</a>
+                                    </div>
+                                    <div class="btn-group flex-grow-1 mb-1">
+                                        <a class="btn btn-sm btn-secondary btn-block o_print_btn" t-att-href="standard.get_portal_url_pdf_download(report_type='pdf')" id="print_standard_report" title="Print" target="_blank">
+                                            <i class="fa fa-print"/> طباعة</a>
+                                    </div>
+                                </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="o_portal_html_view shadow p-3">
+                                <div class="o_portal_html_loader text-center">
+                                    <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw text-black-50"></i>
+                                </div>
+                                <iframe class="mt8 mb8" width="100%" height="100%" style="height: 1100px;" frameborder="0" t-att-src="standard.get_portal_url_pdf_download(report_type='pdf')"/>
+                            </div>
+                            <div id="discussion"/>
+                        </div>
+                    </div>
+
+                    <!-- ======  Chatter ====== -->
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="standard"/>
+                            <t t-set="token" t-value="standard.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>      
+    </template>
+    
+    
+    
+<!--     standard contract -->
+    
+    <template id="portal_layout_standard" name="Portal layout: standardcontract menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'standardcontract' or standardcontract" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not standardcontract else ''}">
+                <a t-if="standardcontract" t-attf-href="/my/standardcontracts?{{ keep_query() }}">العقود الموحدة</a>
+                <t t-else="">العقود الموحدة</t>
+            </li>
+            <li t-if="standardcontract" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="standardcontract.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    
+    <template id="standardcontract_portal_list" name="العقود الموحدة">
+        <t t-set="standardcontract" t-value="page_name == 'standardcontract'"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">العقود الموحدة</t>
+            </t>
+            <t t-if="not standardcontracts">
+                <div class="alert alert-warning mt8" role="alert">
+                 لا يوجد طلب للعقد الموحد
+                </div>
+            </t>
+            <t t-if="standardcontracts" t-call="portal.portal_table">
+             <thead>
+                <tr>
+                    <th>#</th>
+                    <th>العقد</th>
+                 </tr>
+             </thead>
+                <tbody>
+                    <tr t-foreach="standardcontracts" t-as="standardcontract">
+                        <td>
+                         <a t-attf-href="/my/standardcontract/#{standardcontract.id}">
+                             <span t-field="standardcontract.id"/>
+                         </a>
+                        </td>
+                        <td>
+                         <a t-attf-href="/my/standardcontract/#{standardcontract.id}">
+                           <span t-field="standardcontract.name"/>
+                         </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    
+  <template id="standardcontract_portal" name="العقد الموحد">
+        <t t-set="o_portal_fullwidth_alert" groups="standard_contract.group_standard_contract_user">
+            <t t-call="portal.portal_back_in_edit_mode">
+                <t t-set="backend_url" t-value="'/web#model=standard.contract&amp;id=%s&amp;=form' % (standardcontract.id)"/>
+            </t>
+        </t>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li t-if="standardcontract.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المسؤول</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="standardcontract.user_id.image_1024" t-att-src="image_data_uri(standardcontract.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not standardcontract.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="standardcontract.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li t-if="sign_user" class="list-group-item flex-grow-1">
+                                <div class="row flex-nowrap">
+                                    <div class="col pl-1" style="min-width: 150px">
+                                        <a role="button" class="btn btn-primary btn-block mb8" data-toggle="modal" data-target="#modalaccept" href="#">
+                                            <i class="fa fa-check mr-1"/>التوقيع
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <div role="dialog" class="modal fade" id="modalaccept">
+                    <div class="modal-dialog" >
+                        <form id="accept" method="POST" t-att-data-standardcontract-id="standardcontract.id" t-att-data-token="standardcontract.access_token" class="js_accept_json modal-content js_website_submit_form">
+                            <input id="sale_order"  name="sale_order" class="sale_order" type="hidden" value="sale_order"/>
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <header class="modal-header">
+                                <h4 class="modal-title">التوقيع</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                            </header>
+                            <main class="modal-body" id="sign-dialog">
+                                <t t-call="portal.signature_form">
+                                    <t t-set="call_url" t-value="'/my/standardcontracts/%s/sign' % (standardcontract.id)"/>
+                                    <t t-set="default_name" t-value="request.env.user.partner_id.name"/>
+                                    <t t-set="font_color" t-value="'black'"/>
+                                    <t t-set="send_label">القبول والتوقيع</t>
+                                </t>
+                            </main>
+                        </form>
+                    </div>
+                </div>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                    <div class="card_header">
+                        <div class="col mt-3">
+                            <div field="standardcontract.name"/>
+                        </div>
+                    </div>
+                        <div class="card-body">
+                            <div class="o_portal_html_view shadow p-3">
+                                <div class="o_portal_html_loader text-center">
+                                    <i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw text-black-50"></i>
+                                </div>
+                                <iframe class="mt8 mb8" width="100%" height="100%" frameborder="0" t-att-src="standardcontract.get_portal_url_pdf_download(report_type='pdf')" style="height: 1100px;"/>
+                            </div>
+                            <div id="discussion"/>
+                        </div>
+                    </div>
+
+                    <!-- ======  Chatter ====== -->
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="standardcontract"/>
+                            <t t-set="token" t-value="standardcontract.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>      
+    </template>
+
+    
+</odoo>

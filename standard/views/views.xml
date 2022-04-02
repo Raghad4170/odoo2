@@ -1,0 +1,389 @@
+<odoo>
+  <data>
+    <!-- standard replace -->
+
+    <record id="standard_replace_form" model="ir.ui.view">
+        <field name="name">استبدالات النماذج الموحدة</field>
+        <field name="model">standard.replace</field>
+        <field name="arch" type="xml">
+            <form string="استبدالات النماذج الموحدة">
+            <sheet string="استبدالات النماذج الموحدة">
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="replace"/>
+                    </group>   
+                    <group>
+                        <field name="standards"/>
+                    </group>   
+                </group>
+                <group>
+                    <field name="selections" attrs="{'invisible': [('standards', '!=', 'Selection')],'required': [('standards','=','selection')]}">
+                        <tree editable="bottom"> 
+                            <field name="name"/>
+                        </tree>  
+                    </field>
+                    <group>
+                        <field name="models" attrs="{'invisible': [('standards', '!=', 'many2one')],'required': [('standards', '=', 'many2one')]}"/>
+                    </group>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+      
+    <record model="ir.ui.view" id="standard_replace_list">
+      <field name="name">استبدالات النماذج الموحدة</field>
+      <field name="model">standard.replace</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="replace"/>
+          <field name="standards"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="standard_replace_action_window">
+      <field name="name">استبدالات النماذج الموحدة</field>
+      <field name="res_model">standard.replace</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- standard types -->
+
+    <record id="standard_types_form" model="ir.ui.view">
+        <field name="name">قوالب النماذج الموحدة</field>
+        <field name="model">standard.types</field>
+        <field name="arch" type="xml">
+            <form string="قوالب النماذج الموحدة">
+            <sheet string="قوالب النماذج الموحدة">
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <field name="replaces"/>
+                </group>
+                <group>
+                    <field name="Text"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+      
+    <record model="ir.ui.view" id="standard_types_list">
+      <field name="name">قوالب النماذج الموحدة</field>
+      <field name="model">standard.types</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="standard_types_action_window">
+      <field name="name">قوالب النماذج الموحدة</field>
+      <field name="res_model">standard.types</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+      
+      
+    <!-- standard -->
+
+    <record id="standard_form" model="ir.ui.view">
+        <field name="name">النماذج الموحدة</field>
+        <field name="model">standard.standard</field>
+        <field name="arch" type="xml">
+            <form string="النماذج الموحدة">
+                <header>
+                    <button string="تعيين كجديد" name="action_draft" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'جديد')]}"/>
+                    <button string="البدأ بالنموذج" name="action_review" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('في حالة المراجعة','معتمد'))]}"/>
+                    <button string="اعتماد النموذج" name="action_submit" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'في حالة المراجعة')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="جديد,في حالة المراجعة"/>
+                </header>
+            <sheet string="النماذج الموحدة">
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="user_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>   
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="standard_id"/>
+                    </group>   
+                </group>
+                <notebook>
+                    <page string="النموذج">
+                        <group name='replace'>
+                        </group>
+                        <group>
+                            <field name="original_text" invisible='1'/>
+                            <field name="Text"/>
+                        </group>
+                    </page>
+                    <page string="التواقيع">
+                        <group name='sign'>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+            </div>
+            </form>
+        </field>
+    </record>
+      
+      
+    <record model="ir.ui.view" id="standard_list">
+      <field name="name">النماذج الموحدة</field>
+      <field name="model">standard.standard</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="user_id"/>
+          <field name="standard_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="standard_action_window">
+      <field name="name">النماذج الموحدة</field>
+      <field name="res_model">standard.standard</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- menu -->
+    <menuitem name="النماذج الموحدة" id="menu_standard" web_icon="standard,static/description/icon.png" groups="parentid.employee"/>
+
+    <menuitem name="النماذج الموحدة" id="menu_standard_standard" parent="standard.menu_standard" action="standard.standard_action_window"/>
+
+    <menuitem name="قوالب النماذج الموحدة" id="menu_standard_types" parent="standard.menu_standard" action="standard.standard_types_action_window"/>
+
+    <menuitem name="استبدالات النماذج الموحدة" id="menu_standard_replace" parent="standard.menu_standard" action="standard.standard_replace_action_window"/>
+      
+      
+    <!-- contract standard -->
+
+
+    <record id="contract_standard_form" model="ir.ui.view">
+        <field name="name">العقود الموحدة</field>
+        <field name="model">contract.standard</field>
+        <field name="arch" type="xml">
+            <form string="العقود الموحدة">
+            <sheet string="العقود الموحدة">
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="user_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>   
+                    <group>
+                        <field name="partner_id"/>
+                    </group>   
+                </group>
+                <notebook>
+                    <page string="معلومات العقد">
+                        <group string="معلومات العقد">
+                            <group>
+                                <field name="contract_type"/> 
+                                <field name="contract_purpose"/> 
+                                <field name="terms"/>
+                                <field name="start"/> 
+                                <field name="payment_type"/> 
+                                <field name="sides"/> 
+                                <field name="prove"/> 
+                                <field name="not_saudi"/> 
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="second_speciality"/>
+                                <label for="contract_period"/>
+                                <div class="o_row" name="contract_period">
+                                    <field name="contract_period" placeholder="مدة العقد"/>
+                                    <field name="calander" placeholder="ميلادية/هجرية"/>
+                                </div>
+                                <field name="end"/> 
+                                <field name="amount"/> 
+                                <field name="contract_days"/> 
+                                <field name="contract_calander"/> 
+                                <field name="judge"/> 
+                            </group>
+                        </group>
+                        <group>
+                            <group string="الطرف الأول">
+                                <field name="first_side"/> 
+                                <field name="company_person"/> 
+                                <field name="company_attorney"/> 
+                                <field name="authorـcompany_no"/> 
+                                <field name="author_company_date"/> 
+                                <field name="company_function"/> 
+                                <field name="company_phone"/> 
+                                <field name="first_activity"/>
+                            </group>
+                            <group string="الطرف الثاني">
+                                <field name="second_side"/>
+                                <field name="author_id"/>
+                                <field name="author_attorney"/>
+                                <field name="author_no"/>
+                                <field name="author_date"/>
+                                <field name="author_function"/>
+                                <field name="author_phone"/>
+                                <field name="second_activity"/>
+                            </group>
+                        </group>
+                        <group string="الشاهدين">
+                            <group>
+                                <field name="first_witness"/> 
+                            </group>
+                            <group>
+                                <field name="second_witness"/>
+                            </group>
+                        </group>
+                        <group string="الدفعات">
+                            <field name="payment">
+                                <tree editable="bottom">
+                                    <field name="name"/> 
+                                    <field name="payment_type"/>
+                                    <field name="amount"/>                                     
+                                    <field name="amount_discount"/> 
+                                    <field name="issue_date"/> 
+                                    <field name="due_date"/> 
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                    <page string="العقد">
+                        <group>
+                            <field name="sides_contract"/> 
+                            <field name="intro"/> 
+                        </group>
+                        <group string="أولًا:">
+                            <field name="standard_1"/> 
+                            <field name="edited_1"/> 
+                        </group>
+                        <group string="ثانيًا:">
+                            <field name="standard_2"/> 
+                            <field name="edited_2"/> 
+                        </group>
+                        <group string="ثالثًا:">
+                            <field name="standard_3"/> 
+                            <field name="edited_3"/> 
+                        </group>
+                        <group string="رابعًا:">
+                            <field name="standard_4"/> 
+                            <field name="edited_4"/> 
+                        </group>
+                        <group string="خامسًا:">
+                            <field name="standard_5"/> 
+                            <field name="edited_5"/> 
+                        </group>
+                        <group string="سادسًا:">
+                            <field name="standard_6"/> 
+                            <field name="edited_6"/> 
+                        </group>
+                        <group string="سابعًا:">
+                            <field name="standard_7"/> 
+                            <field name="edited_7"/> 
+                        </group>
+                        <group string="ثامنًا:">
+                            <field name="standard_8"/> 
+                            <field name="standard_8_1"/> 
+                            <field name="edited_8"/> 
+                        </group>
+                        <group string="تاسعًا:">
+                            <field name="standard_9"/> 
+                            <field name="edited_9"/> 
+                        </group>
+                        <group string="عاشرًا:">
+                            <field name="standard_10"/> 
+                            <field name="standard_10_1"/> 
+                            <field name="edited_10"/> 
+                        </group>
+                        <group string="حادي عشر:">
+                            <field name="standard_11"/> 
+                            <field name="edited_11"/> 
+                        </group>
+                    </page>
+                    <page string="التوقيع">
+                        <group>
+                            <group string="الطرف الأول">
+                                <field name="first_side"/> 
+                                <field name="first_side_sign" widget="image"/>
+                                <field name="first_side_sign_name" widget="image"/>
+                            </group>
+                            <group string="الطرف الثاني">
+                                <field name="second_side"/>
+                                <field name="second_side_sign" widget="image"/>
+                                <field name="second_side_sign_name" widget="image"/>
+                            </group>
+                            <group string="الشاهد الأول">
+                                <field name="first_witness"/> 
+                                <field name="first_witness_sign" widget="image"/>
+                                <field name="first_witness_sign_name" widget="image"/>
+                            </group>
+                            <group string="الشاهد الثاني">
+                                <field name="second_witness"/>
+                                <field name="second_witness_sign" widget="image"/>
+                                <field name="second_witness_sign_name" widget="image"/>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+            </div>
+            </form>
+        </field>
+    </record>
+      
+      
+    <record model="ir.ui.view" id="contract_standard_list">
+      <field name="name">العقود الموحدة</field>
+      <field name="model">contract.standard</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="user_id"/>
+          <field name="partner_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="contract_standard_action_window">
+      <field name="name">العقود الموحدة</field>
+      <field name="res_model">contract.standard</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+      
+    <menuitem name="العقود الموحدة" id="menu_contract_standard" parent="standard.menu_standard" action="standard.contract_standard_action_window"/>
+
+      
+  </data>
+</odoo>

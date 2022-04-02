@@ -1,0 +1,69 @@
+<odoo>    
+<template id="standard_layout">
+        <div t-attf-class="header o_company_#{doc.company_id.id}_layout" t-att-style="report_header_style">
+            <div class="o_boxed_header">
+            <div class="row">
+                <div class="col-auto" align="right">
+                    <a t-att-href="'%s' % doc.company_id.website">
+                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" alt="Logo"/>
+                    </a>
+                </div>
+
+                <div class="col-auto" align="left">
+                    <img t-if="doc.partner_id.image_1920" t-att-src="image_data_uri(doc.partner_id.image_1920)" alt="Logo"/>
+                </div>                
+            </div>
+            </div>
+        </div>
+
+        <div t-attf-class="article o_report_layout_boxed o_company_#{doc.company_id.id}_layout" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-raw="0"/>
+        </div>
+    
+        <div t-attf-class="footer o_clean_footer o_company_#{doc.company_id.id}_layout">
+            <div class="text-center">
+                <div t-if="report_type == 'pdf'">
+                   صفحة: <span class="page"/> / <span class="topage"/> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto" align="left">
+                    <div t-if="doc.company_id.stamp" t-field="doc.company_id.stamp" style="width:120px;height:120px;" t-options='{"widget": "image"}'/>
+                </div>
+            </div>
+        </div>
+</template>
+
+<template id="standard_document">
+    <t t-call="standard.standard_layout">
+        <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div t-if="doc.Text"><span t-field="doc.Text"/></div>
+        </div>
+    </t>
+</template>
+
+    
+<template id="report_standard">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="standard.standard_document"/>
+        </t>
+    </t>
+</template>
+    
+    <data>
+        <record id="action_report_standard" model="ir.actions.report">
+            <field name="name">النموذج الموحد</field>
+            <field name="model">standard.standard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">standard.report_standard</field>
+            <field name="report_file">standard.report_standard</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_standard_standard"/>
+            <field name="binding_type">report</field>
+        </record>     
+    </data> 
+</odoo>
+
+
+

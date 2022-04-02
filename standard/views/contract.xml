@@ -1,0 +1,186 @@
+<odoo>    
+<template id="contract_standard_document">
+    <t t-call="standard.standard_layout">
+        <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div id="informations" style="font-size: 20px;">
+            <div align="center"><h1 class="mt16" id="informations"><strong><div t-field="doc.name"/></strong></h1></div>
+                
+                <div class="pt-1" t-if="doc.sides_contract"><span t-field="doc.sides_contract"/></div>
+
+                <div class="pt-1"><strong>تمهيد:</strong></div>
+                <span t-if="doc.standard_1"><span t-field="doc.intro"/></span>
+
+                <div class="pt-1"><strong>1.</strong>
+                    <span t-if="doc.standard_1" t-field="doc.standard_1"/>
+                </div>
+                <div t-if="doc.edited_1"><span t-field="doc.edited_1"/></div>
+
+
+                <div class="pt-1"><strong>2.التعريفات:</strong>
+                    <span t-if="doc.standard_2" t-field="doc.standard_2"/>
+                </div>
+                <div t-if="doc.edited_2"><span t-field="doc.edited_2"/></div>
+
+                <div class="pt-1"><strong>3.محل العقد/ الغرض من التعاقد:</strong>
+                    <span t-if="doc.standard_3" t-field="doc.standard_3"/>
+                </div>
+                <div t-if="doc.edited_3"><span t-field="doc.edited_3"/></div>
+
+                <div class="pt-1"><strong>4.مدة العقد:</strong>
+                    <span t-if="doc.standard_4" t-field="doc.standard_4"/>
+                </div>
+                <div t-if="doc.edited_4"><span t-field="doc.edited_4"/></div>
+
+                <div class="pt-1"><strong>5.المقابل المالي:</strong>
+                    <span t-if="doc.standard_5" t-field="doc.standard_5"/>
+                </div>
+                <div t-if="doc.edited_5"><span t-field="doc.edited_5"/></div>
+                <div t-if="doc.payment" class="pt-1">
+                    <table>
+                        <thead>
+                            <tr style="background-color: #62a48a !important;">
+                                <th name="th_quantity" class="text-center">No.</th>
+                                <th name="th_quantity" class="text-center">نوع الدفعة</th>
+                                <th name="th_quantity" class="text-center">قيمة الدفعة</th>
+                                <th name="th_quantity" class="text-center">خصم الدفعة المقدمة</th>
+                                <th name="th_quantity" class="text-center">تاريخ الإصدار</th>
+                                <th name="th_quantity" class="text-center">تاريخ الإستحقاق</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.payment" t-as="line">
+                                <tr>
+                                    <t>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.name"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.payment_type"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.amount"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.amount_discount"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.issue_date"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.due_date"/></td>
+                                    </t>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <div class="pt-1"><strong>6.التزامات الطرف الأول:</strong></div>
+                <div class="pt-2" t-if="doc.standard_6"><span t-field="doc.standard_6"/></div>
+                <div t-if="doc.edited_6"><span t-field="doc.edited_6"/></div>
+
+                <div class="pt-1"><strong>7.التزامات الطرف الثاني:</strong></div>
+                <div class="pt-2" t-if="doc.standard_7"><span t-field="doc.standard_7"/></div>
+                <div t-if="doc.edited_7"><span t-field="doc.edited_7"/></div>
+
+                <div class="pt-1"><strong>8.فسخ وانتهاء العقد:</strong></div>
+                <div class="pt-2" t-if="doc.standard_8"><span t-field="doc.standard_8"/></div>
+                <div t-if="doc.standard_8_1"><span t-field="doc.standard_8_1"/></div>
+                <div t-if="doc.edited_8"><span t-field="doc.edited_8"/></div>
+                
+                <div class="pt-1">
+                    <t t-if="doc.not_saudi"><strong>9.القانون الواجب التطبيق والاختصاص القضائي، وينص على خضوع العقد للأنظمة السعودية:</strong></t><t t-if="not doc.not_saudi"><strong>9.تسوية النزاعات:</strong></t>
+                </div>
+                <div class="pt-2" t-if="doc.standard_9"><span t-field="doc.standard_9"/></div>
+                <div t-if="doc.edited_9"><span t-field="doc.edited_9"/></div>
+
+                <div class="pt-1"><strong>10.أحكام عامة:</strong></div>
+                <div class="pt-2" t-if="doc.standard_10"><span t-field="doc.standard_10"/></div>
+                <div t-if="doc.standard_10_1"><span t-field="doc.standard_10_1"/></div>
+                <div t-if="doc.edited_10"><span t-field="doc.edited_10"/></div>
+
+                <div class="pt-1"><strong>11.المراسلات، الإشعارات، نسخ العقد:</strong></div>
+                <div class="pt-2" t-if="doc.standard_11"><span t-field="doc.standard_11"/></div>
+                <div t-if="doc.edited_11"><span t-field="doc.edited_11"/></div>
+                
+                <div class="pt-1 row">
+                    <div align='right'>
+                        <div class="text-center">
+                            <strong>الطرف الأول</strong>
+                        </div>
+                        <div class="text-center mt32 ml64 mr4" name="first_side_sign">
+                            <div>
+                                الأسم:  <img t-if="doc.first_side_sign" t-att-src="image_data_uri(doc.first_side_sign)" style="max-height: 2cm; max-width: 8cm;"/>
+                            </div>
+                            <div>
+                                التوقيع:  <img t-if="doc.first_side_sign_name" t-att-src="image_data_uri(doc.first_side_sign_name)" style="max-height: 2cm; max-width: 8cm;"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto"/>
+                    <div align='left'>
+                        <div class="text-center">
+                            <strong>الطرف الثاني</strong>
+                        </div>
+                        <div class="text-center mt32 ml64 mr4" name="second_side_sign">
+                            <div>
+                                الأسم:  <img t-if="doc.second_side_sign" t-att-src="image_data_uri(doc.second_side_sign)" style="max-height: 2cm; max-width: 8cm;"/>
+                            </div>
+                            <div>
+                                التوقيع:  <img t-if="doc.second_side_sign_name" t-att-src="image_data_uri(doc.second_side_sign_name)" style="max-height: 2cm; max-width: 8cm;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-1 row">
+                    <div align='right'>
+                        <div class="text-center">
+                            <strong>الشاهد الأول</strong>
+                        </div>
+                        <div class="text-center mt32 ml64 mr4" name="first_witness_sign">
+                            <div>
+                                الأسم:  <img t-if="doc.first_witness_sign" t-att-src="image_data_uri(doc.first_witness_sign)" style="max-height: 2cm; max-width: 8cm;"/>
+                            </div>
+                            <div>
+                                التوقيع:  <img t-if="doc.first_witness_sign_name" t-att-src="image_data_uri(doc.first_witness_sign_name)" style="max-height: 2cm; max-width: 8cm;"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-auto"/>
+                    <div align='left'>
+                        <div class="text-center">
+                            <strong>الشاهد الثاني</strong>
+                        </div>
+                        <div class="text-center mt32 ml64 mr4" name="second_witness_sign">
+                            <div>
+                                الأسم:  <img t-if="doc.second_witness_sign" t-att-src="image_data_uri(doc.second_witness_sign)" style="max-height: 2cm; max-width: 8cm;"/>
+                            </div>
+                            <div>
+                                التوقيع:  <img t-if="doc.second_witness_sign_name" t-att-src="image_data_uri(doc.second_witness_sign_name)" style="max-height: 2cm; max-width: 8cm;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </t>
+</template>
+
+    
+<template id="report_contract_standard">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="standard.contract_standard_document"/>
+        </t>
+    </t>
+</template>
+    
+    <data>
+        <record id="action_report_contract_standard" model="ir.actions.report">
+            <field name="name">العقد الموحد</field>
+            <field name="model">contract.standard</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">standard.report_contract_standard</field>
+            <field name="report_file">standard.report_contract_standard</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_contract_standard"/>
+            <field name="binding_type">report</field>
+        </record>     
+    </data> 
+</odoo>
+
+
+
