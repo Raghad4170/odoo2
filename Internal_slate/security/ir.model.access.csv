@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_serivce_type_manager,serivce.type,model_serivce_type,Internal_slate.group_slate_manager,1,1,1,1
+access_serivce_type,serivce.type,model_serivce_type,,1,1,1,0
+access_internal_slate_user,internal.slate,model_internal_slate,Internal_slate.group_slate_user,1,1,1,1
+access_internal_slate,internal.slate,model_internal_slate,,1,1,1,0
+access_worktime_violation_user,worktime.violation,model_worktime_violation,Internal_slate.group_slate_user,1,1,1,1
+access_worktime_violation,worktime.violation,model_worktime_violation,,1,1,1,0
+access_organize_violation_user,organize.violation,model_organize_violation,Internal_slate.group_slate_user,1,1,1,1
+access_organize_violation,organize.violation,model_organize_violation,,1,1,1,0
+access_labor_violation_user,labor.violation,model_labor_violation,Internal_slate.group_slate_user,1,1,1,1
+access_labor_violation,labor.violation,model_labor_violation,,1,1,1,0

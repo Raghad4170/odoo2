@@ -1,0 +1,1195 @@
+<odoo>    
+<template id="internal_slate_layout">
+        <div t-attf-class="header o_company_#{doc.company_id.id}_layout" t-att-style="report_header_style">
+            <div class="o_boxed_header">
+            <div class="row">
+                <div class="col-auto" align="right">
+                    <a t-att-href="'%s' % doc.company_id.website">
+                        <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" alt="Logo"/>
+                    </a>
+                </div>
+
+                <div class="col-auto" align="left">
+                    <img t-if="doc.partner_company.image_1920" t-att-src="image_data_uri(doc.partner_company.image_1920)" alt="Logo"/>
+                </div>                
+            </div>
+            </div>
+        </div>
+
+        <div t-attf-class="article o_report_layout_boxed o_company_#{doc.company_id.id}_layout" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <t t-raw="0"/>
+        </div>
+    
+        <div t-attf-class="footer o_clean_footer o_company_#{doc.company_id.id}_layout">
+            <div class="text-center">
+                <div t-if="report_type == 'pdf'">
+                   صفحة: <span class="page"/> / <span class="topage"/> 
+                </div>
+            </div>
+            <div class="row">
+                <div t-foreach="doc.user_ids" t-as="user">
+                    <div style="font-family: system-ui, system-ui, Cairo;text-align: justify;text-justify: inter-word;" class="col-auto" align="right">
+                        <div t-if="user.sign_signature" class="text-center">
+                            <img t-att-src="image_data_uri(user.sign_signature)" style="max-height: 2cm; max-width: 4cm;"/>
+                        </div>
+                        <div class="text-center">
+                            <strong>المحامي <span t-field="user.name"/></strong>
+                        </div>
+                        <div t-if="user.permit_no" class="text-center">
+                            <strong>ترخيص رقم (<span t-field="user.permit_no"/>)</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto" align="left">
+                    <div t-if="doc.company_id.stamp" t-field="doc.company_id.stamp" style="width:120px;height:120px;" t-options='{"widget": "image"}'/>
+                </div>
+            </div>
+        </div>
+</template>
+
+<template id="internal_slate_document">
+    <t t-call="Internal_slate.internal_slate_layout">
+    <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div class="oe_structure"/>
+            <div class="pt-5"/>
+            <div class="pt-5"/>
+            <div class="pt-5"/>
+            <div class="pt-5"/>
+            <div class="pt-5"/>
+            <div align="center"><h1 class="mt16" id="informations"><strong>لائحة تنظيم العمل<div class="pt-5" t-field="doc.partner_company"/></strong></h1></div>
+            <p style="page-break-after:always;"></p>
+        
+            <div id="informations" style="font-size: 25px;">
+                <div align="center"><h2><strong>بيانات المنشأة</strong></h2></div>
+                <div class="pt-5"/>
+                <div class="pt-3" t-if="doc.partner_company"><strong>اسم المنشأة: </strong><span t-field="doc.partner_company"/></div>
+                <div class="pt-3" t-if="doc.main_center"><strong>المركز الرئيسي: </strong><span t-field="doc.main_center"/></div>
+                <div class="pt-3" t-if="doc.labor"><strong>عدد العاملين: </strong><span t-field="doc.labor"/> عامل</div>
+                <div class="pt-3" t-if="doc.avtivity"><strong>النشاط: </strong><span t-field="doc.avtivity"/></div>
+                <div class="pt-3" t-if="doc.address"><strong>العنوان الوطني: </strong><span t-field="doc.address"/></div>
+                <div class="pt-3" t-if="doc.mail_box"><strong>صندوق بريد: (</strong><span t-field="doc.mail_box"/><strong>) الرمز البريدي: (</strong><span t-field="doc.zip"/><strong>)</strong></div>
+                <div class="pt-3" t-if="doc.wassel"><strong>رقم بريد واصل: </strong><span t-field="doc.wassel"/></div>
+                <div class="pt-3" t-if="doc.company_phone"><strong>هاتف: </strong><span t-field="doc.company_phone"/></div>
+                <div class="pt-3" t-if="doc.fax"><strong>فاكس: </strong><span t-field="doc.fax"/></div>
+                <div class="pt-3" t-if="doc.company_email"><strong>بريد إلكتروني: </strong><span t-field="doc.company_email"/></div>
+                <div class="pt-3" t-if="doc.file_number"><strong>رقم ملف المنشأة: </strong><span t-field="doc.file_number"/></div>
+                <div class="pt-3" t-if="doc.company_registry"><strong>رقم السجل التجاري: </strong><span t-field="doc.company_registry"/></div>
+                <div class="pt-3" t-if="doc.day"><strong>تاريخ إصدار السجل التجاري: </strong><span t-field="doc.year"/>/<span t-field="doc.month"/>/<span  t-field="doc.day"/> هـ</div>
+            </div>
+            <p style="page-break-after:always;"></p>
+        
+            <div id="informations" style="font-size: 20px;">
+                <div align="center"><h3><strong>أحكام عامة</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_1"><span t-field="doc.standard_1"/></div>
+                <div t-if="doc.edited_1"><span t-field="doc.edited_1"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_2"><span t-field="doc.standard_2"/></div>
+                <div t-if="doc.edited_2"><span t-field="doc.edited_2"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_3"><span t-field="doc.standard_3"/></div>
+                <div t-if="doc.edited_3"><span t-field="doc.edited_3"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_4"><span t-field="doc.standard_4"/></div>
+                <div t-if="doc.edited_4"><span t-field="doc.edited_4"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>التوظيف</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_5"><span t-field="doc.standard_5"/></div>
+                <div t-if="doc.edited_5"><span t-field="doc.edited_5"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>عقد العمل</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_6"><span t-field="doc.standard_6"/></div>
+                <div t-if="doc.edited_6"><span t-field="doc.edited_6"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_7"><span t-field="doc.standard_7"/></div>
+                <div t-if="doc.edited_7"><span t-field="doc.edited_7"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_8"><span t-field="doc.standard_8"/></div>
+                <div t-if="doc.edited_8"><span t-field="doc.edited_8"/></div>
+
+                
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الإركاب</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_9"><span t-field="doc.standard_9"/></div>
+                <div t-if="doc.edited_9"><span t-field="doc.edited_9"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_10"><span t-field="doc.standard_10"/></div>
+                <div t-if="doc.edited_10"><span t-field="doc.edited_10"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>التدريب والتأهيل</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_11"><span t-field="doc.standard_11"/></div>
+                <div t-if="doc.edited_11"><span t-field="doc.edited_11"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_12"><span t-field="doc.standard_12"/></div>
+                <div t-if="doc.edited_12"><span t-field="doc.edited_12"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_13"><span t-field="doc.standard_13"/></div>
+                <div t-if="doc.edited_13"><span t-field="doc.edited_13"/></div>
+                
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الأجور</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_14"><span t-field="doc.standard_14"/></div>
+                <div t-if="doc.edited_14"><span t-field="doc.edited_14"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_15"><span t-field="doc.standard_15"/></div>
+                <div t-if="doc.edited_15"><span t-field="doc.edited_15"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_16"><span t-field="doc.standard_16"/></div>
+                <div t-if="doc.edited_16"><span t-field="doc.edited_16"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>تقارير الأداء</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_17"><span t-field="doc.standard_17"/></div>
+                <div t-if="doc.edited_17"><span t-field="doc.edited_17"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_18"><span t-field="doc.standard_18"/></div>
+                <div t-if="doc.edited_18"><span t-field="doc.edited_18"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (١٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_19"><span t-field="doc.standard_19"/></div>
+                <div t-if="doc.edited_19"><span t-field="doc.edited_19"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>العلاوات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_20"><span t-field="doc.standard_20"/></div>
+                <div t-if="doc.edited_20"><span t-field="doc.edited_20"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الترقيات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_21"><span t-field="doc.standard_21"/></div>
+                <div t-if="doc.edited_21"><span t-field="doc.edited_21"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (٢٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_22"><span t-field="doc.standard_22"/></div>
+                <div t-if="doc.edited_22"><span t-field="doc.edited_22"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الانتداب</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_23"><span t-field="doc.standard_23"/></div>
+                <div t-if="doc.edited_23"><span t-field="doc.edited_23"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>المزايا والبدلات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_24"><span t-field="doc.standard_24"/></div>
+                <div t-if="doc.edited_24"><span t-field="doc.edited_24"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>أيام وساعات العمل</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_25"><span t-field="doc.standard_25"/></div>
+                <div t-if="doc.edited_25"><span t-field="doc.edited_25"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>العمل الإضافي</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_26"><span t-field="doc.standard_26"/></div>
+                <div t-if="doc.edited_26"><span t-field="doc.edited_26"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>التفتيش الإداري</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_27"><span t-field="doc.standard_27"/></div>
+                <div t-if="doc.edited_27"><span t-field="doc.edited_27"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_28"><span t-field="doc.standard_28"/></div>
+                <div t-if="doc.edited_28"><span t-field="doc.edited_28"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الإجازات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_29"><span t-field="doc.standard_29"/></div>
+                <div t-if="doc.edited_29"><span t-field="doc.edited_29"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (٣٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_30"><span t-field="doc.standard_30"/></div>
+                <div t-if="doc.edited_30"><span t-field="doc.edited_30"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (٣١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_31"><span t-field="doc.standard_31"/></div>
+                <div t-if="doc.edited_31"><span t-field="doc.edited_31"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_32"><span t-field="doc.standard_32"/></div>
+                <div t-if="doc.edited_32"><span t-field="doc.edited_32"/></div>
+
+
+                
+                <div align="center" class="pt-4"><h3><strong>الرعاية الطبية</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_33"><span t-field="doc.standard_33"/></div>
+                <div t-if="doc.edited_33"><span t-field="doc.edited_33"/></div>
+
+
+                
+                <div align="center" class="pt-4"><h3><strong>أحكام خاصة بالمرأة</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_34"><span t-field="doc.standard_34"/></div>
+                <div t-if="doc.edited_34"><span t-field="doc.edited_34"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_35"><span t-field="doc.standard_35"/></div>
+                <div t-if="doc.edited_35"><span t-field="doc.edited_35"/></div>
+
+
+                
+                <div align="center" class="pt-4"><h3><strong>الخدمات الاجتماعية</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_36"><span t-field="doc.standard_36"/></div>
+                <div t-if="doc.edited_36"><span t-field="doc.edited_36"/></div>
+
+
+                
+                <div align="center" class="pt-4"><h3><strong>ضوابط سلوكيات العمل</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_37"><span t-field="doc.standard_37"/></div>
+                <div t-if="doc.edited_37"><span t-field="doc.edited_37"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_38"><span t-field="doc.standard_38"/></div>
+                <div t-if="doc.edited_38"><span t-field="doc.edited_38"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_39"><span t-field="doc.standard_39"/></div>
+                <div t-if="doc.edited_39"><span t-field="doc.edited_39"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_40"><span t-field="doc.standard_40"/></div>
+                <div t-if="doc.edited_40"><span t-field="doc.edited_40"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>المخالفات والجزاءات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_41"><span t-field="doc.standard_41"/></div>
+                <div t-if="doc.edited_41"><span t-field="doc.edited_41"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_42"><span t-field="doc.standard_42"/></div>
+                <div t-if="doc.edited_42"><span t-field="doc.edited_42"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_43"><span t-field="doc.standard_43"/></div>
+                <div t-if="doc.edited_43"><span t-field="doc.edited_43"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_44"><span t-field="doc.standard_44"/></div>
+                <div t-if="doc.edited_44"><span t-field="doc.edited_44"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_45"><span t-field="doc.standard_45"/></div>
+                <div t-if="doc.edited_45"><span t-field="doc.edited_45"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_46"><span t-field="doc.standard_46"/></div>
+                <div t-if="doc.edited_46"><span t-field="doc.edited_46"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_47"><span t-field="doc.standard_47"/></div>
+                <div t-if="doc.edited_47"><span t-field="doc.edited_47"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_48"><span t-field="doc.standard_48"/></div>
+                <div t-if="doc.edited_48"><span t-field="doc.edited_48"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_49"><span t-field="doc.standard_49"/></div>
+                <div t-if="doc.edited_49"><span t-field="doc.edited_49"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_50"><span t-field="doc.standard_50"/></div>
+                <div t-if="doc.edited_50"><span t-field="doc.edited_50"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_51"><span t-field="doc.standard_51"/></div>
+                <div t-if="doc.edited_51"><span t-field="doc.edited_51"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_52"><span t-field="doc.standard_52"/></div>
+                <div t-if="doc.edited_52"><span t-field="doc.edited_52"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_53"><span t-field="doc.standard_53"/></div>
+                <div t-if="doc.edited_53"><span t-field="doc.edited_53"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>التظلم</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_54"><span t-field="doc.standard_54"/></div>
+                <div t-if="doc.edited_54"><span t-field="doc.edited_54"/></div>
+
+                
+                <div align="center" class="pt-4"><h3><strong>أحكام ختامية</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_55"><span t-field="doc.standard_55"/></div>
+                <div t-if="doc.edited_55"><span t-field="doc.edited_55"/></div>
+
+            </div>
+            <p style="page-break-after:always;"></p>
+        
+            <div id="informations" style="font-size: 20px;">
+                <div align="center"><h2><strong>جداول المخالفات والجزاءات</strong></h2></div>
+                
+                <div align="center" class="pt-4"><h3><strong>أولا: مخالفات تتعلق بمواعيد العمل:</strong></h3></div>
+                <div t-if="doc.worktime_violation" align="center" class="pt-4" style="font-size: 18px;">
+                    <table border="1">
+                        <thead>
+                            <tr style="background-color: #62a48a !important;">
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">م</th>
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">نوع المخالفة</th>
+                                <th class="text-center" colspan="4">الجزاء (النسبة المحسومة هي نسبة من الأجر اليومي)</th>
+                            </tr>
+                            <tr  style="background-color: #62a48a !important;">
+                                <th name="th_quantity" class="text-center">أول مرة</th>
+                                <th name="th_quantity" class="text-center">ثاني مرة</th>
+                                <th name="th_quantity" class="text-center">ثالث مرة</th>
+                                <th name="th_quantity" class="text-center">رابع مرة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.worktime_violation" t-as="line">
+                                <tr>
+                                    <t>
+                                        <t t-if="line.note">
+                                            <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                        </t>
+                                        <t t-if="not line.note">
+                                            <td style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                        </t>
+                                        <t t-if="line.note">
+                                            <td rowspan="2" style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                        </t>
+                                        <t t-if="not line.note">
+                                            <td style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                        </t>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.First_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                    </t>
+                                </tr>
+                                <t t-if="line.note">
+                                    <tr>
+                                        <td style="border-bottom: 1px solid Black;width: 400px;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="page-break-after:always;"></p>
+                
+                <div align="center" class="pt-4"><h3><strong>ثانيا: مخالفات تتعلق بتنظيم العمل:</strong></h3></div>
+                <div t-if="doc.organize_violation" align="center" class="pt-4" style="font-size: 18px;">
+                    <table border="1">
+                        <thead>
+                            <tr style="background-color: #62a48a !important;">
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">م</th>
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">نوع المخالفة</th>
+                                <th class="text-center" colspan="4">الجزاء (النسبة المحسومة هي نسبة من الأجر اليومي)</th>
+                            </tr>
+                            <tr  style="background-color: #62a48a !important;">
+                                <th name="th_quantity" class="text-center">أول مرة</th>
+                                <th name="th_quantity" class="text-center">ثاني مرة</th>
+                                <th name="th_quantity" class="text-center">ثالث مرة</th>
+                                <th name="th_quantity" class="text-center">رابع مرة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.organize_violation" t-as="line">
+                                <tr>
+                                    <t>
+                                        <t t-if="line.note">
+                                            <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                        </t>
+                                        <t t-if="not line.note">
+                                            <td style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                        </t>
+                                        <t t-if="line.note">
+                                            <td rowspan="2" style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                        </t>
+                                        <t t-if="not line.note">
+                                            <td style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                        </t>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.First_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                    </t>
+                                </tr>
+                                <t t-if="line.note">
+                                    <tr>
+                                        <td style="border-bottom: 1px solid Black;width: 400px;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="page-break-after:always;"></p>
+                
+                <div align="center" class="pt-4"><h3><strong>ثالثًا: مخالفات تتعلق بسلوك العامل:</strong></h3></div>
+                <div t-if="doc.labor_violation" align="center" class="pt-4" style="font-size: 18px;">
+                    <table border="1">
+                        <thead>
+                            <tr style="background-color: #62a48a !important;">
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">م</th>
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">نوع المخالفة</th>
+                                <th class="text-center" colspan="4">الجزاء (النسبة المحسومة هي نسبة من الأجر اليومي)</th>
+                            </tr>
+                            <tr  style="background-color: #62a48a !important;">
+                                <th name="th_quantity" class="text-center">أول مرة</th>
+                                <th name="th_quantity" class="text-center">ثاني مرة</th>
+                                <th name="th_quantity" class="text-center">ثالث مرة</th>
+                                <th name="th_quantity" class="text-center">رابع مرة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.labor_violation" t-as="line">
+                                <tr>
+                                    <t>
+                                        <t t-if="line.note">
+                                            <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                        </t>
+                                        <t t-if="not line.note">
+                                            <td style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                        </t>
+                                        <t t-if="line.note">
+                                            <td rowspan="2" style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                        </t>
+                                        <t t-if="not line.note">
+                                            <td style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                        </t>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.First_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                        <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                    </t>
+                                </tr>
+                                <t t-if="line.note">
+                                    <tr>
+                                        <td style="border-bottom: 1px solid Black;width: 400px;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+    
+<template id="report_internal_slate">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="Internal_slate.internal_slate_document"/>
+        </t>
+    </t>
+</template>
+    
+    <data>
+        <record id="action_report_internal_slate" model="ir.actions.report">
+            <field name="name">اللائحة الداخلية</field>
+            <field name="model">internal.slate</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">Internal_slate.report_internal_slate</field>
+            <field name="report_file">Internal_slate.report_internal_slate</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_internal_slate"/>
+            <field name="binding_type">report</field>
+        </record>     
+    </data>
+    
+
+
+<template id="internal_slate_documentـedit">
+    <t t-call="Internal_slate.internal_slate_layout">
+    <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div class="oe_structure"/>
+            <div class="pt-5"/>
+            <div class="pt-5"/>
+            <div class="pt-5"/>
+            <div class="pt-5"/>
+            <div class="pt-5"/>
+            <div align="center"><h1 class="mt16" id="informations"><strong>لائحة تنظيم العمل<div class="pt-5" t-field="doc.partner_company"/></strong></h1></div>
+            <p style="page-break-after:always;"></p>
+        
+            <div id="informations" style="font-size: 25px;">
+                <div align="center"><h2><strong>بيانات المنشأة</strong></h2></div>
+                <div class="pt-5"/>
+                <div class="pt-3" t-if="doc.partner_company"><strong>اسم المنشأة: </strong><span style="color:#c60000;" t-field="doc.partner_company"/></div>
+                <div class="pt-3" t-if="doc.main_center"><strong>المركز الرئيسي: </strong><span style="color:#c60000;" t-field="doc.main_center"/></div>
+                <div class="pt-3" t-if="doc.labor"><strong>عدد العاملين: </strong><span style="color:#c60000;" t-field="doc.labor"/> عامل</div>
+                <div class="pt-3" t-if="doc.avtivity"><strong>النشاط: </strong><span style="color:#c60000;" t-field="doc.avtivity"/></div>
+                <div class="pt-3" t-if="doc.address"><strong>العنوان الوطني: </strong><span style="color:#c60000;" t-field="doc.address"/></div>
+                <div class="pt-3" t-if="doc.mail_box"><strong>صندوق بريد: (</strong><span style="color:#c60000;" t-field="doc.mail_box"/><strong>) الرمز البريدي: (</strong><span style="color:#c60000;" t-field="doc.zip"/><strong>)</strong></div>
+                <div class="pt-3" t-if="doc.wassel"><strong>رقم بريد واصل: </strong><span style="color:#c60000;" t-field="doc.wassel"/></div>
+                <div class="pt-3" t-if="doc.company_phone"><strong>هاتف: </strong><span style="color:#c60000;" t-field="doc.company_phone"/></div>
+                <div class="pt-3" t-if="doc.fax"><strong>فاكس: </strong><span style="color:#c60000;" t-field="doc.fax"/></div>
+                <div class="pt-3" t-if="doc.company_email"><strong>بريد إلكتروني: </strong><span style="color:#c60000;" t-field="doc.company_email"/></div>
+                <div class="pt-3" t-if="doc.file_number"><strong>رقم ملف المنشأة: </strong><span style="color:#c60000;" t-field="doc.file_number"/></div>
+                <div class="pt-3" t-if="doc.company_registry"><strong>رقم السجل التجاري: </strong><span style="color:#c60000;" t-field="doc.company_registry"/></div>
+                <div class="pt-3" t-if="doc.day"><strong>تاريخ إصدار السجل التجاري: </strong><span style="color:#c60000;" t-field="doc.year"/>/<span style="color:#c60000;" t-field="doc.month"/>/<span style="color:#c60000;" t-field="doc.day"/> هـ</div>
+            </div> 
+            <p style="page-break-after:always;"></p>
+        
+            <div id="informations" style="font-size: 20px;">
+                <div align="center"><h3><strong>أحكام عامة</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_1">يقصد بلفظ المنشأة أينما ورد في هذه اللائحة: <span style="color:#c60000;" t-field="doc.partner_company"/></div>
+                <div t-if="doc.standard_1">يقصد بلفظ العامل أينما ورد في هذه اللائحة: كل شخص طبيعي - ذكراً أو أنثى - يعمل لمصلحة هذه المنشأة وتحت إدارتها، أو إشرافها مقابل أجر، ولو كان بعيداً عن نظارتها.</div>
+                <div style="color:#c60000;" t-if="doc.edited_1"><span t-field="doc.edited_1"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_2">التقويم المعمول به في المنشأة هو: التقويم <span style="color:#c60000;" t-field="doc.calander"/>.</div>
+                <div style="color:#c60000;" t-if="doc.edited_2"><span t-field="doc.edited_2"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_3"><span t-field="doc.standard_3"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_3"><span t-field="doc.edited_3"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_4"><span t-field="doc.standard_4"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_4"><span t-field="doc.edited_4"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>التوظيف</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_5"><span t-field="doc.standard_5"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_5"><span t-field="doc.edited_5"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>عقد العمل</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_6"><span t-field="doc.standard_6"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_6"><span t-field="doc.edited_6"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_7"><span t-field="doc.standard_7"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_7"><span t-field="doc.edited_7"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_8"><span t-field="doc.standard_8"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_8"><span t-field="doc.edited_8"/></div>
+
+                
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الإركاب</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_9"><span t-field="doc.standard_9"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_9"><span t-field="doc.edited_9"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_10"><span t-field="doc.standard_10"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_10"><span t-field="doc.edited_10"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>التدريب والتأهيل</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_11"><span t-field="doc.standard_11"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_11"><span t-field="doc.edited_11"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_12"><span t-field="doc.standard_12"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_12"><span t-field="doc.edited_12"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_13"><span t-field="doc.standard_13"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_13"><span t-field="doc.edited_13"/></div>
+                
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الأجور</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_14"><span t-field="doc.standard_14"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_14"><span t-field="doc.edited_14"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_15"><span t-field="doc.standard_15"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_15"><span t-field="doc.edited_15"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_16"><span t-field="doc.standard_16"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_16"><span t-field="doc.edited_16"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>تقارير الأداء</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_17"><span t-field="doc.standard_17"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_17"><span t-field="doc.edited_17"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (١٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_18"><span t-field="doc.standard_18"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_18"><span t-field="doc.edited_18"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (١٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_19"><span t-field="doc.standard_19"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_19"><span t-field="doc.edited_19"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>العلاوات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_20"><span t-field="doc.standard_20"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_20"><span t-field="doc.edited_20"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الترقيات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_21"><span t-field="doc.standard_21"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_21"><span t-field="doc.edited_21"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (٢٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_22"><span t-field="doc.standard_22"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_22"><span t-field="doc.edited_22"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الانتداب</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_23"><span t-field="doc.standard_23"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_23"><span t-field="doc.edited_23"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>المزايا والبدلات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_24"><span t-field="doc.standard_24"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_24"><span t-field="doc.edited_24"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>أيام وساعات العمل</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_25">١. يكون عدد أيام العمل <span style="color:#c60000;" t-field="doc.workdays"/> أيام في الأسـبـوع ، و يكون ( يوم / يومي) <span style="color:#c60000;" t-field="doc.offdays"/> الراحة الأسـبوعية بأجر كامل لجميع العمال ، و يجوز للمنشأة. بعد إبلاغ مكتب العمل المختص. أن تستبدل بهذا اليوم لبعض عمالها أي يوم من أيام الأسبوع ، و عليها أن تمكنهم من القيام بواجباتهم الدينية ، و لا يجوز تعويض يوم الراحة الأسبوعية بمقابل نقدي.</div>
+                <div t-if="doc.standard_25"><span t-field="doc.edited_25"/>٢.تكون ساعات العمل (ثماني) ساعات عمل يوميا تخفض الى (ست) ساعات يوميا في شهر رمضان للعمال المسلمين.</div>
+                <div style="color:#c60000;" t-if="doc.edited_25"><span t-field="doc.edited_25"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>العمل الإضافي</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_26"><span t-field="doc.standard_26"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_26"><span t-field="doc.edited_26"/></div>
+
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>التفتيش الإداري</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_27"><span t-field="doc.standard_27"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_27"><span t-field="doc.edited_27"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_28"><span t-field="doc.standard_28"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_28"><span t-field="doc.edited_28"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>الإجازات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٢٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_29"><span t-field="doc.standard_29"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_29"><span t-field="doc.edited_29"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (٣٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_30"><span t-field="doc.standard_30"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_30"><span t-field="doc.edited_30"/></div>
+
+
+                <div align="center" class="pt-1"><strong>المادة (٣١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_31"><span t-field="doc.standard_31"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_31"><span t-field="doc.edited_31"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_32"><span t-field="doc.standard_32"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_32"><span t-field="doc.edited_32"/></div>
+
+
+                
+                <div align="center" class="pt-4"><h3><strong>الرعاية الطبية</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_33"><span t-field="doc.standard_33"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_33"><span t-field="doc.edited_33"/></div>
+
+
+                
+                <div align="center" class="pt-4"><h3><strong>أحكام خاصة بالمرأة</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_34"><span t-field="doc.standard_34"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_34"><span t-field="doc.edited_34"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_35"><span t-field="doc.standard_35"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_35"><span t-field="doc.edited_35"/></div>
+
+
+                
+                <div align="center" class="pt-4"><h3><strong>الخدمات الاجتماعية</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_36"><span t-field="doc.standard_36"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_36"><span t-field="doc.edited_36"/></div>
+
+
+                
+                <div align="center" class="pt-4"><h3><strong>ضوابط سلوكيات العمل</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_37"><span t-field="doc.standard_37"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_37"><span t-field="doc.edited_37"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_38"><span t-field="doc.standard_38"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_38"><span t-field="doc.edited_38"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٣٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_39"><span t-field="doc.standard_39"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_39"><span t-field="doc.edited_39"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_40"><span t-field="doc.standard_40"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_40"><span t-field="doc.edited_40"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>المخالفات والجزاءات</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_41"><span t-field="doc.standard_41"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_41"><span t-field="doc.edited_41"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_42"><span t-field="doc.standard_42"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_42"><span t-field="doc.edited_42"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_43"><span t-field="doc.standard_43"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_43"><span t-field="doc.edited_43"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_44"><span t-field="doc.standard_44"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_44"><span t-field="doc.edited_44"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_45"><span t-field="doc.standard_45"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_45"><span t-field="doc.edited_45"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٦)</strong></div>
+                <div class="pt-2" t-if="doc.standard_46"><span t-field="doc.standard_46"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_46"><span t-field="doc.edited_46"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٧)</strong></div>
+                <div class="pt-2" t-if="doc.standard_47"><span t-field="doc.standard_47"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_47"><span t-field="doc.edited_47"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٨)</strong></div>
+                <div class="pt-2" t-if="doc.standard_48"><span t-field="doc.standard_48"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_48"><span t-field="doc.edited_48"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٤٩)</strong></div>
+                <div class="pt-2" t-if="doc.standard_49"><span t-field="doc.standard_49"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_49"><span t-field="doc.edited_49"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٠)</strong></div>
+                <div class="pt-2" t-if="doc.standard_50"><span t-field="doc.standard_50"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_50"><span t-field="doc.edited_50"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥١)</strong></div>
+                <div class="pt-2" t-if="doc.standard_51"><span t-field="doc.standard_51"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_51"><span t-field="doc.edited_51"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٢)</strong></div>
+                <div class="pt-2" t-if="doc.standard_52"><span t-field="doc.standard_52"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_52"><span t-field="doc.edited_52"/></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٣)</strong></div>
+                <div class="pt-2" t-if="doc.standard_53"><span t-field="doc.standard_53"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_53"><span t-field="doc.edited_53"/></div>
+
+                
+                
+                <div align="center" class="pt-4"><h3><strong>التظلم</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٤)</strong></div>
+                <div class="pt-2" t-if="doc.standard_54"><span t-field="doc.standard_54"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_54"><span t-field="doc.edited_54"/></div>
+
+                
+                <div align="center" class="pt-4"><h3><strong>أحكام ختامية</strong></h3></div>
+
+                <div align="center" class="pt-1"><strong>المادة (٥٥)</strong></div>
+                <div class="pt-2" t-if="doc.standard_55"><span t-field="doc.standard_55"/></div>
+                <div style="color:#c60000;" t-if="doc.edited_55"><span t-field="doc.edited_55"/></div>
+
+            </div>
+            <p style="page-break-after:always;"></p>
+        
+            <div id="informations" style="font-size: 20px;">
+                <div align="center"><h2><strong>جداول المخالفات والجزاءات</strong></h2></div>
+                
+                <div align="center" class="pt-4"><h3><strong>أولا: مخالفات تتعلق بمواعيد العمل:</strong></h3></div>
+                <div t-if="doc.worktime_violation" align="center" class="pt-4" style="font-size: 18px;">
+                    <table border="1">
+                        <thead>
+                            <tr style="background-color: #62a48a !important;">
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">م</th>
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">نوع المخالفة</th>
+                                <th class="text-center" colspan="4">الجزاء (النسبة المحسومة هي نسبة من الأجر اليومي)</th>
+                            </tr>
+                            <tr  style="background-color: #62a48a !important;">
+                                <th name="th_quantity" class="text-center">أول مرة</th>
+                                <th name="th_quantity" class="text-center">ثاني مرة</th>
+                                <th name="th_quantity" class="text-center">ثالث مرة</th>
+                                <th name="th_quantity" class="text-center">رابع مرة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.worktime_violation" t-as="line">
+                                <div t-if="not line.no_delete">
+                                    <tr>
+                                        <t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.First_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                        </t>
+                                    </tr>
+                                    <t t-if="line.note">
+                                        <tr>
+                                            <td style="border-bottom: 1px solid Black;width: 400px;background-color: #c60000 !important;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                        </tr>
+                                    </t>
+                                </div>   
+                                <div t-if="line.no_delete">
+                                    <tr>
+                                        <t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.First_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                        </t>
+                                    </tr>
+                                    <t t-if="line.note">
+                                        <tr>
+                                            <td style="border-bottom: 1px solid Black;width: 400px;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                        </tr>
+                                    </t>
+                                </div>   
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="page-break-after:always;"></p>
+                
+                <div align="center" class="pt-4"><h3><strong>ثانيا: مخالفات تتعلق بتنظيم العمل:</strong></h3></div>
+                <div t-if="doc.organize_violation" align="center" class="pt-4" style="font-size: 18px;">
+                    <table border="1">
+                        <thead>
+                            <tr style="background-color: #62a48a !important;">
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">م</th>
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">نوع المخالفة</th>
+                                <th class="text-center" colspan="4">الجزاء (النسبة المحسومة هي نسبة من الأجر اليومي)</th>
+                            </tr>
+                            <tr  style="background-color: #62a48a !important;">
+                                <th name="th_quantity" class="text-center">أول مرة</th>
+                                <th name="th_quantity" class="text-center">ثاني مرة</th>
+                                <th name="th_quantity" class="text-center">ثالث مرة</th>
+                                <th name="th_quantity" class="text-center">رابع مرة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.organize_violation" t-as="line">
+                                <div t-if="not line.no_delete">
+                                    <tr>
+                                        <t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.First_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                        </t>
+                                    </tr>
+                                    <t t-if="line.note">
+                                        <tr>
+                                            <td style="border-bottom: 1px solid Black;width: 400px;background-color: #c60000 !important;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                        </tr>
+                                    </t>
+                                </div>   
+                                <div t-if="line.no_delete">
+                                    <tr>
+                                        <t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.First_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                        </t>
+                                    </tr>
+                                    <t t-if="line.note">
+                                        <tr>
+                                            <td style="border-bottom: 1px solid Black;width: 400px;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                        </tr>
+                                    </t>
+                                </div>   
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="page-break-after:always;"></p>
+                
+                <div align="center" class="pt-4"><h3><strong>ثالثًا: مخالفات تتعلق بسلوك العامل:</strong></h3></div>
+                <div t-if="doc.labor_violation" align="center" class="pt-4" style="font-size: 18px;">
+                    <table border="1">
+                        <thead>
+                            <tr style="background-color: #62a48a !important;">
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">م</th>
+                                <th class="text-center" style="margin-top: 100px;vertical-align : middle;text-align:center;" rowspan="2">نوع المخالفة</th>
+                                <th class="text-center" colspan="4">الجزاء (النسبة المحسومة هي نسبة من الأجر اليومي)</th>
+                            </tr>
+                            <tr  style="background-color: #62a48a !important;">
+                                <th name="th_quantity" class="text-center">أول مرة</th>
+                                <th name="th_quantity" class="text-center">ثاني مرة</th>
+                                <th name="th_quantity" class="text-center">ثالث مرة</th>
+                                <th name="th_quantity" class="text-center">رابع مرة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.labor_violation" t-as="line">
+                                <div t-if="not line.no_delete">
+                                    <tr>
+                                        <t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #c60000 !important;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.First_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;background-color: #c60000 !important;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                        </t>
+                                    </tr>
+                                    <t t-if="line.note">
+                                        <tr>
+                                            <td style="border-bottom: 1px solid Black;width: 400px;background-color: #c60000 !important;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                        </tr>
+                                    </t>
+                                </div>   
+                                <div t-if="line.no_delete">
+                                    <tr>
+                                        <t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;background-color: #62a48a !important;"><span t-field="line.sequence_no"/></td>
+                                            </t>
+                                            <t t-if="line.note">
+                                                <td rowspan="2" style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <t t-if="not line.note">
+                                                <td style="border-bottom: 1px solid Black;"><span t-field="line.name"/></td>
+                                            </t>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.First_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Second_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Third_penality"/></td>
+                                            <td style="border-bottom: 1px solid Black;width: 100px;" class="text-center"><span t-field="line.Fourth_penality"/></td>
+                                        </t>
+                                    </tr>
+                                    <t t-if="line.note">
+                                        <tr>
+                                            <td style="border-bottom: 1px solid Black;width: 400px;" class="text-center" colspan="4"><span t-field="line.note"/></td>
+                                        </tr>
+                                    </t>
+                                </div>   
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+<template id="report_internal_slateـedit">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="Internal_slate.internal_slate_documentـedit"/>
+        </t>
+    </t>
+</template>
+    
+    <data>
+        <record id="action_report_internal_slateـedit" model="ir.actions.report">
+            <field name="name">اللائحة الداخلية موضحة التعديلات</field>
+            <field name="model">internal.slate</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">Internal_slate.report_internal_slateـedit</field>
+            <field name="report_file">Internal_slate.report_internal_slateـedit</field>
+            <field name="print_report_name">(object.name_edit)</field>
+            <field name="binding_model_id" ref="model_internal_slate"/>
+            <field name="binding_type">report</field>
+        </record>     
+    </data>
+    
+</odoo>
+
+

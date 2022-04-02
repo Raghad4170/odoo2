@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_internal_slate_base" name="لوائح العمل الداخلية" sequence="1" web_icon="Internal_slate,static/description/icon.png" groups="Internal_slate.group_slate_user"/>
+
+
+    <record model="ir.ui.view" id="interna_slate_form_view">
+        <field name="name">internal.slate.form.view</field>
+        <field name="model">internal.slate</field>
+    	<field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="تعيين كجديد" name="action_draft" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'جديد')]}"/>
+                    <button string="البدأ باللائحة" name="action_review" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('في حالة المراجعة','معتمد'))]}"/>
+                    <button string="اعتماد اللائحة" name="action_submit" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'في حالة المراجعة')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="جديد,في حالة المراجعة"/>
+                </header>
+                <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="qutation_id" groups="sales_team.group_sale_salesman"/>
+                        <field name="user_id"/> 
+                    </group>
+                    <group>
+                        <field name="service_type_id"/> 
+                        <field name="user_ids" widget="many2many_tags"/> 
+                    </group>
+                </group>
+                    <notebook>
+                        <page name="info" string="معلومات المنشأة">
+                            <group>
+                                <group>
+                                    <field name="partner_id"/> 
+                                    <field name="partner_company"/>
+                                    <field name="company_phone"/> 
+                                    <field name="company_email"/>
+                                    <field name="company_registry"/>
+                                    <field name="main_center"/> 
+                                    <field name="avtivity"/> 
+                                    <span name="address_name">
+                                        <b>العنوان الوطني</b>
+                                    </span>
+                                    <div>
+                                        <field name="short_address" placeholder="العنوان المختصر"/>
+                                        <field name="building_no" placeholder="رقم المبنى"/>
+                                        <field name="street" placeholder="الشارع"/>
+                                        <field name="addititonal_no" placeholder="الرقم الفرعي"/>
+                                        <field name="neighborhood" placeholder="الحي"/>
+                                        <field name="zip" placeholder="الرمز البريدي"/>
+                                        <field name="city" placeholder="المدينة"/>
+                                        <field name="country_id" placeholder="الدولة"/>
+                                    </div>
+                                    <field name="registry_file"/> 
+                                </group>
+                                <group>
+                                    <field name="labor"/> 
+                                    <field name="wassel"/> 
+                                    <field name="fax"/> 
+                                    <field name="file_number"/>
+                                    <field name="calander"/>
+                                    <label for="offdays"/>
+                                    <div>
+                                        <div class="o_row">
+                                            <field name="sat"/><label for="sat"/>
+                                            <field name="sun"/><label for="sun"/>
+                                            <field name="mon"/><label for="mon"/>
+                                            <field name="tus"/><label for="tus"/>
+                                        </div>
+
+                                        <div class="o_row">
+                                            <field name="wed"/><label for="wed"/>
+                                            <field name="thur"/><label for="thur"/>
+                                            <field name="fri"/><label for="fri"/>
+                                        </div>
+                                    </div>
+                                    <field name="workdays"/>
+                                    <field name="offdays"/>
+                                    <label for="day"/>
+                                    <div class="o_row" name="day">
+                                            <field name="day"/>
+                                        <span>/</span>
+                                            <field name="month"/> 
+                                        <span>/</span>
+                                            <field name="year"/> 
+                                        <span> هـ</span>
+                                    </div>
+                                    <field name="slate_file"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page name="info" string="البنود">
+                            <group string="أحكام عامة">
+                                <field name="standard_1"/> 
+                                <field name="edited_1"/> 
+                                <field name="standard_2"/> 
+                                <field name="edited_2"/> 
+                                <field name="standard_3"/> 
+                                <field name="edited_3"/> 
+                                <field name="standard_4"/> 
+                                <field name="edited_4"/> 
+                            </group>
+                            <group string="التوظيف">
+                                <field name="standard_5"/> 
+                                <field name="edited_5"/> 
+                            </group>
+                            <group string="عقد العمل">
+                                <field name="standard_6"/> 
+                                <field name="edited_6"/> 
+                                <field name="standard_7"/> 
+                                <field name="edited_7"/> 
+                                <field name="standard_8"/> 
+                                <field name="edited_8"/> 
+                            </group>
+                            <group string="الإركاب">
+                                <field name="standard_9"/> 
+                                <field name="edited_9"/> 
+                                <field name="standard_10"/> 
+                                <field name="edited_10"/> 
+                            </group>
+                            <group string="التدريب والتأهيل">
+                                <field name="standard_11"/> 
+                                <field name="edited_11"/> 
+                                <field name="standard_12"/> 
+                                <field name="edited_12"/> 
+                                <field name="standard_13"/> 
+                                <field name="edited_13"/> 
+                            </group>
+                            <group string="الأجور">
+                                <field name="standard_14"/> 
+                                <field name="edited_14"/> 
+                                <field name="standard_15"/> 
+                                <field name="edited_15"/> 
+                                <field name="standard_16"/> 
+                                <field name="edited_16"/> 
+                            </group>
+                            <group string="تقارير الأداء">
+                                <field name="standard_17"/> 
+                                <field name="edited_17"/> 
+                                <field name="standard_18"/> 
+                                <field name="edited_18"/> 
+                                <field name="standard_19"/> 
+                                <field name="edited_19"/> 
+                            </group>
+                            <group string="العلاوات">
+                                <field name="standard_20"/> 
+                                <field name="edited_20"/> 
+                            </group>
+                            <group string="الترقيات">
+                                <field name="standard_21"/> 
+                                <field name="edited_21"/> 
+                                <field name="standard_22"/> 
+                                <field name="edited_22"/> 
+                            </group>
+                            <group string="الانتداب">
+                                <field name="standard_23"/> 
+                                <field name="edited_23"/> 
+                            </group>
+                            <group string="المزايا والبدلات">
+                                <field name="standard_24"/> 
+                                <field name="edited_24"/> 
+                            </group>
+                            <group string="أيام وساعات العمل">
+                                <field name="standard_25"/> 
+                                <field name="edited_25"/> 
+                            </group>
+                            <group string="العمل الإضافي">
+                                <field name="standard_26"/> 
+                                <field name="edited_26"/> 
+                            </group>
+                            <group string="التفتيش الإداري">
+                                <field name="standard_27"/> 
+                                <field name="edited_27"/> 
+                                <field name="standard_28"/> 
+                                <field name="edited_28"/> 
+                            </group>
+                            <group string="الإجازات">
+                                <field name="standard_29"/> 
+                                <field name="edited_29"/> 
+                                <field name="standard_30"/> 
+                                <field name="edited_30"/> 
+                                <field name="standard_31"/> 
+                                <field name="edited_31"/> 
+                                <field name="standard_32"/> 
+                                <field name="edited_32"/> 
+                            </group>
+                            <group string="الرعاية الطبية">
+                                <field name="standard_33"/> 
+                                <field name="edited_33"/> 
+                            </group>
+                            <group string="أحكام خاصة بالمرأة">
+                                <field name="standard_34"/> 
+                                <field name="edited_34"/> 
+                                <field name="standard_35"/> 
+                                <field name="edited_35"/> 
+                            </group>
+                            <group string="الخدمات الاجتماعية">
+                                <field name="standard_36"/> 
+                                <field name="edited_36"/> 
+                            </group>
+
+                            <group string="ضوابط سلوكيات العمل">
+                                <field name="standard_37"/> 
+                                <field name="edited_37"/> 
+                                <field name="standard_38"/> 
+                                <field name="edited_38"/> 
+                                <field name="standard_39"/> 
+                                <field name="edited_39"/> 
+                                <field name="standard_40"/> 
+                                <field name="edited_40"/> 
+                            </group>
+                            <group string="المخالفات والجزاءات">
+                                <field name="standard_41"/> 
+                                <field name="edited_41"/> 
+                                <field name="standard_42"/> 
+                                <field name="edited_42"/> 
+                                <field name="standard_43"/> 
+                                <field name="edited_43"/> 
+                                <field name="standard_44"/> 
+                                <field name="edited_44"/> 
+                                <field name="standard_45"/> 
+                                <field name="edited_45"/> 
+                                <field name="standard_46"/> 
+                                <field name="edited_46"/> 
+                                <field name="standard_47"/> 
+                                <field name="edited_47"/> 
+                                <field name="standard_48"/> 
+                                <field name="edited_48"/> 
+                                <field name="standard_49"/> 
+                                <field name="edited_49"/> 
+                                <field name="standard_50"/> 
+                                <field name="edited_50"/>
+                                <field name="standard_51"/> 
+                                <field name="edited_51"/> 
+                                <field name="standard_52"/> 
+                                <field name="edited_52"/> 
+                                <field name="standard_53"/> 
+                                <field name="edited_53"/> 
+                            </group>
+                            <group string="التظلم">
+                                <field name="standard_54"/> 
+                                <field name="edited_54"/> 
+                            </group>
+                            <group string="أحكام ختامية">
+                                <field name="standard_55"/> 
+                                <field name="edited_55"/> 
+                            </group>
+                        </page>
+                        <page name="worktime_violation" string="مخالفات تتعلق بمواعيد العمل">
+                            <field name="worktime_violation">
+                                <tree editable="bottom">
+                                    <field name="sequence_no"/> 
+                                    <field name="name"/> 
+                                    <field name="First_penality"/> 
+                                    <field name="Second_penality"/> 
+                                    <field name="Third_penality"/> 
+                                    <field name="Fourth_penality"/> 
+                                    <field name="note"/> 
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="organize_violation" string="مخالفات تتعلق بتنظيم العمل">
+                            <field name="organize_violation">
+                                <tree editable="bottom">
+                                    <field name="sequence_no"/> 
+                                    <field name="name"/> 
+                                    <field name="First_penality"/> 
+                                    <field name="Second_penality"/> 
+                                    <field name="Third_penality"/> 
+                                    <field name="Fourth_penality"/> 
+                                    <field name="note"/> 
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="labor_violation" string="مخالفات تتعلق بسلوك العامل">
+                            <field name="labor_violation">
+                                <tree editable="bottom">
+                                    <field name="sequence_no"/> 
+                                    <field name="name"/> 
+                                    <field name="First_penality"/> 
+                                    <field name="Second_penality"/> 
+                                    <field name="Third_penality"/> 
+                                    <field name="Fourth_penality"/> 
+                                    <field name="note"/> 
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="interna_slate_master_tree_view">
+        <field name="name">internal.slate.tree.view</field>
+        <field name="model">internal.slate</field>
+    	<field name="arch" type="xml">
+            <tree>
+                <field name="name"/> 
+                <field name="service_type_id"/> 
+                <field name="user_id"/> 
+                <field name="partner_company"/>
+                <field name="partner_id"/>
+                <field name="state"/> 
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="internal_slate_master_action">
+        <field name="name">اللائحة الداخلية</field>
+        <field name="type">ir.actions.act_window</field>                
+        <field name="res_model">internal.slate</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="interna_slate_master_tree_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    !لا توجد لائحة لنصنع واحدة
+            </p>
+        </field>
+
+    </record>
+    
+    <menuitem id="menu_interna_slate" name="اللائحة الداخلية" sequence="1" action="internal_slate_master_action" parent="menu_internal_slate_base"/>
+    
+    <record model="ir.ui.view" id="serivce_type_form_view">
+        <field name="name">serivce.type.form.view</field>
+        <field name="model">serivce.type</field>
+    	<field name="arch" type="xml">
+            <form>
+                <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="user_id"/> 
+                        <field name="user_ids" widget="many2many_tags"/> 
+                    </group>
+                    <group>
+                        <field name="price"/> 
+                    </group>
+                </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="serivce_type_master_tree_view">
+        <field name="name">serivce.type.tree.view</field>
+        <field name="model">serivce.type</field>
+    	<field name="arch" type="xml">
+            <tree>
+                <field name="name"/> 
+                <field name="price"/> 
+            </tree>
+        </field>
+    </record>
+
+    
+    <record model="ir.actions.act_window" id="serivceـtype_action">
+        <field name="name">انواع الخدمات</field>
+        <field name="type">ir.actions.act_window</field>                
+        <field name="res_model">serivce.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="serivce_type_master_tree_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    !لا توجد نوع خدمة لنصنع واحدة
+            </p>
+        </field>
+    </record>
+
+    
+    <menuitem id="menu_serivceـtype" name="انواع الخدمات" sequence="2" action="serivceـtype_action" parent="menu_internal_slate_base"/>
+
+    <record model="ir.ui.view" id="worktime_violation_tree_view">
+        <field name="name">worktime.violation.tree.view</field>
+        <field name="model">worktime.violation</field>
+    	<field name="arch" type="xml">
+            <tree>
+                <field name="sequence_no"/> 
+                <field name="name"/> 
+                <field name="First_penality"/> 
+                <field name="Second_penality"/> 
+                <field name="Third_penality"/> 
+                <field name="Fourth_penality"/> 
+                <field name="note"/> 
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="organize_violation_tree_view">
+        <field name="name">organize.violation.tree.view</field>
+        <field name="model">organize.violation</field>
+    	<field name="arch" type="xml">
+            <tree>
+                <field name="sequence_no"/> 
+                <field name="name"/> 
+                <field name="First_penality"/> 
+                <field name="Second_penality"/> 
+                <field name="Third_penality"/> 
+                <field name="Fourth_penality"/> 
+                <field name="note"/> 
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="labor_violation_tree_view">
+        <field name="name">labor.violation.tree.view</field>
+        <field name="model">labor.violation</field>
+    	<field name="arch" type="xml">
+            <tree>
+                <field name="sequence_no"/> 
+                <field name="name"/> 
+                <field name="First_penality"/> 
+                <field name="Second_penality"/> 
+                <field name="Third_penality"/> 
+                <field name="Fourth_penality"/> 
+                <field name="note"/> 
+            </tree>
+        </field>
+    </record>            
+</odoo>

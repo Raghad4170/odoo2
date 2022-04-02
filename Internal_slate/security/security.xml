@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="ir.module.category" id="module_category_slate">
+        <field name="name">لوائح العمل الداخلية</field>
+        <field name="description">لوائح العمل الداخلية</field>
+        <field name="sequence">2</field>
+    </record>
+    
+    <record model="res.groups" id="group_slate_user">
+        <field name="name">مستخدم</field>
+        <field name="category_id" ref="module_category_slate"/>
+    </record>
+    
+    <record model="res.groups" id="group_slate_manager">
+        <field name="name">مدير</field>
+        <field name="category_id" ref="module_category_slate"/>
+        <field name="implied_ids" eval="[(4, ref('group_slate_user'))]"/>
+    </record>
+
+<data noupdate="1">
+    
+<!-- slate -->
+    <record model="ir.rule" id="slate_comp_rule">
+        <field name="name">slate: multi-company</field>
+        <field name="model_id" ref="model_internal_slate"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="slate_manager_rule">
+        <field name="name">slate: slate manager: see all</field>
+        <field name="model_id" ref="model_internal_slate"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4,ref('Internal_slate.group_slate_manager'))]"/>
+    </record>
+
+    <record model="ir.rule" id="slate_members_rule">
+        <field name="name">slate: Own slate</field>
+        <field name="model_id" ref="model_internal_slate"/>
+        <field name="domain_force">[('user_ids', 'in', user.ids)]</field>
+        <field name="groups" eval="[(4, ref('Internal_slate.group_slate_user'))]"/>
+    </record>
+
+    <record model="ir.rule" id="slate_create_rule">
+        <field name="name">slate: Own slate</field>
+        <field name="model_id" ref="model_internal_slate"/>
+        <field name="domain_force">[('create_uid', 'in', user.ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+
+    <!-- slate Portal -->
+    <record model="ir.rule" id="slate_rule_portal">
+        <field name="name">slate: portal users</field>
+        <field name="model_id" ref="model_internal_slate"/>
+        <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+
+    <record model="ir.rule" id="slate_rule_portal_partner_company">
+        <field name="name">slate: portal users</field>
+        <field name="model_id" ref="model_internal_slate"/>
+        <field name="domain_force">[('partner_company','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4,ref('base.group_portal')),(4,ref('base.group_public'))]"/>
+    </record>
+
+    
+
+</data>
+</odoo>
