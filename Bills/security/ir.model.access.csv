@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bills_management,bills.management,model_bills_management,base.group_user,1,1,1,0
+access_bills_management_hr,bills.management.hr,model_bills_management,hr.group_hr_manager,1,1,1,1
+access_bills_management_ac,bills.management.ac,model_bills_management,account.group_account_manager,1,1,1,1
+access_custody_management,custody.management,model_custody_management,base.group_user,1,1,1,0
+access_custody_management_hr,custody.management.hr,model_custody_management,hr.group_hr_manager,1,1,1,1
+access_custody_management_ac,custody.management.ac,model_custody_management,account.group_account_manager,1,1,1,1
+access_asset_custody,asset.custody,model_asset_custody,base.group_user,1,1,1,0
+access_asset_custody_hr,asset.custody.hr,model_asset_custody,hr.group_hr_manager,1,1,1,1
+access_asset_custody_ac,asset.custody.ac,model_asset_custody,account.group_account_manager,1,1,1,1
+access_asset_donerequest,asset.donerequest,model_asset_donerequest,base.group_user,1,1,1,0

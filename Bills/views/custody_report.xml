@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>    
+<template id="custody_document">
+    <t t-call="web.external_layout">
+    <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div class="oe_structure"/>
+            <h3 class="text-center" id="informations"><strong>" استلام عهدة نقدية "</strong></h3>
+        <div class="pt-4"/>
+            <div id="informations">
+                <h4>
+                    <strong>التاريخ:
+                    <span class="m-0" t-field="doc.date_custody"/>
+                    </strong>
+                </h4>
+            </div>
+        
+        <div class="pt-4"/>
+            <h4 class="mt16" id="informations"><strong>بيانات المستلم:</strong></h4>
+            <hr class="my-0"/>
+            <div class="row pt-3" id="informations">
+                <div t-if="doc.employee_id" class="col-auto col-3 mw-100 mb-2">
+                    <strong>الاسم:
+                    <p class="m-0" t-field="doc.employee_id.name"/></strong>
+                </div>
+                <div t-if="doc.job_position" class="col-auto col-3 mw-100 mb-2">
+                    <strong>المسمى الوظيفي:
+                    <p class="m-0" t-field="doc.job_position"/></strong>
+                </div>
+                <div t-if="doc.iban" class="col-auto col-3 mw-100 mb-2">
+                    <strong>رقم حساب (الآيبان):
+                    <p class="m-0" t-field="doc.iban"/></strong>
+                </div>
+            </div>
+        <div class="pt-4"/>
+            <div class="row pt-3" id="informations">
+                <strong><h5>
+                <span class="m-0" t-field="doc.note"/>
+                </h5></strong>
+            </div>        
+        <div class="pt-4"/>
+            <div t-if="doc.employee_id.name" id="informations" name="signature">
+                <div class="text-center">
+                    <strong>اسم المستلم</strong>
+                </div>
+                <div class="text-center">
+                    <strong><span t-field="doc.employee_id.name"/></strong>
+                </div>
+                <div t-if="doc.sign" class="text-center">
+                    <img t-att-src="image_data_uri(doc.sign)" style="max-height: 4cm; max-width: 8cm;"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+    
+<template id="report_custody">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="Bills.custody_document"/>
+        </t>
+    </t>
+</template>
+    
+    <data>
+        <record id="action_report_custody" model="ir.actions.report">
+            <field name="name">العهدة المالية</field>
+            <field name="model">custody.management</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">Bills.report_custody</field>
+            <field name="report_file">Bills.report_custody</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_custody_management"/>
+            <field name="binding_type">report</field>
+        </record>     
+    </data>
+
+    
+    
+    
+    
+    <!-- Asset Custoday -->
+
+    
+<template id="asset_custody_document">
+    <t t-call="web.external_layout">
+    <div class="page" style="font-family: system-ui, system-ui, Cairo;">
+            <div class="oe_structure"/>
+            <h3 class="text-center" id="informations"><strong>" استلام عهدة عينية "</strong></h3>
+        <div class="pt-4"/>
+            <div id="informations">
+                <h4>
+                    <strong>التاريخ:
+                    <span class="m-0" t-field="doc.recived"/>
+                    </strong>
+                </h4>
+            </div>
+        
+        <div class="pt-4"/>
+            <h4 class="mt16" id="informations"><strong>بيانات المستلم:</strong></h4>
+            <hr class="my-0"/>
+            <div class="row pt-3" id="informations">
+                <div t-if="doc.employee_id" class="col-auto col-3 mw-100 mb-2">
+                    <strong>الاسم:
+                    <p class="m-0" t-field="doc.employee_id.name"/></strong>
+                </div>
+                <div t-if="doc.job_position" class="col-auto col-3 mw-100 mb-2">
+                    <strong>المسمى الوظيفي:
+                    <p class="m-0" t-field="doc.job_position"/></strong>
+                </div>
+            </div>
+        <div class="pt-4"/>
+            <div class="row pt-3" id="informations">
+                <strong><h5>
+                <span class="m-0" t-field="doc.note"/>
+                </h5></strong>
+            </div>        
+        <div class="pt-4"/>
+            <div t-if="doc.employee_id.name" id="informations" name="signature">
+                <div class="text-center">
+                    <strong>اسم المستلم</strong>
+                </div>
+                <div class="text-center">
+                    <strong><span t-field="doc.employee_id.name"/></strong>
+                </div>
+                <div t-if="doc.sign" class="text-center">
+                    <img t-att-src="image_data_uri(doc.sign)" style="max-height: 4cm; max-width: 8cm;"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</template>
+
+    
+<template id="report_asset_custody">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="Bills.asset_custody_document"/>
+        </t>
+    </t>
+</template>
+    
+    <data>
+        <record id="action_report_asset_custody" model="ir.actions.report">
+            <field name="name">العهدة العينية</field>
+            <field name="model">asset.custody</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">Bills.report_asset_custody</field>
+            <field name="report_file">Bills.report_asset_custody</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_asset_custody"/>
+            <field name="binding_type">report</field>
+        </record>     
+    </data>
+</odoo>
+
+
+
+

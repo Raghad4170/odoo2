@@ -1,0 +1,318 @@
+<odoo>
+  <data>
+    <!-- Top menu item -->
+
+    <menuitem name="الإجراءات الداخلية" id="bills_root" web_icon="Bills,static/description/icon.png" groups="parentid.employee"/>
+
+    <!-- bills messages -->
+      
+        <record id="bills_form" model="ir.ui.view">
+            <field name="name">الفواتير</field>
+            <field name="model">bills.management</field>
+            <field name="arch" type="xml">
+                <form string="الفواتير">
+                <header>
+                    <button string="موافقة المحاسب" name="action_accountant_approve" type="object" groups="account.group_account_manager" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button string="التوصية بالأعتماد" name="action_hr_approve" type="object" groups="parentid.bills_officer" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'accountant_ap')]}"/>
+                    <button string="الإعتماد" name="action_admin_approve" type="object" groups="parentid.director" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'hr_ap')]}"/>
+                    <button string="تم تسديدها" name="action_paid" type="object" groups="account.group_account_manager" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'admin_ap')]}"/>
+                    <button string="مسودة" name="action_draft" type="object" groups="parentid.bills_officer" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'admin_ap')]}" />
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="الفواتير">
+                     <div class="oe_title">
+                       <h1>
+                          <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                            <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>   
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>   
+                        <group>
+                            <field name="expense_amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="file" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="bank" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                     </group>
+                     <group>
+                            <field name="note" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                     </group>
+                </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+      
+    <record model="ir.ui.view" id="bills_list">
+      <field name="name">الفواتير</field>
+        <field name="model">bills.management</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="employee_id"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+          <field name="expense_amount"/>
+          <field name="file" widget="binary"/>
+          <field name="bank" widget="binary"/>
+          <field name="note"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="bills_action">
+        <field name="name">الفواتير</field>
+        <field name="res_model">bills.management</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'group_by':['bills_state']}</field>
+    </record>
+
+
+    <!-- actions -->
+
+    <menuitem name="الفواتير" id="bills_menu" parent="bills_root" action="bills_action" sequence="1"/>  
+      
+    <!-- Custoday -->
+        <record id="custody_done_request_form" model="ir.ui.view">
+            <field name="name">Custoday.form</field>
+            <field name="model">asset.donerequest</field>
+            <field name="arch" type="xml">
+                <form string="إخلاء طرف">
+                    <group>
+                       <group>
+                           <field name="back"/>
+                       </group>  
+                    </group>                 
+                    <footer>
+                        <button name="donerequest" string="إخلاء طرف" type="object" class="btn-primary"/>
+                        <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                    </footer>                    
+                 </form>
+            </field>
+        </record>
+
+        <record id="custody_form" model="ir.ui.view">
+            <field name="name">Custoday.form</field>
+            <field name="model">custody.management</field>
+            <field name="arch" type="xml">
+                <form string="العهدة المالية">
+                <header>
+                    <button string="الموافقة" name="action_hr_approve" type="object" groups="hr.group_hr_manager" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button string="الإعتماد" name="action_admin_approve" type="object" groups="parentid.director" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'approval')]}"/>
+                    <button string="مسودة" name="action_draft" type="object" groups="hr.group_hr_manager" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'admin_ap')]}"/>
+                    <button string="طلب إخلاء طرف" name="done_request_action" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'admin_ap')]}"/>
+                    <button string="إخلاء طرف" name="action_done" type="object" groups="hr.group_hr_manager" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'done_request')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="العهدة المالية">
+                     <div class="oe_title">
+                       <h1>
+                          <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                            <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id" groups="base.group_multi_company" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="job_position" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="iban"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>   
+                        <group>
+                            <field name="date_custody" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="back" readonly='1'/>
+                            <field name="custody"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="custody_remaining"/>
+                        </group>
+                        <group>
+                            <field name="note"/>
+                        </group>
+                        <group>
+                            <field name="sign"  widget="signature" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                     </group>
+                     <group>
+                         <field name="bills_ids">
+                             <tree editable="bottom">
+                                 <field name="name"/>
+                                 <field name="expense_amount"/>
+                                 <field name="file" widget="binary"/>
+                                 <field name="bank" widget="binary"/>
+                             </tree>
+                         </field>
+                     </group>
+                </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+      
+    <record model="ir.ui.view" id="custody_list">
+      <field name="name">العهدة المالية</field>
+        <field name="model">custody.management</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="employee_id"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+          <field name="custody"/>
+          <field name="date_custody" />
+          <field name="custody_remaining"/>
+          <field name="sign" widget="binary"/>
+          <field name="state"/>            
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="custody_action">
+      <field name="name">العهدة المالية</field>
+        <field name="res_model">custody.management</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- actions -->
+
+    <menuitem name="العهدة المالية" id="custody_menu" parent="Bills.bills_root" action="custody_action" sequence="1"/>
+
+      
+      
+    <!-- Asset Custoday -->
+      
+    <record id="account_asset_custody_form_view" model="ir.ui.view">
+        <field name="name">account.asset.form.view</field>
+        <field name="model">account.asset</field>
+        <field name="inherit_id" ref="account_asset.view_account_asset_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='original_value']" position="before">
+                <field name="id" string="كود الأصل"/>
+                <field name="s_number"/>
+            </xpath>
+            <xpath expr="//notebook" position="before">
+                <group>
+                    <field name="employees_asset_custody"/>
+                </group>
+            </xpath>  
+        </field>
+    </record>
+
+      
+        <record id="asset_done_request_form" model="ir.ui.view">
+            <field name="name">Custoday.form</field>
+            <field name="model">asset.donerequest</field>
+            <field name="arch" type="xml">
+                <form string="إخلاء طرف">
+                    <group>
+                       <group>
+                           <field name="back"/>
+                           <field name="back_state"/>
+                       </group>  
+                    </group>                 
+                    <footer>
+                        <button name="donerequest" string="إخلاء طرف" type="object" class="btn-primary"/>
+                        <button string="إلغاء" class="btn-secondary" special="cancel"/>
+                    </footer>                    
+                 </form>
+            </field>
+        </record>
+
+        <record id="asset_custody_form" model="ir.ui.view">
+            <field name="name">Custoday.form</field>
+            <field name="model">asset.custody</field>
+            <field name="arch" type="xml">
+                <form string="العهدة العينية">
+                <header>
+                    <button string="الموافقة" name="action_hr_approve" type="object" groups="hr.group_hr_manager" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button string="الإعتماد" name="action_admin_approve" type="object" groups="parentid.director" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'approval')]}"/>
+                    <button string="مسودة" name="action_draft" type="object" groups="hr.group_hr_manager" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'admin_ap')]}"/>
+                    <button string="طلب إخلاء طرف" name="done_request_action" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'admin_ap')]}"/>
+                    <button string="إخلاء طرف" name="action_done" type="object" groups="hr.group_hr_manager" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'done_request')]}"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet string="العهدة العينية">
+                     <div class="oe_title">
+                       <h1>
+                          <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                       </h1>
+                     </div>
+                     <group>
+                        <group>
+                            <field name="employee_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="job_position" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="company_id" groups="base.group_multi_company" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group>
+                            <field name="asset_id" groups="account.group_account_manager" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="recived" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="back" readonly='1'/>
+                            <field name="back_state" readonly='1'/>
+                        </group>  
+                        <group>
+                            <field name="note"/>
+                        </group>
+                        <group>
+                            <field name="sign"  widget="signature" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                     </group>
+                </sheet>
+                    <div class="o_attachment_preview"/>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                 </form>
+            </field>
+        </record>
+      
+    <record model="ir.ui.view" id="asset_custody_list">
+      <field name="name">العهدة العينية</field>
+        <field name="model">asset.custody</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="employee_id"/>
+          <field name="company_id" groups="base.group_multi_company"/>
+          <field name="job_position"/>
+          <field name="recived"/>
+          <field name="back"/>
+          <field name="sign" widget="binary"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="asset_custody_action">
+      <field name="name">العهدة العينية</field>
+        <field name="res_model">asset.custody</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- actions -->
+
+    <menuitem name="العهدة العينية" id="asset_custody_menu" parent="Bills.bills_root" action="asset_custody_action" sequence="1"/>
+
+      
+  </data>
+</odoo>
