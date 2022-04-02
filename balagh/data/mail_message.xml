@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="send_email_balagh" model="mail.template">
+            <field name="name">بلاغ جديد</field>
+            <field name="email_from">{{ (object.user_id.company_id.partner_id.email_formatted or object.user_id.email_formatted) }}</field>
+            <field name="email_to">{{object.user_id.partner_id.email}}</field>
+            <field name="subject">تم إستلام بلاغ جديد</field>
+            <field name="model_id" ref="balagh.model_balagh_balagh"/>
+            <field name="auto_delete" eval="False"/>
+            <field name="body_html" type="xml">
+            <div>
+                السلام عليكم ورحمة الله وبركاته
+                <br/><br/>
+                تم تعيينك للعمل على  <t t-out="object.name or ''"/> 
+                <br/><br/>
+                نأمل منكم مراجعة البلاغ والبدأ به في أقرب وقت 
+                <div style="text-align: center; margin: 16px 0px 16px 0px;">
+                    <a style="background-color: #4f9084; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-att-href="'%s' % object.url">عرض البلاغ</a><br/>
+                </div>
+                <br/><br/>
+            </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or object.user_id.lang or user.lang }}</field>
+        </record>        
+    </data>
+</odoo>
+
+
+

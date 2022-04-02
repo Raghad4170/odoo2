@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_balagh_balagh_portal,balagh.balagh,model_balagh_balagh,base.group_portal,1,1,1,0
+access_balagh_balagh,balagh.balagh,model_balagh_balagh,balagh.group_balagh_user,1,1,1,1
+access_balagh_messages,balagh.messages,model_balagh_messages,balagh.group_balagh_user,1,1,1,1

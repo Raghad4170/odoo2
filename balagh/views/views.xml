@@ -1,0 +1,181 @@
+<odoo>
+  <data>
+    <!-- Top menu item -->
+
+    <menuitem name="بلاغ" id="balagh.menu_root" web_icon="balagh,static/description/icon.png" groups="balagh.group_balagh_user"/>
+
+    <!-- balagh -->
+      
+        <record id="edit_balagh" model="ir.ui.view">
+            <field name="name">بلاغ</field>
+            <field name="model">balagh.balagh</field>
+            <field name="arch" type="xml">
+                <form string="بلاغ">
+                <header>
+                    <button string="تعيين كجديد" name="action_draft" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'جديد')]}"/>
+                    <button string="إرسال البلاغ" name="action_send" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'جديد')]}"/>
+                    <button string="تم التبليغ" name="action_submit" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'not in', ('تعذر التبليغ','يتم الإرسال'))]}"/>
+                    <button string="تعذر التبليغ" name="action_fail" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'يتم الإرسال')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="جديد,يتم الإرسال"/>
+                </header>
+                <sheet string="بلاغ">
+                     <div class="oe_title">
+                       <h1>
+                          <field name="name"/>
+                       </h1>
+                     </div>
+                      <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="sender_name"/>
+                        </group>   
+                        <group>
+                            <field name="recever_id"/>
+                            <field name="recever_name"/>
+                        </group>   
+                      </group>
+                      <group>
+                        <group>
+                            <field name="balagh_id"/>
+                            <field name="user_id"/>
+                            <field name="price"/>
+<!--                             <field name="qutation_id" groups="sales_team.group_sale_salesman"/> -->
+                        </group>   
+                        <group>
+                            <field name="variables" invisible='1'/>
+                            <field name="variable_1"/>
+                            <field name="variable_2" attrs="{'invisible': [('variables', '=','1')]}"/>
+                            <field name="variable_3" attrs="{'invisible': [('variables', 'in',('1','2'))]}"/>
+                            <field name="variable_4" attrs="{'invisible': [('variables', 'not in',('4','5','6','7','8'))]}"/>
+                            <field name="variable_5" attrs="{'invisible': [('variables', 'not in',('5','6','7','8'))]}"/>
+                            <field name="variable_6" attrs="{'invisible': [('variables', 'not in',('6','7','8'))]}"/>
+                            <field name="variable_7" attrs="{'invisible': [('variables', 'not in',('7','8'))]}"/>
+                            <field name="variable_8" attrs="{'invisible': [('variables', '!=','8')]}"/>
+                        </group>   
+                      </group>
+                      <group>
+                          <group>
+                                <field name="order_name"/>
+                          </group>
+                          <group>
+                                <field name="order_file"/>
+                          </group>
+                      </group>
+                      <group>
+                          <field name="message"/>
+                      </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+                </form>
+            </field>
+        </record>
+      
+    <record model="ir.ui.view" id="balagh_list">
+      <field name="name">بلاغ</field>
+      <field name="model">balagh.balagh</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="user_id"/>
+          <field name="partner_id"/>
+          <field name="balagh_id"/>
+          <field name="sender_name"/>
+          <field name="recever_id"/>
+          <field name="recever_name"/>
+          <field name="price"/>
+          <field name="message"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="balagh.action_balagh">
+      <field name="name">بلاغ</field>
+      <field name="res_model">balagh.balagh</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            لا توجد رسائل لنصنع واحدةَ!
+        </p>
+      </field>
+    </record>
+
+    <!-- actions -->
+
+    <menuitem name="بلاغ" id="balagh.menu_balagh" parent="balagh.menu_root"
+              action="balagh.action_balagh" sequence="1"/>
+
+      
+    <!-- balagh messages -->
+      
+        <record id="edit_balagh_messages" model="ir.ui.view">
+            <field name="name">رسائل بلاغ</field>
+            <field name="model">balagh.messages</field>
+            <field name="arch" type="xml">
+                <form string="بلاغ">
+                <sheet string="بلاغ">
+                     <div class="oe_title">
+                       <h1>
+                          <field name="name"/>
+                       </h1>
+                     </div>
+                      <group>
+                        <group>
+                            <field name="user_id"/>
+                        </group>   
+                        <group>
+                            <field name="price"/>
+                        </group>
+                      </group>
+                      <group>
+                        <group>
+                            <field name="variables"/>
+                        </group>   
+                        <group>
+                            <field name="message"/>
+                        </group>
+                      </group>
+                </sheet>
+                 </form>
+            </field>
+        </record>
+      
+    <record model="ir.ui.view" id="balagh_messages_list">
+      <field name="name">رسائل بلاغ</field>
+      <field name="model">balagh.messages</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="message"/>
+          <field name="variables"/>
+          <field name="user_id"/>
+          <field name="price"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="balagh.action_messages">
+      <field name="name">رسائل بلاغ</field>
+      <field name="res_model">balagh.messages</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+            لا توجد رسائل لنصنع واحدةَ!
+        </p>
+      </field>
+    </record>
+
+
+    <!-- actions -->
+
+    <menuitem name="رسائل بلاغ" id="balagh.menu_balagh_messages" parent="balagh.menu_root"
+              action="balagh.action_messages" sequence="2"/>
+
+  </data>
+</odoo>

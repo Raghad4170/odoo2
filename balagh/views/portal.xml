@@ -1,0 +1,347 @@
+<odoo>
+    <data noupdate="1">
+
+        <record id="website_menu_balagh" model="website.menu">
+            <field name="name">البلاغات القانونية</field>
+            <field name="url">/my/balaghs</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">1</field>
+            <field name="group_ids" eval="[(4, ref('base.group_portal')),
+                                          (4,ref('base.group_user')),]"/>
+        </record>
+
+<!--         <record id="website_menu_new_balagh" model="website.menu">
+            <field name="name">طلب بلاغ قانوني</field>
+            <field name="url">/new/balagh</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence" type="int">2</field>
+        </record>
+ -->
+
+    </data>
+    <data>        
+        
+    <template id="portal_my_balaghs" name="بلاغ قانوني">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">بلاغ قانوني</t>
+            </t>
+            <t t-if="not balaghs">
+                <div class="alert alert-warning mt8" role="alert">
+                    لا يوجد لديك بلاغات قانونية
+                </div>
+            </t>
+            <t t-if="balaghs" t-call="portal.portal_table">
+             <thead>
+                <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                    <th class="text-left">#</th>
+                    <th class="text-left">الرسالة</th>
+                    <th class="text-left">الحالة</th>
+                 </tr>
+             </thead>
+                <tbody>
+                    <tr t-foreach="balaghs" t-as="balagh">
+                        <td>
+                         <a t-attf-href="/my/balagh/#{balagh.id}?access_token=#{balagh.access_token}">
+                             <span t-field="balagh.id"/>
+                         </a>
+                        </td>
+                        <td class="text-left">
+                         <a t-attf-href="/my/balagh/#{balagh.id}?access_token=#{balagh.access_token}">
+                          <span t-field="balagh.message"/>
+                         </a>
+                        </td>
+                        <td class="text-left">
+                          <span t-field="balagh.state"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+        
+    <template id="portal_my_balagh" name="بلاغ قانوني">
+            <t t-set="o_portal_fullwidth_alert" groups="balagh.group_balagh_user">
+                <t t-call="portal.portal_back_in_edit_mode">
+                    <t t-set="backend_url" t-value="'/web#model=balagh.balagh&amp;id=%s&amp;view_type=form' % (balagh.id)"/>
+                </t>
+            </t>
+            <input type="hidden"  t-att-value="balagh.id" name="balagh_id"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="title">
+                        <h3><span t-field="balagh.name"/></h3>
+                    </t>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li t-if="balagh.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المسؤول</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="balagh.user_id.image_1024" t-att-src="image_data_uri(balagh.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not balagh.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="balagh.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                        <div class="card-body">
+                            <div t-if="balagh.message">
+                                <span t-if="balagh.state == 'تم التبليغ'" class="float-right">
+                                    <div class="btn-group  flex-grow-1 mr-1 mb-1">
+                                       <a role="button" t-attf-href="/web/content?model=balagh.balagh&amp;field=order_file&amp;id={{ f.id }}" class="btn btn-sm btn-secondary">
+                                            <span class="fa fa-download" role="img" aria-label="Reports" title="التقرير"/>
+                                            <small><b class="text">التقرير</b></small>
+                                        </a>
+                                    </div>
+                                </span>
+                                <h4 class="mb-1">معلومات الرسالة</h4>
+                                <hr class="my-0"/>
+                                <table class="table table-borderless table-sm">
+                                    <tbody style="white-space:nowrap">
+                                        <tr t-if="balagh.recever_id">
+                                            <th class="text-left pb-0">هوية المرسل إليه:</th>
+                                            <td class="w-100 pb-0 text-wrap"><span t-field="balagh.recever_id"/></td>
+                                        </tr>
+                                        <tr t-if="balagh.recever_name">
+                                            <th class="text-left pb-0">اسم المرسل إليه:</th>
+                                            <td class="w-100 pb-0 text-wrap"><span t-field="balagh.recever_name"/></td>
+                                        </tr>
+                                        <tr t-if="balagh.state">
+                                            <th class="text-left pb-0">حالة الرسالة:</th>
+                                            <td class="w-100 pb-0 text-wrap"><span t-field="balagh.state"/></td>
+                                        </tr>
+                                        <tr t-if="balagh.message">
+                                            <th class="text-left pb-0">الرسالة:</th>
+                                            <td class="w-100 pb-0 text-wrap"><span t-field="balagh.message"/></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ======  Chatter ====== -->
+                    <div id="discussion"/>
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="balagh"/>
+                            <t t-set="token" t-value="balagh.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+        
+<!--     Form -->
+        
+    <template id="new_balagh_layout" name="Portal Layout">
+        <t t-call="portal.frontend_layout">
+            <t t-set="is_portal" t-value="True"/>
+
+            <div class="o_portal container mt-3">
+            </div>
+
+            <div id="wrap" class='o_portal_wrap'>
+                <div class="container mb64">
+                    <t t-if="my_details">
+                    </t>
+                    <t t-else="">
+                        <t t-raw="0"/>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>        
+        
+     <template id="new_balagh" name="بلاغ قانوني">
+        <t t-call="balagh.new_balagh_layout">
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">بلاغ قانوني</t>
+            </t>
+            <t t-if="not balagh_msg_list">
+                <div class="alert alert-warning mt8" role="alert">
+                    لا توجد بلاغات قانونية متاحة
+                </div>
+            </t>
+            <t  t-call="portal.portal_table">
+             <thead>
+                <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                    <th>الرسالة</th>
+                    <th class="text-left">محتوى الرسالة</th>
+                 </tr>
+             </thead>
+                <t t-foreach="balagh_msg_list" t-as="msg">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a t-attf-href="/new/balagh/#{msg['id']}"><span t-esc="msg['name']"/></a>
+                            </td>
+                            <td class="text-left">
+                                <a t-attf-href="/new/balagh/#{msg['id']}"><span t-esc="msg['message']"/></a>
+                            </td>
+                            <td class="text-left" style="display:none;">
+                            </td>
+                        </tr>
+                    </tbody>
+                </t>
+            </t>
+        </t>
+    </template>
+    
+    <template id="new_balagh_form_portal_breadcrumbs" name="Portal Breadcrumbs">
+        <nav t-attf-class="navbar navbar-light navbar-expand-lg border py-0 mb-2 o_portal_navbar {{classes if classes else ''}} {{'mt-3 rounded' if breadcrumbs_searchbar else 'border-top-0' }}">
+            <ol t-if="page_name != 'home'" class="o_portal_submenu breadcrumb mb-0 py-2 flex-grow-1 row">
+                <li class="breadcrumb-item ml-1">
+                    <a href="/my/home" aria-label="Home" title="Home"><i class="fa fa-home"/></a>                
+                </li>
+                <li class="breadcrumb-item ml-1">
+                    <a t-attf-href="/new/balagh" aria-label="Home" title="Home">رسائل بلاغ القانونية</a>
+                </li>            
+                <li class="breadcrumb-item ml-1">
+                    <span t-field="msg.name"/>
+                </li>            
+            </ol>
+        </nav>
+    </template>        
+        
+    <template id="new_balagh_form" name="بلاغ قانوني">
+        <t t-call="balagh.new_balagh_layout">
+            <t t-call="balagh.new_balagh_form_portal_breadcrumbs"/>
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_body">
+                  <form id="portal_balag_msg" action="/submit_balag_msg" method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="balagh.messages" data-success-mode="redirect" data-success-page="/my/balaghs" data-editable-form="false"  hide-change-model="true">
+
+                    <div class="row mb-4">
+                       <input type="hidden" class="form-control" t-att-value="msg.id" style="display:none;" id="msg_id" name="msg_id"/>
+                        <br>
+                            <div class="row form-group col-12 s_website_form_field s_website_form_model_required">
+                                <div class="row s_col_no_resize s_col_no_bgcolor col-auto">
+                                    <label class="col-form-label col-auto s_website_form_label" style="width:150px" for="recever_id">
+                                        <span class="s_website_form_label_content">هوية المستقبل</span>
+                                        <span class="s_website_form_mark"> *</span>
+                                    </label>
+                                    <div class="col-sm col-xs-12">
+                                        <input id="recever_id" type='text' class='form-control s_website_form_input' style="width:160px" name="recever_id" required="1"/>
+                                    </div>
+                                </div>
+                                <div class="row s_col_no_resize s_col_no_bgcolor col-auto">
+                                    <label class="col-form-label col-auto s_website_form_label" style="width:150px" for="recever_name">
+                                        <span class="s_website_form_label_content">اسم المستقبل</span>
+                                        <span class="s_website_form_mark"> *</span>
+                                    </label>
+                                    <div class="col-sm col-xs-12">
+                                        <input id="recever_name" type='text' class='form-control s_website_form_input' style="width:160px" name="recever_name" required="1"/>
+                                    </div>
+                                </div>
+                                <div class="row s_col_no_resize s_col_no_bgcolor col-auto">
+                                    <label class="col-form-label col-auto s_website_form_label" style="width:150px" for="sender_name">
+                                        <span class="s_website_form_label_content">اسم المرسل</span>
+                                        <span class="s_website_form_mark"> *</span>
+                                    </label>
+                                    <div class="col-sm col-xs-12">
+                                        <input id="sender_name" t-att-value="sender_name" type='text' class='form-control s_website_form_input' style="width:160px" name="sender_name" required="1"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <t t-if="public_user">
+                               <div class="row form-group col-12 s_website_form_field s_website_form_model_required">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor col-auto">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width:150px" for="email">
+                                            <span class="s_website_form_label_content">البريد الإلكتروني</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="email" type='email' name="email" class='form-control s_website_form_input' style="width:160px" t-att-value="email" required="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="row s_col_no_resize s_col_no_bgcolor col-auto">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width:150px" for="phone">
+                                            <span class="s_website_form_label_content">رقم الجوال</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="phone" type='phone' t-att-value="phone" class='form-control s_website_form_input' style="width:160px" name="phone" required="1"/>
+                                        </div>
+                                    </div>
+                              </div>
+                            </t>
+                            <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-name="message">
+                                <div class="s_col_no_resize s_col_no_bgcolor col-auto">
+                                    <label class="col-form-label col-auto s_website_form_label" for="message">
+                                        <span class="s_website_form_label_content">الرسالة</span>
+                                        <span class="s_website_form_mark"> :</span>
+                                    </label>
+                                    <div align="center">
+                                        <div class="col-md-7 col-sm-8 col-auto text-center">
+                                            <input type="text" class="form-control" t-att-value="msg.message" style="display:none;" id="message_data" name="message_data"/>
+                                        </div>
+                                        <div id="msg_box" name="msg_box">
+                                    </div>    
+                                    </div>
+                                </div>
+                            </div>
+                        </br>                              
+                    </div>
+                    <div align="left">
+                        <button type="button" id="submit_msg" name="submit_msg" class="submit_msg o_portal_chatter_composer_btn btn btn-primary">إرسال</button>  
+                    </div>
+                  </form>
+                </t>
+            </t>
+        </t>
+    </template>
+        
+    <template id="balagh_sucsess" name="تم استلام البلاغ القانوني">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty" data-oe-model="ir.ui.view" data-oe-id="4945" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]">
+              <section class="s_cover bg-black-50 o_colored_level s_parallax_no_overflow_hidden pt256 o_full_screen_height pb248" data-scroll-background-ratio="0" data-snippet="s_cover" data-name="Cover" data-oe-shape-data="{&quot;shape&quot;:&quot;web_editor/Airy/02&quot;,&quot;flip&quot;:[]}" style="position: relative; min-height: 884.75px !important;">
+                <div class="o_we_shape o_web_editor_Airy_02"></div>
+                <div class="container s_allow_columns">
+                  <h1 style="text-align: center;">
+                    <font style="font-size: 62px;">تم استلام بلاغكم بنجاح</font>
+                  </h1>
+                  <p class="lead" style="text-align: center;">
+                    <font style="font-size: 24px;">نأمل منكم اعتماد عرض السعر وتسديد القيمة لاستكمال إجراءات الحصول على الخدمة.</font>
+                  </p>
+                  <t t-if="public_user">
+                      <p class="lead" style="text-align: center;">
+                        <font style="font-size: 20px;">
+                            <p style="text-align: center;">
+                            اسم المستخدم (البريد الإلكتروني المدخل في الطلب)
+                            </p>
+                            <p style="text-align: center;">
+                            كلمة المرور (رقم الجوال المدخل في الطلب)
+                            </p>
+                        </font>
+                      </p>
+                  </t>
+                  <p style="text-align: center;">
+                    <a href="/my/balaghs" class="mb-2 btn btn-primary btn-lg" data-original-title="" title="" aria-describedby="tooltip766208">البلاغات القانونية</a>
+                    <a href="/my/quotes" class="mb-2 btn btn-primary btn-lg" data-original-title="" title="" aria-describedby="tooltip766208">عروض الأسعار</a>
+                  </p>
+                </div>
+              </section>
+            </div>
+         </t>
+    </template>        
+        
+    </data>
+</odoo>
