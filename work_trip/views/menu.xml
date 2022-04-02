@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+ <record id="work_trip.hr_attendance_action_work_trip" model="ir.actions.client">
+        <field name="name">رحلة عمل</field>
+        <field name="tag">hr_attendance_action_work_trips</field>
+    </record>
+
+   
+    <!-- Menus -->
+
+
+    <menuitem id="menu_hr_attendance_work_trip" name="رحلة عمل" parent="hr_attendance.menu_hr_attendance_root" sequence="2" action="work_trip.hr_attendance_action_work_trip" groups="parentid.employee"/>
+
+</odoo>

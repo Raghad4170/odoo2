@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="res_users_allowed_ips">
+            <field name="name">res.users</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[1]" position='after'>
+                    <page string="بروتوكول الأنترنت المسموح به">
+                        <field name="allowed_ips">
+                            <tree editable="bottom">
+                                <field name="ip_address"/>
+                            </tree>
+                        </field>
+                      </page>
+                    <page string="المواقع المسموح بها">
+                        <button string="حدد المواقع عبر الخريطة" name="set_map"  type="object" class="oe_highlight"/>
+                        <field name="allowed_locations">
+                            <tree editable="bottom">
+                                <field name="check_in_latitude"/>
+                                <field name="check_in_longitude"/>
+                                <field name="attendance_range"/>
+                            </tree>
+                        </field>
+                      </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="work_trip">
+            <field name="name">hr.attendance.trip</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='worked_hours']" position="after">
+                    <field name="work_trip"/>
+                    <field name="check_in_maps" widget="url"/>
+                    <field name="check_out_maps" widget="url"/>
+                </xpath>
+            </field>
+        </record>
+        
+        
+    <record id="hr_attendance_view_form_inherit" model="ir.ui.view">
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/group" position="after">
+                <group name="locations" col="2">
+                        <field name="work_trip"/>
+                        <field name="check_in_maps" widget="url"/>
+                        <field name="check_out_maps" widget="url"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+        
+    </data>
+</odoo>
