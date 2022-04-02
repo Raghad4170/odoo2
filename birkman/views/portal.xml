@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>    
+    
+    <template id="portal_layout_birkman" name="Portal layout: birkman menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'birkman' or birkman" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not birkman else ''}">
+                <a t-if="birkman" t-attf-href="/my/birkmans?{{ keep_query() }}">اختبار بيركمان</a>
+                <t t-else="">اختبار بيركمان</t>
+            </li>
+        </xpath>
+    </template>
+
+
+    <template id="birkman_list" name="اختبار بيركمان">
+        <t t-set="birkman" t-value="page_name == 'birkman'"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">اختبار بيركمان</t>
+            </t>
+            <t t-if="not birkmans">
+                <div class="alert alert-warning mt8" role="alert">
+                 لا يوجد طلب لاختبار بيركمان
+                </div>
+            </t>
+            <t t-if="birkmans" t-call="portal.portal_table">
+             <thead>
+                <tr>
+                    <th>#</th>
+                    <th>بيركمان</th>
+                    <th>نوع الباقة</th>
+                    <th>حالة الاختبار</th>
+                 </tr>
+             </thead>
+                <tbody>
+                    <tr t-foreach="birkmans" t-as="birkman">
+                        <td>
+                         <a t-attf-href="/my/birkman/#{birkman.id}">
+                             <span t-field="birkman.id"/>
+                         </a>
+                        </td>
+                        <td>
+                         <a t-attf-href="/my/birkman/#{birkman.id}">
+                           <span t-field="birkman.name"/>
+                         </a>
+                        </td>
+                        <td>
+                           <span t-field="birkman.service_type_id"/>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                           <span t-field="birkman.state"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+    
+    <template id="birkman_submit_form" name="اختبار بيركمان">
+        <t t-call="website.layout">
+        <div class="container pt-5">
+            <div align="center">
+                <h2 class="text-muted">
+                   باقات اختبار بيركمان
+                </h2>
+            </div>
+            <div class="pt-5"/>
+            <span class="hidden" data-for="birkman_ticket_form"/>
+            <div id="birkman_section">
+                <section id="forms">
+                    <div class="container">
+                        <form id="birkman_ticket_form" action="/save_birkman"  method="post" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="birkman" data-success-mode="redirect">
+                            <div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <div class="row">
+                                            <label class="col-form-label col-auto s_website_form_label" style="width: 220px" for="service_type_id">
+                                                <span class="s_website_form_label_content">نوع الباقة</span>
+                                                <span class="s_website_form_mark">*</span>
+                                            </label>
+                                            <t t-foreach="service_type_ids" t-as="s">
+                                                <div class="s_col_no_bgcolor text-center pt32 pb16 col-lg-2" style="width: 250px" data-name="Box">
+                                                    <div class="card bg-200">
+                                                    <h6 class="card-header btn-primary"><t t-esc="s.name"/></h6>
+                                                    <div class="card-body text-center">
+                                                        <h5 class="card-title">
+                                                        <span class="s_comparisons_price">
+                                                            <b class="o_default_snippet_text">
+                                                                <t t-if="s.price_value">
+                                                                    <span t-esc="s.price_value"/>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <span t-esc="s.price" t-options="{'widget': 'monetary', 'display_currency': s.company_currency}"/>
+                                                                </t>
+                                                            </b>
+                                                        </span>
+                                                        </h5>
+                                                        <small>لكل فرد غير شامل لضريبة القيمة المضافة</small>
+                                                    </div>
+                                                    <ul class="list-group list-group-flush">
+                                                      <li class="list-group-item"><t t-esc="s.description"/></li>
+                                                    </ul>    
+                                                    <div class="card-footer btn-primary">
+                                                        <input type="radio" id="service_type_id" name="service_type_id" t-att-value="s.id"/>
+                                                        <label for="service_type_id"/>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="number">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="qty">
+                                            <span class="s_website_form_label_content">عدد المختبرين</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="qty" type="number" class="form-control s_website_form_input" name="qty"  t-att-value="qty" required="True"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input id="partner_id" type="hidden" class="form-control s_website_form_input" name="partner_id"  t-att-value="partner_id"/>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="char">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="partner">
+                                            <span class="s_website_form_label_content">الاسم</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="partner" type="text" class="form-control s_website_form_input" name="partner"  t-att-value="partner" required="True"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="phone">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk2">
+                                            <span class="s_website_form_label_content">رقم الجوال</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="phone" type='phone' class='form-control s_website_form_input' t-att-value="phone"  name="phone" required="True"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 s_website_form_field s_website_form_model_required" data-type="email">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-auto s_website_form_label" style="width: 200px" for="helpdesk2">
+                                            <span class="s_website_form_label_content">البريد الإلكتروني</span>
+                                            <span class="s_website_form_mark"> *</span>
+                                        </label>
+                                        <div class="col-sm col-xs-12">
+                                            <input id="email" type='email' class='form-control s_website_form_input' name="email" t-att-value="email" required="True"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div align="left">
+                                    <button type="submit" id="submit_msg" class="btn btn-primary">طلب</button>  
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+        </t>
+    </template>
+
+    
+    
+    <template id="birkman_submit_msg" name="تم استلام طلبكم">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty" data-oe-model="ir.ui.view" data-oe-id="4945" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]">
+              <section class="s_cover bg-black-50 o_colored_level s_parallax_no_overflow_hidden pt256 o_full_screen_height pb248" data-scroll-background-ratio="0" data-snippet="s_cover" data-name="Cover" data-oe-shape-data="{&quot;shape&quot;:&quot;web_editor/Airy/02&quot;,&quot;flip&quot;:[]}" style="position: relative; min-height: 884.75px !important;">
+                <div class="o_we_shape o_web_editor_Airy_02"></div>
+                <div class="container s_allow_columns">
+                  <h1 style="text-align: center;">
+                    <font style="font-size: 62px;">تم استلام طلبكم</font>
+                  </h1>
+                  <p class="lead" style="text-align: center;">
+                    <font style="font-size: 24px;">يرجى تسديده ليتم اعتماده في أقرب وقت.</font>
+                  </p>
+                  <t t-if="public_user">
+                      <p class="lead" style="text-align: center;">
+                        <font style="font-size: 20px;">
+                            <p style="text-align: center;">
+                            اسم المستخدم (البريد الإلكتروني المدخل في الطلب)
+                            </p>
+                            <p style="text-align: center;">
+                            كلمة المرور (رقم الجوال المدخل في الطلب)
+                            </p>
+                        </font>
+                      </p>
+                  </t>
+                  <p style="text-align: center;">
+                    <a t-att-href="'%s' % portal_url" class="mb-2 btn btn-primary btn-lg" data-original-title="" title="" aria-describedby="tooltip766208">متابعة الطلب</a>
+                    <a t-att-href="'%s' % sale_url" class="mb-2 btn btn-primary btn-lg" data-original-title="" title="" aria-describedby="tooltip766208">عرض السعر</a>
+                  </p>
+                </div>
+              </section>
+            </div>
+         </t>
+    </template>
+
+
+      <template id="brikman_brikman_followup" name="اختبار بيركمان">
+        <t t-set="o_portal_fullwidth_alert" groups="brkiman.group_brikman_user">
+            <t t-call="portal.portal_back_in_edit_mode">
+                <t t-set="backend_url" t-value="'/web#model=brikman&amp;id=%s&amp;view_type=form' % (brikman.id)"/>
+            </t>
+        </t>
+        <t t-call="portal.portal_layout">
+            <t t-set="wrapwrap_classes" t-value="'o_portal_bg_dark'"/>
+            <div class="row mt16 oe_website_contract o_portal_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+                    <t t-set="entries">
+                        <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
+                            <li t-if="brikman.user_id" class="list-group-item flex-grow-1">
+                                <div class="small mb-1"><strong class="text-muted">المسؤول</strong></div>
+                                <div class="row flex-nowrap">
+                                    <div class="col flex-grow-0 pr-2">
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="brikman.user_id.image_1024" t-att-src="image_data_uri(brikman.user_id.image_1024)" alt="Contact"/>
+                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-if="not brikman.user_id.image_1024" src="/web/static/src/img/placeholder.png" alt="Contact"/>
+                                    </div>
+                                    <div class="col pl-0" style="min-width: 150px">
+                                        <span t-field="brikman.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
+                                        <a href="#discussion" class="small"><i class="fa fa-comment"></i> إرسال رسالة</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </t>
+                </t>
+                <!-- ====== Page Content  ====== -->
+                <div class="col-12 col-lg">
+                    <div class="card oe_website_contract">
+                    <div class="card_header">
+                        <div class="col mt-3">
+                            <div field="brikman.name"/>
+                        </div>
+                    </div>
+                        <div class="card-body">
+                                <div>
+                                <h4 class="mb-1">معلومات الاختبار</h4>
+                                <hr class="my-0"/>
+                                <div class="row mt-4">
+                                    <table class="table table-borderless table-sm">
+                                        <tbody style="white-space:nowrap">
+                                            <tr t-if="brikman.partner_id">
+                                                <th class="text-left pb-0">الاسم:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="brikman.partner_id.name"/></td>
+                                            </tr>
+                                            <tr t-if="brikman.create_date">
+                                                <th class="text-left pb-0">تاريخ الطلب:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="brikman.create_date"/></td>
+                                            </tr>
+                                            <tr t-if="brikman.service_type_id.name">
+                                                <th class="text-left pb-0">نوع الباقة:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="brikman.service_type_id.name"/></td>
+                                            </tr>
+                                            <tr t-if="brikman.state">
+                                                <th class="text-left pb-0">حالة الطلب:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="brikman.state"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            <div id="discussion"/>
+                        </div>
+                    </div>
+
+                    <!-- ======  Chatter ====== -->
+                    <div>
+                        <h4 class="mt-4">تاريخ التواصل والرسائل</h4>
+                        <t t-call="portal.message_thread">
+                            <t t-set="object" t-value="brikman"/>
+                            <t t-set="token" t-value="brikman.access_token"/>
+                            <t t-set="pid" t-value="pid"/>
+                            <t t-set="hash" t-value="hash"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>      
+    </template>
+
+</odoo>

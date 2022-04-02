@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="birkman" model="product.product">
+            <field name="name">اختبار بيركمان</field>
+            <field name="sale_ok">True</field>
+            <field name="type">service</field>
+            <field name="categ_id" ref="product.product_category_1"/>
+            <field name="list_price">0.0</field>
+        </record>
+
+    </data>
+</odoo>
+
+
+

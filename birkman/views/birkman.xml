@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_birkman_base" name="بيركمان" sequence="1"  groups="birkman.group_brikman_user" web_icon="birkman,static/description/icon.png"/>
+
+
+    <record model="ir.ui.view" id="birkman_form_view">
+        <field name="name">birkman.form.view</field>
+        <field name="model">birkman</field>
+    	<field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="تعيين كجديد" name="action_draft" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'جديد')]}"/>
+                    <button string="البدأ بالاختبار" name="action_review" type="object" class="oe_highlight" attrs="{'invisible': [('state', 'in', ('في حالة المراجعة','معتمد'))]}"/>
+                    <button string="اعتماد النتائج" name="action_submit" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'في حالة المراجعة')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="جديد,في حالة المراجعة"/>
+                </header>
+                <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="qutation_id" groups="sales_team.group_sale_salesman"/>
+                        <field name="user_id"/> 
+                    </group>
+                    <group>
+                        <field name="service_type_id"/>
+                        <field name="qty"/> 
+                    </group>
+                </group>
+                    <notebook>
+                        <page name="info" string="معلومات مقدم الطلب">
+                            <group>
+                                <group>
+                                    <field name="partner_id"/> 
+                                    <field name="phone"/> 
+                                    <field name="email"/>
+                                </group>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" options="{'post_refresh':True}" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="birkman_master_tree_view">
+        <field name="name">birkman.tree.view</field>
+        <field name="model">birkman</field>
+    	<field name="arch" type="xml">
+            <tree>
+                <field name="name"/> 
+                <field name="service_type_id"/> 
+                <field name="user_id"/> 
+                <field name="partner_id"/>
+                <field name="state"/> 
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="birkman_master_action">
+        <field name="name">اختبار بيركمان</field>
+        <field name="type">ir.actions.act_window</field>                
+        <field name="res_model">birkman</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="birkman_master_tree_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    لا توجد طلبات لنصنع واحدة!
+            </p>
+        </field>
+
+    </record>
+    
+    <menuitem id="menu_birkman" name="بيركمان" sequence="1" action="birkman_master_action" parent="menu_birkman_base"/>
+    
+    <record model="ir.ui.view" id="birkman_serivce_type_form_view">
+        <field name="name">birkman.serivce.type.form.view</field>
+        <field name="model">birkman.serivce.type</field>
+    	<field name="arch" type="xml">
+            <form>
+                <sheet>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </div>
+                <group>
+                    <group>
+                        <field name="description"/>
+                        <field name="user_id"/> 
+                    </group>
+                    <group>
+                        <field name="price"/> 
+                        <field name="price_value"/> 
+                    </group>
+                </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="birkman_serivce_type_master_tree_view">
+        <field name="name">birkman.serivce.type.tree.view</field>
+        <field name="model">birkman.serivce.type</field>
+    	<field name="arch" type="xml">
+            <tree>
+                <field name="name"/> 
+                <field name="price"/> 
+            </tree>
+        </field>
+    </record>
+
+    
+    <record model="ir.actions.act_window" id="birkman_serivceـtype_action">
+        <field name="name">باقات بيركمان</field>
+        <field name="type">ir.actions.act_window</field>                
+        <field name="res_model">birkman.serivce.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="birkman_serivce_type_master_tree_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                    !لا توجد نوع خدمة لنصنع واحدة
+            </p>
+        </field>
+    </record>
+
+    
+    <menuitem id="menu_serivceـtype" name="باقات بيركمان" sequence="2" action="birkman_serivceـtype_action" parent="menu_birkman_base"/>
+
+    
+    <record model="ir.ui.view" id="birkman_system_view">
+        <field name="name">birkman.system</field>
+        <field name="model">birkman</field>
+    	<field name="arch" type="xml">
+            <form>
+                <iframe src="https://direct.birkman.com" marginheight="0" marginwidth="0" frameborder="0" width="100%" height="100%"/>
+            </form>
+        </field>
+    </record>
+    
+    <record model="ir.actions.act_window" id="birkman_system_action">
+        <field name="name">نظام بيركمان</field>
+        <field name="type">ir.actions.act_window</field>                
+        <field name="res_model">birkman</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="birkman_system_view"/>
+    </record>
+
+    <menuitem id="menu_birkman_system" name="نظام بيركمان" sequence="3" action="birkman_system_action" parent="menu_birkman_base"/>
+
+</odoo>

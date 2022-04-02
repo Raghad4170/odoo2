@@ -1,0 +1,160 @@
+<odoo>
+  <data>
+     <record id="hr_employee_form_birkman" model="ir.ui.view">
+        <field name="name">hr.employee.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="priority" eval="-110"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='public']" position="before">
+                <page name="birkman" string="مقياس بيركمان">
+                    <group string='BIRKMAN INTERESTS'>
+                        <div>
+                            <div class='row'>
+                                <span class="col">
+                                    <field name="artistic" widget="percentpie"/>
+                                </span>
+                                <span class="col">
+                                    <field name="scientific" widget="percentpie"/>
+                                </span>
+                                <span class="col">
+                                    <field name="musical" widget="percentpie"/>
+                                </span>
+                                <span class="col">
+                                    <field name="technical" widget="percentpie"/>
+                                </span>
+                                <span class="col">
+                                    <field name="literary" widget="percentpie"/>
+                                </span>
+                            </div>
+                            <div class='row'>
+                                <span class="col">
+                                    <field name="persuasive" widget="percentpie"/>
+                                </span>
+                                <span class="col">
+                                    <field name="outdoor" widget="percentpie"/>
+                                </span>
+                                <span class="col">
+                                    <field name="social_service" widget="percentpie"/>
+                                </span>
+                                <span class="col">
+                                    <field name="administrative" widget="percentpie"/>
+                                </span>
+                                <span class="col">
+                                    <field name="numerical" widget="percentpie"/>
+                                </span>
+                            </div>
+                        </div>
+                    </group>
+                    <group string='BIRKMAN COMPONENTS'>
+                        <div>
+                            <div class='row'>
+                                <div class="col">
+                                    <group string='Social Energy'>
+                                        <img src="/birkman/views/social.png" alt="social"/>
+                                        <div class="col">
+                                            <field name="social_usual" widget="progressbar"/>
+                                            <field name="social_need" widget="progressbar"/>
+                                            <field name="social_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                                <div class="col">
+                                    <group string='Physical Energy'>
+                                        <div class="col">
+                                            <field name="physical_usual" widget="progressbar"/>
+                                            <field name="physical_need" widget="progressbar"/>
+                                            <field name="physical_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                                <div class="col">
+                                    <group string='Emotional Energy'>
+                                        <div class="col">
+                                            <field name="emotional_usual" widget="progressbar"/>
+                                            <field name="emotional_need" widget="progressbar"/>
+                                            <field name="emotional_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class="col">
+                                    <group string='Self-Consciousness'>
+                                        <div class="col">
+                                            <field name="consciousness_usual" widget="progressbar"/>
+                                            <field name="consciousness_need" widget="progressbar"/>
+                                            <field name="consciousness_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                                <div class="col">
+                                    <group string='Assertiveness'>
+                                        <div class="col">
+                                            <field name="assertiveness_usual" widget="progressbar"/>
+                                            <field name="assertiveness_need" widget="progressbar"/>
+                                            <field name="assertiveness_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                                <div class="col">
+                                    <group string='Insistence'>
+                                        <div class="col">
+                                            <field name="insistence_usual" widget="progressbar"/>
+                                            <field name="insistence_need" widget="progressbar"/>
+                                            <field name="insistence_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class="col">
+                                    <group string='Incentives'>
+                                        <div class="col">
+                                            <field name="incentives_usual" widget="progressbar"/>
+                                            <field name="incentives_need" widget="progressbar"/>
+                                            <field name="incentives_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                                <div class="col">
+                                    <group string='Restlessness'>
+                                        <div class="col">
+                                            <field name="restlessness_usual" widget="progressbar"/>
+                                            <field name="restlessness_need" widget="progressbar"/>
+                                            <field name="restlessness_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                                <div class="col">
+                                    <group string='Thought'>
+                                        <div class="col">
+                                            <field name="thought_usual" widget="progressbar"/>
+                                            <field name="thought_need" widget="progressbar"/>
+                                            <field name="thought_stress" widget="progressbar"/>
+                                        </div>
+                                    </group>
+                                </div>
+                            </div>
+                        </div>
+                    </group>
+<!--                     <group>
+                        <group>
+                            <field name="artistic"/>
+                            <field name="scientific"/>
+                            <field name="musical"/>
+                            <field name="technical"/>
+                            <field name="literary"/>
+                            <field name="persuasive"/>
+                            <field name="outdoor"/>
+                            <field name="social_service"/>
+                            <field name="administrative"/>
+                            <field name="numerical"/>
+                        </group>
+                    </group> -->
+                </page>
+            </xpath>
+        </field>
+     </record>
+  </data>
+</odoo>

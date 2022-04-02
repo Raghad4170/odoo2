@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_serivce_type_manager,birkman.serivce.type,model_birkman_serivce_type,,1,1,1,1
+access_birkman,birkman,model_birkman,,1,1,1,1
